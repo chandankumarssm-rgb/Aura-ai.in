@@ -32,8 +32,7 @@
     font-family:'IBM Plex Sans', -apple-system, 'Noto Sans Devanagari', sans-serif;
     -webkit-font-smoothing:antialiased;
     display:flex;
-      repetition_penalty: 1.15,
-      streamer
+  }
     });
     const last = output[0].generated_text.at(-1);
     const reply = (last && last.content ? last.content : full).trim();
