@@ -306,14 +306,11 @@
           });
         }
 
-        const endpoint = `https:// Cancel changes ges... generativelanguage.googleapis.com /v1beta/models?key=${apikeygemini-3.6-flash:generateContent?key=${apiKey}`;
+        const endpoint = `https://generativelanguage.googleapis.com /v1beta/models?key=${apikeygemini-3.6-flash:generateContent?key=${apiKey}`;
 
         const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: parts }]
-          })
+          method: "GET",
+        
         });
 
         if (!response.ok) {
@@ -323,7 +320,7 @@
 
         const data = await response.json();
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "कवनो जवाब ना मिलल।";
-        loadingMsg.textContent = reply;
+        loadingMsg.textContent = gemini-3.6-flash;
 
       } catch (error) {
         loadingMsg.textContent = "एरर: " + error.message;
