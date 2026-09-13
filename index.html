@@ -14,6 +14,7 @@
       --bg-raised-2: #22242f;
       --border: rgba(255, 255, 255, 0.09);
       --text: #000000;
+      --text-on-dark: #eef0f5;
       --text-muted: #93949f;
       --accent: #f2b84b;
       --accent-dim: rgba(242, 184, 75, 0.16);
@@ -77,11 +78,14 @@
     input[type="password"], input[type="text"] {
       background: var(--bg-raised-2);
       border: 1px solid var(--border);
-      color: var(--text);
+      color: var(--text-on-dark);
       padding: 8px 12px;
       border-radius: var(--radius);
       outline: none;
       font-size: 0.9rem;
+    }
+    input[type="password"]::placeholder, input[type="text"]::placeholder {
+      color: var(--text-muted);
     }
     button {
       background: var(--accent);
@@ -97,12 +101,12 @@
     button:hover { opacity: 0.9; }
     button.btn-secondary {
       background: var(--bg-raised-2);
-      color: var(--text);
+      color: var(--text-on-dark);
       border: 1px solid var(--border);
     }
     button.btn-mic {
       background: var(--bg-raised-2);
-      color: var(--text);
+      color: var(--text-on-dark);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -142,11 +146,13 @@
       align-self: flex-end;
       background: var(--accent-dim);
       border: 1px solid rgba(242, 184, 75, 0.3);
+      color: var(--text);
     }
     .msg.assistant {
       align-self: flex-start;
       background: var(--bg-raised);
       border: 1px solid var(--border);
+      color: var(--text-on-dark);
     }
     .msg.error {
       background: rgba(231, 137, 122, 0.15);
@@ -217,8 +223,12 @@
       apiKeyInput.value = apiKey;
     }
 
+    // FIX 1: preventDefault ke turant baad ek stray quote (') tha jo
+    // unterminated string literal error de raha tha aur poora script
+    // parse hone se rok raha tha. Ab yeh clean hai.
     saveKeyBtn.addEventListener('click', (event) => {
-      apiKey = apiKeyInput.value.trim();event.preventDefault();' 
+      event.preventDefault();
+      apiKey = apiKeyInput.value.trim();
       if (apiKey) {
         localStorage.setItem('aura_gemini_key', apiKey);
         alert('API Key सेव हो गइल!');
@@ -373,7 +383,18 @@
       }
     }
 
-  'chatForm.addEventListener');
+    // FIX 2: pehle yahan sirf ek tooti hui string 'chatForm.addEventListener');
+    // thi — koi actual submit listener attach hi nahi hua tha, isliye
+    // "भेजीं" dabane ya Enter dabane par kuch nahi hota tha. Ab यह theek se
+    // kaam karta hai.
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (text && !isBusy) {
+        askGemini(text);
+        chatInput.value = '';
+      }
+    });
   </script>
 </body>
 </html>
