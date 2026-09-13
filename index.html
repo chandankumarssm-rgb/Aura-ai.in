@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="bho">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aura AI — Personal Screen Assistant</title>
+  <title>Aura AI — Personal Voice Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #14151c;
+      --bg: #ffffff;
       --bg-raised: #1b1d27;
       --bg-raised-2: #22242f;
       --border: rgba(255, 255, 255, 0.09);
-      --text: #eeeae1;
+      --text: #000000;
       --text-muted: #93949f;
       --accent: #f2b84b;
       --accent-dim: rgba(242, 184, 75, 0.16);
@@ -51,15 +51,22 @@
     }
     .status-badge {
       font-size: 0.75rem;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 20px;
       background: var(--bg-raised-2);
       border: 1px solid var(--border);
+      color: var(--text-muted);
     }
-    .status-badge.live {
-      background: rgba(75, 242, 140, 0.15);
-      color: #4bf28c;
-      border-color: rgba(75, 242, 140, 0.3);
+    .status-badge.listening {
+      background: rgba(231, 137, 122, 0.2);
+      color: var(--danger);
+      border-color: rgba(231, 137, 122, 0.4);
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
     }
     .controls {
       display: flex;
@@ -85,26 +92,26 @@
       font-weight: 600;
       cursor: pointer;
       font-size: 0.9rem;
-      transition: opacity 0.2s;
+      transition: all 0.2s;
     }
     button:hover { opacity: 0.9; }
-    button:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
     button.btn-secondary {
       background: var(--bg-raised-2);
       color: var(--text);
       border: 1px solid var(--border);
     }
-    button.btn-danger {
+    button.btn-mic {
+      background: var(--bg-raised-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button.btn-mic.active {
       background: var(--danger);
       color: #fff;
-    }
-    #live-toggle-btn.active {
-      background: var(--accent);
-      color: #111;
-      border-color: var(--accent);
+      border-color: var(--danger);
     }
     main {
       flex: 1;
@@ -160,72 +167,51 @@
     .chat-form input {
       flex: 1;
     }
-    /* Kept technically "visible" (not display:none) off-screen instead —
-       some browsers pause frame decoding on display:none video elements,
-       which silently breaks captureFrame(). */
-    video {
-      position: fixed;
-      top: -9999px;
-      left: -9999px;
-      width: 2px;
-      height: 2px;
-      opacity: 0;
-      pointer-events: none;
-    }
   </style>
 </head>
 <body>
 
   <header>
     <div class="header-left">
-      <span class="title">Aura AI</span>
-      <span id="screen-status" class="status-badge">Screen: OFF</span>
+      <span class="title">Aura Voice AI</span>
+      <span id="voice-status" class="status-badge">माइक: बंद बा</span>
     </div>
     <div class="controls">
       <input type="password" id="api-key" placeholder="Enter Gemini API Key">
       <button id="save-key-btn" class="btn-secondary">Save Key</button>
-      <button id="share-btn">Start Screen Share</button>
-      <button id="live-toggle-btn" class="btn-secondary" disabled>🔴 Live Mode: बंद</button>
+      <button id="tts-toggle-btn" class="btn-secondary">🔊 आवाज: चालू</button>
     </div>
   </header>
 
   <main>
     <div id="chat-box">
-      <div class="msg assistant">प्रणाम! आपन Gemini API Key डाल के Save Key दबाईं, फिर स्क्रीन शेयर ऑन करीं। स्क्रीन ऑन हो गइला पर 'Live Mode' दबाईं त हम अपने आप थोड़ी-थोड़ी देर पर स्क्रीन देख के बतावत रहब — या नीचे टाइप क के कभुओं कुछुओ पूछ सकीलें।</div>
+      <div class="msg assistant">प्रणाम! आपन Gemini API Key डाल के Save Key दबाईं। रउआँ नीचे माइक बटन (🎙️) दबा के बोल सकीलें भा टाइप क के कुछुओ पूछ सकीलें। AI रउआँ के जवाब बोल के भी सुनाई।</div>
     </div>
   </main>
 
   <footer>
     <form id="chat-form" class="chat-form">
-      <input type="text" id="chat-input" placeholder="स्क्रीन के बारे में कुछ पूछीं..." autocomplete="off">
+      <button type="button" id="mic-btn" class="btn-mic" title="बोल के पूछीं">🎙️ बोलल शुरू करीं</button>
+      <input type="text" id="chat-input" placeholder="कुछ पूछीं भा माइक दबा के बोलीं..." autocomplete="off">
       <button type="submit">भेजीं</button>
     </form>
   </footer>
 
-  <video id="screen-video" autoplay playsinline muted></video>
-  <canvas id="screen-canvas" style="display:none;"></canvas>
-
   <script>
     const apiKeyInput = document.getElementById('api-key');
     const saveKeyBtn = document.getElementById('save-key-btn');
-    const shareBtn = document.getElementById('share-btn');
-    const liveToggleBtn = document.getElementById('live-toggle-btn');
-    const screenStatus = document.getElementById('screen-status');
+    const ttsToggleBtn = document.getElementById('tts-toggle-btn');
+    const micBtn = document.getElementById('mic-btn');
+    const voiceStatus = document.getElementById('voice-status');
     const chatBox = document.getElementById('chat-box');
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
-    const video = document.getElementById('screen-video');
-    const canvas = document.getElementById('screen-canvas');
 
-    let stream = null;
     let apiKey = localStorage.getItem('aura_gemini_key') || '';
-    let videoReady = false;
-    let liveModeOn = false;
-    let liveInterval = null;
+    let isSpeakingEnabled = true;
     let isBusy = false;
-
-    const LIVE_INTERVAL_MS = 7000; // हर 7 सेकंड पर एक बेर स्क्रीन देखी
-    const LIVE_PROMPT = 'स्क्रीन पर अभी का हो रहा बा, एक-दू लाइन में संक्षेप में बताईं।';
+    let isListening = false;
+    let recognition = null;
 
     if (apiKey) {
       apiKeyInput.value = apiKey;
@@ -237,108 +223,102 @@
         localStorage.setItem('aura_gemini_key', apiKey);
         alert('API Key सेव हो गइल!');
       } else {
-        alert('कृपया एगो वैध API Key डालीं!');
+        alert('कृपया एगो सही API Key डालीं!');
       }
     });
 
-    function screenShareSupported() {
-      return window.isSecureContext && !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
-    }
-
-    shareBtn.addEventListener('click', async () => {
-      if (!stream) {
-        if (!screenShareSupported()) {
-          alert(
-            'स्क्रीन शेयर ना चल पाई: ई फीचर सिर्फ HTTPS या localhost पर, डेस्कटॉप ब्राउज़र ' +
-            '(Chrome, Edge, Firefox, या Mac पर Safari) में काम करेला। मोबाइल Safari आ अधिकतर ' +
-            'मोबाइल ब्राउज़र में getDisplayMedia एपीआई सपोर्टेड नइखे — ई ब्राउज़र के सीमा बा, कोड के गड़बड़ी ना। ' +
-            'कृपया इहे पेज कवनो डेस्कटॉप ब्राउज़र में खोलीं।'
-          );
-          return;
-        }
-        try {
-          stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 1 } });
-          videoReady = false;
-          video.srcObject = stream;
-          video.onloadedmetadata = () => { videoReady = true; };
-          try { await video.play(); } catch (playErr) { console.warn('video.play() failed:', playErr); }
-
-          screenStatus.textContent = 'Screen: LIVE';
-          screenStatus.classList.add('live');
-          shareBtn.textContent = 'Stop Sharing';
-          shareBtn.classList.add('btn-danger');
-          liveToggleBtn.disabled = false;
-
-          stream.getVideoTracks()[0].onended = () => stopScreen();
-        } catch (err) {
-          console.error(err);
-          if (err.name === 'NotAllowedError') {
-            alert('स्क्रीन शेयरिंग के इजाजत ना मिलल। परमिशन डायलॉग में "Allow"/"शेयर करीं" दबाईं।');
-          } else if (err.name === 'NotFoundError') {
-            alert('कवनो शेयर करे लायक स्क्रीन या विंडो ना मिलल।');
-          } else {
-            alert('स्क्रीन शेयरिंग शुरू ना हो सकल: ' + err.message);
-          }
-        }
+    // आवाज (TTS) ऑन/ऑफ टॉगल
+    ttsToggleBtn.addEventListener('click', () => {
+      isSpeakingEnabled = !isSpeakingEnabled;
+      if (isSpeakingEnabled) {
+        ttsToggleBtn.textContent = '🔊 आवाज: चालू';
       } else {
-        stopScreen();
+        ttsToggleBtn.textContent = '🔇 आवाज: बंद';
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
       }
     });
 
-    function stopScreen() {
-      if (stream) {
-        stream.getTracks().forEach(t => t.stop());
-        stream = null;
-      }
-      videoReady = false;
-      screenStatus.textContent = 'Screen: OFF';
-      screenStatus.classList.remove('live');
-      shareBtn.textContent = 'Start Screen Share';
-      shareBtn.classList.remove('btn-danger');
-      liveToggleBtn.disabled = true;
-      stopLiveMode();
+    // ब्राउज़र में आवाज सुनल (Speech-to-Text Setup)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'hi-IN'; // भोजपुरी/हिंदी खातिर सभसे बढ़िया उच्चारण पकड़ेला
+
+      recognition.onstart = () => {
+        isListening = true;
+        voiceStatus.textContent = '🎙️ सुन रहल बानी... बोलीं';
+        voiceStatus.classList.add('listening');
+        micBtn.classList.add('active');
+        micBtn.textContent = '⏹️ सुनल बंद करीं';
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+        askGemini(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech Recognition Error:', event.error);
+        stopListening();
+        if (event.error === 'not-allowed') {
+          alert('माइक्रोफोन के परमिशन ना मिलल। कृपया ब्राउज़र में माइक अलाउ करीं।');
+        }
+      };
+
+      recognition.onend = () => {
+        stopListening();
+      };
+    } else {
+      micBtn.disabled = true;
+      micBtn.title = 'एह ब्राउज़र में स्पीच रिकग्निशन सपोर्ट नइखे';
+      voiceStatus.textContent = 'माइक सपोर्ट नइखे';
     }
 
-    liveToggleBtn.addEventListener('click', () => {
-      if (!stream) return;
-      if (liveModeOn) {
-        stopLiveMode();
+    function startListening() {
+      if (!recognition || isBusy) return;
+      if (window.speechSynthesis) window.speechSynthesis.cancel(); // पहिले से बोलत होखे त रोकि
+      try {
+        recognition.start();
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function stopListening() {
+      isListening = false;
+      voiceStatus.textContent = 'माइक: बंद बा';
+      voiceStatus.classList.remove('listening');
+      micBtn.classList.remove('active');
+      micBtn.textContent = '🎙️ बोलल शुरू करीं';
+      if (recognition) {
+        try { recognition.stop(); } catch (e) {}
+      }
+    }
+
+    micBtn.addEventListener('click', () => {
+      if (isListening) {
+        stopListening();
       } else {
-        startLiveMode();
+        startListening();
       }
     });
 
-    function startLiveMode() {
-      liveModeOn = true;
-      liveToggleBtn.textContent = '🔴 Live Mode: चालू';
-      liveToggleBtn.classList.add('active');
-      runLiveTick();
-      liveInterval = setInterval(runLiveTick, LIVE_INTERVAL_MS);
-    }
+    function speakText(text) {
+      if (!isSpeakingEnabled || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
 
-    function stopLiveMode() {
-      liveModeOn = false;
-      liveToggleBtn.textContent = '🔴 Live Mode: बंद';
-      liveToggleBtn.classList.remove('active');
-      if (liveInterval) {
-        clearInterval(liveInterval);
-        liveInterval = null;
-      }
-    }
+      // मार्कडाउन आ गैर-जरूरी सिंबल हटा के साफ बोले खातिर
+      const cleanText = text.replace(/[*_#`~>]/g, '').trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'hi-IN';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
 
-    function runLiveTick() {
-      if (!stream || isBusy) return;
-      askGemini(LIVE_PROMPT, true);
-    }
-
-    function captureFrame() {
-      if (!stream || !videoReady || video.videoWidth === 0) return null;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
-      return dataUrl.split(',')[1];
+      window.speechSynthesis.speak(utterance);
     }
 
     function appendMessage(text, type) {
@@ -350,34 +330,16 @@
       return msg;
     }
 
-    async function askGemini(promptText, isAuto) {
+    async function askGemini(promptText) {
       if (!apiKey) {
         alert('पहिले आपन Gemini API Key डाल के Save करीं!');
-        if (isAuto) stopLiveMode();
         return;
       }
 
       isBusy = true;
+      appendMessage(promptText, 'user');
+      const pendingBubble = appendMessage('सोच रहल बानी...', 'assistant');
 
-      if (!isAuto) {
-        appendMessage(promptText, 'user');
-      }
-      const pendingBubble = appendMessage(isAuto ? '🔴 लाइव: देख रहल बानी...' : 'सोच रहल बानी...', 'assistant');
-
-      const base64Image = captureFrame();
-      const parts = [{ text: promptText }];
-
-      if (base64Image) {
-        parts.push({
-          inline_data: {
-            mime_type: 'image/jpeg',
-            data: base64Image
-          }
-        });
-      }
-
-      // gemini-1.5-flash was fully shut down (Sept 2025) and now 404s.
-      // gemini-3.1-flash-lite is the current GA lightweight model.
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
 
       try {
@@ -385,7 +347,10 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: parts }]
+            contents: [{ parts: [{ text: promptText }] }],
+            system_instruction: {
+              parts: [{ text: "रउआँ एगो मददगार वॉइस असिस्टेंट हईं। आसान आ छोट, संक्षेप में जवाब दीं ताकि बोले में बढ़िया लागे।" }]
+            }
           })
         });
 
@@ -396,7 +361,10 @@
         }
 
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'माफ़ करीं, कवनो जवाब ना मिलल।';
-        pendingBubble.textContent = isAuto ? `🔴 लाइव: ${reply}` : reply;
+        pendingBubble.textContent = reply;
+
+        // AI के आवाज में जवाब सुनाई
+        speakText(reply);
       } catch (err) {
         pendingBubble.className = 'msg error';
         pendingBubble.textContent = 'गड़बड़ भइल: ' + err.message;
@@ -405,13 +373,7 @@
       }
     }
 
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const query = chatInput.value.trim();
-      if (!query) return;
-      chatInput.value = '';
-      await askGemini(query, false);
-    });
+  'chatForm.addEventListener');
   </script>
 </body>
 </html>
