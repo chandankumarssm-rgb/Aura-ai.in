@@ -65,6 +65,7 @@
       display: flex;
       gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
     }
     input[type="password"], input[type="text"] {
       background: var(--bg-raised-2);
@@ -87,6 +88,10 @@
       transition: opacity 0.2s;
     }
     button:hover { opacity: 0.9; }
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
     button.btn-secondary {
       background: var(--bg-raised-2);
       color: var(--text);
@@ -95,6 +100,11 @@
     button.btn-danger {
       background: var(--danger);
       color: #fff;
+    }
+    #live-toggle-btn.active {
+      background: var(--accent);
+      color: #111;
+      border-color: var(--accent);
     }
     main {
       flex: 1;
@@ -150,7 +160,18 @@
     .chat-form input {
       flex: 1;
     }
-    video { display: none; }
+    /* Kept technically "visible" (not display:none) off-screen instead —
+       some browsers pause frame decoding on display:none video elements,
+       which silently breaks captureFrame(). */
+    video {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 2px;
+      height: 2px;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -164,12 +185,13 @@
       <input type="password" id="api-key" placeholder="Enter Gemini API Key">
       <button id="save-key-btn" class="btn-secondary">Save Key</button>
       <button id="share-btn">Start Screen Share</button>
+      <button id="live-toggle-btn" class="btn-secondary" disabled>🔴 Live Mode: बंद</button>
     </div>
   </header>
 
   <main>
     <div id="chat-box">
-      <div class="msg assistant">प्रणाम! आपन Gemini API Key डाल के Save Key दबाईं, फिर स्क्रीन शेयर ऑन करके कुछ भी पूछीं।</div>
+      <div class="msg assistant">प्रणाम! आपन Gemini API Key डाल के Save Key दबाईं, फिर स्क्रीन शेयर ऑन करीं। स्क्रीन ऑन हो गइला पर 'Live Mode' दबाईं त हम अपने आप थोड़ी-थोड़ी देर पर स्क्रीन देख के बतावत रहब — या नीचे टाइप क के कभुओं कुछुओ पूछ सकीलें।</div>
     </div>
   </main>
 
@@ -180,13 +202,14 @@
     </form>
   </footer>
 
-  <video id="screen-video" autoplay playsinline></video>
+  <video id="screen-video" autoplay playsinline muted></video>
   <canvas id="screen-canvas" style="display:none;"></canvas>
 
   <script>
     const apiKeyInput = document.getElementById('api-key');
     const saveKeyBtn = document.getElementById('save-key-btn');
     const shareBtn = document.getElementById('share-btn');
+    const liveToggleBtn = document.getElementById('live-toggle-btn');
     const screenStatus = document.getElementById('screen-status');
     const chatBox = document.getElementById('chat-box');
     const chatForm = document.getElementById('chat-form');
@@ -196,6 +219,13 @@
 
     let stream = null;
     let apiKey = localStorage.getItem('aura_gemini_key') || '';
+    let videoReady = false;
+    let liveModeOn = false;
+    let liveInterval = null;
+    let isBusy = false;
+
+    const LIVE_INTERVAL_MS = 7000; // हर 7 सेकंड पर एक बेर स्क्रीन देखी
+    const LIVE_PROMPT = 'स्क्रीन पर अभी का हो रहा बा, एक-दू लाइन में संक्षेप में बताईं।';
 
     if (apiKey) {
       apiKeyInput.value = apiKey;
@@ -211,20 +241,44 @@
       }
     });
 
+    function screenShareSupported() {
+      return window.isSecureContext && !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
+    }
+
     shareBtn.addEventListener('click', async () => {
       if (!stream) {
+        if (!screenShareSupported()) {
+          alert(
+            'स्क्रीन शेयर ना चल पाई: ई फीचर सिर्फ HTTPS या localhost पर, डेस्कटॉप ब्राउज़र ' +
+            '(Chrome, Edge, Firefox, या Mac पर Safari) में काम करेला। मोबाइल Safari आ अधिकतर ' +
+            'मोबाइल ब्राउज़र में getDisplayMedia एपीआई सपोर्टेड नइखे — ई ब्राउज़र के सीमा बा, कोड के गड़बड़ी ना। ' +
+            'कृपया इहे पेज कवनो डेस्कटॉप ब्राउज़र में खोलीं।'
+          );
+          return;
+        }
         try {
           stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 1 } });
+          videoReady = false;
           video.srcObject = stream;
+          video.onloadedmetadata = () => { videoReady = true; };
+          try { await video.play(); } catch (playErr) { console.warn('video.play() failed:', playErr); }
+
           screenStatus.textContent = 'Screen: LIVE';
           screenStatus.classList.add('live');
           shareBtn.textContent = 'Stop Sharing';
           shareBtn.classList.add('btn-danger');
+          liveToggleBtn.disabled = false;
 
           stream.getVideoTracks()[0].onended = () => stopScreen();
         } catch (err) {
           console.error(err);
-          alert('स्क्रीन शेयरिंग शुरू ना हो सकल: ' + err.message);
+          if (err.name === 'NotAllowedError') {
+            alert('स्क्रीन शेयरिंग के इजाजत ना मिलल। परमिशन डायलॉग में "Allow"/"शेयर करीं" दबाईं।');
+          } else if (err.name === 'NotFoundError') {
+            alert('कवनो शेयर करे लायक स्क्रीन या विंडो ना मिलल।');
+          } else {
+            alert('स्क्रीन शेयरिंग शुरू ना हो सकल: ' + err.message);
+          }
         }
       } else {
         stopScreen();
@@ -236,14 +290,49 @@
         stream.getTracks().forEach(t => t.stop());
         stream = null;
       }
+      videoReady = false;
       screenStatus.textContent = 'Screen: OFF';
       screenStatus.classList.remove('live');
       shareBtn.textContent = 'Start Screen Share';
       shareBtn.classList.remove('btn-danger');
+      liveToggleBtn.disabled = true;
+      stopLiveMode();
+    }
+
+    liveToggleBtn.addEventListener('click', () => {
+      if (!stream) return;
+      if (liveModeOn) {
+        stopLiveMode();
+      } else {
+        startLiveMode();
+      }
+    });
+
+    function startLiveMode() {
+      liveModeOn = true;
+      liveToggleBtn.textContent = '🔴 Live Mode: चालू';
+      liveToggleBtn.classList.add('active');
+      runLiveTick();
+      liveInterval = setInterval(runLiveTick, LIVE_INTERVAL_MS);
+    }
+
+    function stopLiveMode() {
+      liveModeOn = false;
+      liveToggleBtn.textContent = '🔴 Live Mode: बंद';
+      liveToggleBtn.classList.remove('active');
+      if (liveInterval) {
+        clearInterval(liveInterval);
+        liveInterval = null;
+      }
+    }
+
+    function runLiveTick() {
+      if (!stream || isBusy) return;
+      askGemini(LIVE_PROMPT, true);
     }
 
     function captureFrame() {
-      if (!stream || video.videoWidth === 0) return null;
+      if (!stream || !videoReady || video.videoWidth === 0) return null;
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext('2d');
@@ -261,23 +350,22 @@
       return msg;
     }
 
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const query = chatInput.value.trim();
-      if (!query) return;
-
+    async function askGemini(promptText, isAuto) {
       if (!apiKey) {
         alert('पहिले आपन Gemini API Key डाल के Save करीं!');
+        if (isAuto) stopLiveMode();
         return;
       }
 
-      appendMessage(query, 'user');
-      chatInput.value = '';
+      isBusy = true;
 
-      const pendingBubble = appendMessage('सोच रहल बानी...', 'assistant');
+      if (!isAuto) {
+        appendMessage(promptText, 'user');
+      }
+      const pendingBubble = appendMessage(isAuto ? '🔴 लाइव: देख रहल बानी...' : 'सोच रहल बानी...', 'assistant');
 
       const base64Image = captureFrame();
-      const parts = [{ text: query }];
+      const parts = [{ text: promptText }];
 
       if (base64Image) {
         parts.push({
@@ -288,6 +376,8 @@
         });
       }
 
+      // gemini-1.5-flash was fully shut down (Sept 2025) and now 404s.
+      // gemini-3.1-flash-lite is the current GA lightweight model.
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
 
       try {
@@ -306,11 +396,21 @@
         }
 
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'माफ़ करीं, कवनो जवाब ना मिलल।';
-        pendingBubble.textContent = reply;
+        pendingBubble.textContent = isAuto ? `🔴 लाइव: ${reply}` : reply;
       } catch (err) {
         pendingBubble.className = 'msg error';
         pendingBubble.textContent = 'गड़बड़ भइल: ' + err.message;
+      } finally {
+        isBusy = false;
       }
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = chatInput.value.trim();
+      if (!query) return;
+      chatInput.value = '';
+      await askGemini(query, false);
     });
   </script>
 </body>
