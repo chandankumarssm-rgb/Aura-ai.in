@@ -1,63 +1,318 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#14151c">
-<title>Aura AI — आपके device पर चलने वाला AI</title>
-<meta name="description" content="Aura AI ek offline, private chatbot hai jo poori tarah browser mein chalta hai — bina server, bina API key ke.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,680&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#14151c;
-    --bg-raised:#1b1d27;
-    --bg-raised-2:#22242f;
-    --border:rgba(255,255,255,0.09);
-    --text:#eeeae1;
-    --text-muted:#93949f;
-    --accent:#f2b84b;
-    --accent-dim:rgba(242,184,75,0.16);
-    --accent-line:rgba(242,184,75,0.35);
-    --danger:#e7897a;
-    --radius:14px;
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'IBM Plex Sans', -apple-system, 'Noto Sans Devanagari', sans-serif;
-    -webkit-font-smoothing:antialiased;
-    display:flex;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura AI — Personal Screen Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #14151c;
+      --bg-raised: #1b1d27;
+      --bg-raised-2: #22242f;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #eeeae1;
+      --text-muted: #93949f;
+      --accent: #f2b84b;
+      --accent-dim: rgba(242, 184, 75, 0.16);
+      --danger: #e7897a;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 12px 16px;
+      background: var(--bg-raised);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    .status-badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--bg-raised-2);
+      border: 1px solid var(--border);
+    }
+    .status-badge.live {
+      background: rgba(75, 242, 140, 0.15);
+      color: #4bf28c;
+      border-color: rgba(75, 242, 140, 0.3);
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    input[type="password"], input[type="text"] {
+      background: var(--bg-raised-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      outline: none;
+      font-size: 0.9rem;
+    }
+    button {
+      background: var(--accent);
+      color: #111;
+      border: none;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.9; }
+    button.btn-secondary {
+      background: var(--bg-raised-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    button.btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    #chat-box {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 12px;
+    }
+    .msg {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+    .msg.user {
+      align-self: flex-end;
+      background: var(--accent-dim);
+      border: 1px solid rgba(242, 184, 75, 0.3);
+    }
+    .msg.assistant {
+      align-self: flex-start;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+    }
+    .msg.error {
+      background: rgba(231, 137, 122, 0.15);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+    footer {
+      padding: 12px 16px;
+      background: var(--bg-raised);
+      border-top: 1px solid var(--border);
+    }
+    .chat-form {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+    }
+    .chat-form input {
+      flex: 1;
+    }
+    video { display: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <span class="title">Aura AI</span>
+      <span id="screen-status" class="status-badge">Screen: OFF</span>
+    </div>
+    <div class="controls">
+      <input type="password" id="api-key" placeholder="Enter Gemini API Key">
+      <button id="save-key-btn" class="btn-secondary">Save Key</button>
+      <button id="share-btn">Start Screen Share</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="chat-box">
+      <div class="msg assistant">प्रणाम! आपन Gemini API Key डाल के Save Key दबाईं, फिर स्क्रीन शेयर ऑन करके कुछ भी पूछीं।</div>
+    </div>
+  </main>
+
+  <footer>
+    <form id="chat-form" class="chat-form">
+      <input type="text" id="chat-input" placeholder="स्क्रीन के बारे में कुछ पूछीं..." autocomplete="off">
+      <button type="submit">भेजीं</button>
+    </form>
+  </footer>
+
+  <video id="screen-video" autoplay playsinline></video>
+  <canvas id="screen-canvas" style="display:none;"></canvas>
+
+  <script>
+    const apiKeyInput = document.getElementById('api-key');
+    const saveKeyBtn = document.getElementById('save-key-btn');
+    const shareBtn = document.getElementById('share-btn');
+    const screenStatus = document.getElementById('screen-status');
+    const chatBox = document.getElementById('chat-box');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const video = document.getElementById('screen-video');
+    const canvas = document.getElementById('screen-canvas');
+
+    let stream = null;
+    let apiKey = localStorage.getItem('aura_gemini_key') || '';
+
+    if (apiKey) {
+      apiKeyInput.value = apiKey;
+    }
+
+    saveKeyBtn.addEventListener('click', () => {
+      apiKey = apiKeyInput.value.trim();
+      if (apiKey) {
+        localStorage.setItem('aura_gemini_key', apiKey);
+        alert('API Key सेव हो गइल!');
+      } else {
+        alert('कृपया एगो वैध API Key डालीं!');
+      }
     });
-    const last = output[0].generated_text.at(-1);
-    const reply = (last && last.content ? last.content : full).trim();
-    bubble.textContent = reply || 'माफ़ कीजिए, जवाब नहीं बन पाया। दोबारा पूछिए।';
-    messages.push({ role: 'assistant', content: reply });
-  } catch (err) {
-    console.error(err);
-    bubble.textContent = 'कुछ गड़बड़ हो गई। दोबारा try करें।';
-  } finally {
-    bubble.classList.remove('pending');
-    setBusy(false);
-    input.focus();
-  }
-}
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  send(input.value);
-});
+    shareBtn.addEventListener('click', async () => {
+      if (!stream) {
+        try {
+          stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 1 } });
+          video.srcObject = stream;
+          screenStatus.textContent = 'Screen: LIVE';
+          screenStatus.classList.add('live');
+          shareBtn.textContent = 'Stop Sharing';
+          shareBtn.classList.add('btn-danger');
 
-window.addEventListener('error', (e) => {
-  console.error('Unhandled error:', e.error || e.message);
-});
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('Unhandled promise rejection:', e.reason);
-});
+          stream.getVideoTracks()[0].onended = () => stopScreen();
+        } catch (err) {
+          console.error(err);
+          alert('स्क्रीन शेयरिंग शुरू ना हो सकल: ' + err.message);
+        }
+      } else {
+        stopScreen();
+      }
+    });
 
-init();
+    function stopScreen() {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+      }
+      screenStatus.textContent = 'Screen: OFF';
+      screenStatus.classList.remove('live');
+      shareBtn.textContent = 'Start Screen Share';
+      shareBtn.classList.remove('btn-danger');
+    }
+
+    function captureFrame() {
+      if (!stream || video.videoWidth === 0) return null;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+      return dataUrl.split(',')[1];
+    }
+
+    function appendMessage(text, type) {
+      const msg = document.createElement('div');
+      msg.className = `msg ${type}`;
+      msg.textContent = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return msg;
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = chatInput.value.trim();
+      if (!query) return;
+
+      if (!apiKey) {
+        alert('पहिले आपन Gemini API Key डाल के Save करीं!');
+        return;
+      }
+
+      appendMessage(query, 'user');
+      chatInput.value = '';
+
+      const pendingBubble = appendMessage('सोच रहल बानी...', 'assistant');
+
+      const base64Image = captureFrame();
+      const parts = [{ text: query }];
+
+      if (base64Image) {
+        parts.push({
+          inline_data: {
+            mime_type: 'image/jpeg',
+            data: base64Image
+          }
+        });
+      }
+
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: parts }]
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.error) {
+          throw new Error(data.error.message || 'API एरर आइल बा');
+        }
+
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'माफ़ करीं, कवनो जवाब ना मिलल।';
+        pendingBubble.textContent = reply;
+      } catch (err) {
+        pendingBubble.className = 'msg error';
+        pendingBubble.textContent = 'गड़बड़ भइल: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
+
