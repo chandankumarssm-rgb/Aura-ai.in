@@ -217,8 +217,8 @@
       apiKeyInput.value = apiKey;
     }
 
-    saveKeyBtn.addEventListener('click', () => {
-      apiKey = apiKeyInput.value.trim();
+    saveKeyBtn.addEventListener('click', (event) => {
+      apiKey = apiKeyInput.value.trim();event.preventDefault();' 
       if (apiKey) {
         localStorage.setItem('aura_gemini_key', apiKey);
         alert('API Key सेव हो गइल!');
