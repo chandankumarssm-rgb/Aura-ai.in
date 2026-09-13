@@ -159,6 +159,14 @@
       border: 1px solid var(--danger);
       color: var(--danger);
     }
+    .msg img.msg-photo {
+      display: block;
+      max-width: 100%;
+      max-height: 220px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      object-fit: cover;
+    }
     footer {
       padding: 12px 16px;
       background: var(--bg-raised);
@@ -172,6 +180,40 @@
     }
     .chat-form input {
       flex: 1;
+    }
+    #image-preview-strip {
+      max-width: 800px;
+      margin: 0 auto 8px auto;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    #image-preview-strip.visible {
+      display: flex;
+    }
+    #image-preview-strip img {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    #image-preview-strip .preview-label {
+      color: var(--text-on-dark);
+      font-size: 0.85rem;
+      flex: 1;
+    }
+    #image-preview-strip button {
+      background: var(--bg-raised-2);
+      color: var(--text-on-dark);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      font-size: 0.85rem;
+    }
+    button.btn-attach {
+      background: var(--bg-raised-2);
+      color: var(--text-on-dark);
+      border: 1px solid var(--border);
     }
   </style>
 </head>
@@ -196,7 +238,14 @@
   </main>
 
   <footer>
+    <div id="image-preview-strip">
+      <img id="image-preview-thumb" src="" alt="चुनल फोटो">
+      <span class="preview-label">फोटो जुड़ल बा</span>
+      <button type="button" id="image-remove-btn">✕ हटाईं</button>
+    </div>
     <form id="chat-form" class="chat-form">
+      <input type="file" id="image-input" accept="image/*" style="display:none">
+      <button type="button" id="image-btn" class="btn-attach" title="कैमरा भा गैलरी से फोटो जोड़ीं">📷</button>
       <button type="button" id="mic-btn" class="btn-mic" title="बोल के पूछीं">🎙️ बोलल शुरू करीं</button>
       <input type="text" id="chat-input" placeholder="कुछ पूछीं भा माइक दबा के बोलीं..." autocomplete="off">
       <button type="submit">भेजीं</button>
@@ -212,12 +261,18 @@
     const chatBox = document.getElementById('chat-box');
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
+    const imageBtn = document.getElementById('image-btn');
+    const imageInput = document.getElementById('image-input');
+    const imagePreviewStrip = document.getElementById('image-preview-strip');
+    const imagePreviewThumb = document.getElementById('image-preview-thumb');
+    const imageRemoveBtn = document.getElementById('image-remove-btn');
 
     let apiKey = localStorage.getItem('aura_gemini_key') || '';
     let isSpeakingEnabled = true;
     let isBusy = false;
     let isListening = false;
     let recognition = null;
+    let pendingImage = null; // { mimeType, base64, dataUrl }
 
     if (apiKey) {
       apiKeyInput.value = apiKey;
@@ -248,6 +303,43 @@
       }
     });
 
+    // फोटो जोड़ल (कैमरा भा गैलरी से) — बटन दबला पर ब्राउज़र के देशी
+    // पिकर खुली, जवना में यूजर कैमरा से खींच सकेलें भा गैलरी से चुन सकेलें।
+    imageBtn.addEventListener('click', () => {
+      imageInput.click();
+    });
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files && imageInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result; // "data:image/jpeg;base64,...."
+        const base64 = dataUrl.split(',')[1];
+        pendingImage = { mimeType: file.type || 'image/jpeg', base64, dataUrl };
+        imagePreviewThumb.src = dataUrl;
+        imagePreviewStrip.classList.add('visible');
+      };
+      reader.onerror = () => {
+        alert('फोटो पढ़ल ना गइल, दोबारा कोशिश करीं।');
+      };
+      reader.readAsDataURL(file);
+
+      // ताकि ओहि फोटो के दोबारा चुनला पर भी 'change' इवेंट फायर होखे
+      imageInput.value = '';
+    });
+
+    imageRemoveBtn.addEventListener('click', () => {
+      clearPendingImage();
+    });
+
+    function clearPendingImage() {
+      pendingImage = null;
+      imagePreviewThumb.src = '';
+      imagePreviewStrip.classList.remove('visible');
+    }
+
     // ब्राउज़र में आवाज सुनल (Speech-to-Text Setup)
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -268,7 +360,10 @@
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         chatInput.value = transcript;
-        askGemini(transcript);
+        const imageToSend = pendingImage;
+        askGemini(transcript, imageToSend);
+        chatInput.value = '';
+        if (imageToSend) clearPendingImage();
       };
 
       recognition.onerror = (event) => {
@@ -331,33 +426,57 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    function appendMessage(text, type) {
+    function appendMessage(text, type, imageDataUrl) {
       const msg = document.createElement('div');
       msg.className = `msg ${type}`;
-      msg.textContent = text;
+
+      if (imageDataUrl) {
+        const img = document.createElement('img');
+        img.className = 'msg-photo';
+        img.src = imageDataUrl;
+        img.alt = 'भेजल फोटो';
+        msg.appendChild(img);
+      }
+
+      const textNode = document.createElement('span');
+      textNode.textContent = text;
+      msg.appendChild(textNode);
+
       chatBox.appendChild(msg);
       chatBox.scrollTop = chatBox.scrollHeight;
       return msg;
     }
 
-    async function askGemini(promptText) {
+    async function askGemini(promptText, imageData) {
       if (!apiKey) {
         alert('पहिले आपन Gemini API Key डाल के Save करीं!');
         return;
       }
 
       isBusy = true;
-      appendMessage(promptText, 'user');
+      appendMessage(promptText, 'user', imageData ? imageData.dataUrl : null);
       const pendingBubble = appendMessage('सोच रहल बानी...', 'assistant');
 
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
+
+      // टेक्स्ट के साथ-साथ, अगर कवनो फोटो जुड़ल बा त ओकरो inline_data के रूप में
+      // पार्ट्स में जोड़ल जाला ताकि Gemini फोटो के भी "देख" सके।
+      const parts = [{ text: promptText }];
+      if (imageData) {
+        parts.push({
+          inline_data: {
+            mime_type: imageData.mimeType,
+            data: imageData.base64
+          }
+        });
+      }
 
       try {
         const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: promptText }] }],
+            contents: [{ parts }],
             system_instruction: {
               parts: [{ text: "रउआँ एगो मददगार वॉइस असिस्टेंट हईं। आसान आ छोट, संक्षेप में जवाब दीं ताकि बोले में बढ़िया लागे।" }]
             }
@@ -390,10 +509,14 @@
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const text = chatInput.value.trim();
-      if (text && !isBusy) {
-        askGemini(text);
-        chatInput.value = '';
-      }
+      if (isBusy) return;
+      if (!text && !pendingImage) return;
+
+      const imageToSend = pendingImage;
+      const promptText = text || 'एह फोटो में का बा, बताईं।';
+      askGemini(promptText, imageToSend);
+      chatInput.value = '';
+      if (imageToSend) clearPendingImage();
     });
   </script>
 </body>
