@@ -2,52 +2,50 @@
 <html lang="bho">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#0b0d12">
-
-<title>Aura AI Advance</title>
+<title>Aura AI Advance V2</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 :root{
   --bg:#0b0d12;
   --panel:#11141b;
-  --panel2:#181c25;
+  --panel2:#191d26;
   --border:rgba(255,255,255,.09);
-  --text:#f4f6fb;
-  --muted:#9298a7;
+  --text:#f5f7fb;
+  --muted:#9299a8;
   --accent:#f2b84b;
   --accent2:#ffd477;
-  --danger:#ef8175;
-  --user:#332a18;
-  --shadow:0 20px 60px rgba(0,0,0,.25);
+  --danger:#e97d72;
+  --user:#302714;
 }
 
 body.light{
-  --bg:#f6f7f9;
-  --panel:#ffffff;
+  --bg:#f6f7fa;
+  --panel:#fff;
   --panel2:#eef0f4;
   --border:rgba(0,0,0,.09);
-  --text:#15171c;
-  --muted:#6e7480;
-  --user:#fff1cf;
-  --shadow:0 20px 50px rgba(0,0,0,.08);
+  --text:#17191e;
+  --muted:#707680;
+  --user:#fff1cc;
 }
 
 html,body{
+  width:100%;
   height:100%;
 }
 
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
   overflow:hidden;
+}
+
+button,input,textarea,select{
+  font:inherit;
 }
 
 /* APP */
@@ -61,41 +59,42 @@ body{
 
 .sidebar{
   width:270px;
+  flex-shrink:0;
   background:var(--panel);
   border-right:1px solid var(--border);
   display:flex;
   flex-direction:column;
   padding:14px;
+  z-index:50;
   transition:.25s;
-  z-index:10;
 }
 
-.brand{
+.logo-area{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:8px 6px 18px;
+  padding:7px 5px 18px;
 }
 
 .logo{
-  width:40px;
-  height:40px;
-  border-radius:13px;
+  width:42px;
+  height:42px;
+  border-radius:14px;
   display:grid;
   place-items:center;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#16120b;
-  font-size:20px;
+  color:#111;
+  font-size:22px;
   font-weight:900;
-  box-shadow:0 8px 25px rgba(242,184,75,.22);
+  box-shadow:0 10px 30px rgba(242,184,75,.2);
 }
 
-.brand-text strong{
+.logo-text strong{
   display:block;
   font-size:16px;
 }
 
-.brand-text span{
+.logo-text span{
   font-size:11px;
   color:var(--muted);
 }
@@ -104,9 +103,9 @@ body{
   width:100%;
   padding:12px;
   border:1px solid var(--border);
-  border-radius:13px;
   background:var(--panel2);
   color:var(--text);
+  border-radius:13px;
   cursor:pointer;
   font-weight:700;
   margin-bottom:15px;
@@ -117,10 +116,9 @@ body{
 }
 
 .history-title{
-  font-size:11px;
   color:var(--muted);
-  padding:8px 6px;
-  text-transform:uppercase;
+  font-size:11px;
+  padding:7px 5px;
 }
 
 .history{
@@ -129,35 +127,34 @@ body{
 }
 
 .history-item{
-  padding:10px 11px;
+  padding:10px;
   border-radius:10px;
+  color:var(--muted);
   cursor:pointer;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  color:var(--muted);
   margin-bottom:3px;
 }
 
-.history-item:hover,
-.history-item.active{
+.history-item:hover{
   background:var(--panel2);
   color:var(--text);
 }
 
-.sidebar-bottom{
+.side-bottom{
   border-top:1px solid var(--border);
-  padding-top:12px;
+  padding-top:10px;
 }
 
 .side-btn{
   width:100%;
   padding:10px;
-  background:transparent;
   border:0;
+  background:transparent;
   color:var(--muted);
   text-align:left;
-  border-radius:10px;
+  border-radius:9px;
   cursor:pointer;
 }
 
@@ -178,19 +175,14 @@ body{
 /* HEADER */
 
 .header{
-  height:64px;
-  border-bottom:1px solid var(--border);
-  background:rgba(17,20,27,.82);
-  backdrop-filter:blur(18px);
+  height:62px;
+  flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 18px;
-  z-index:5;
-}
-
-body.light .header{
-  background:rgba(255,255,255,.82);
+  padding:0 17px;
+  border-bottom:1px solid var(--border);
+  background:var(--panel);
 }
 
 .header-left{
@@ -201,49 +193,48 @@ body.light .header{
 
 .menu{
   display:none;
+  border:0;
   background:transparent;
   color:var(--text);
-  border:0;
   font-size:22px;
-  cursor:pointer;
 }
 
-.ai-name{
+.ai-title{
   font-weight:800;
 }
 
-.online{
+.status{
+  font-size:10px;
+  color:#65d58a;
   display:flex;
   align-items:center;
-  gap:6px;
-  font-size:11px;
-  color:#67d58b;
+  gap:5px;
 }
 
-.dot{
+.status-dot{
   width:7px;
   height:7px;
-  background:#67d58b;
   border-radius:50%;
-  box-shadow:0 0 12px #67d58b;
+  background:#65d58a;
+  box-shadow:0 0 10px #65d58a;
 }
 
-.header-actions{
+.header-buttons{
   display:flex;
   gap:7px;
 }
 
-.icon-btn{
-  width:38px;
-  height:38px;
+.icon{
+  width:37px;
+  height:37px;
+  border-radius:10px;
   border:1px solid var(--border);
-  border-radius:11px;
   background:var(--panel2);
   color:var(--text);
   cursor:pointer;
 }
 
-.icon-btn:hover{
+.icon:hover{
   border-color:var(--accent);
 }
 
@@ -252,7 +243,7 @@ body.light .header{
 .chat{
   flex:1;
   overflow-y:auto;
-  padding:28px 16px 130px;
+  padding:25px 15px 145px;
 }
 
 .chat-inner{
@@ -263,7 +254,7 @@ body.light .header{
 /* WELCOME */
 
 .welcome{
-  min-height:55vh;
+  min-height:58vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -272,27 +263,27 @@ body.light .header{
 }
 
 .welcome-logo{
-  width:72px;
-  height:72px;
-  border-radius:23px;
+  width:70px;
+  height:70px;
   display:grid;
   place-items:center;
+  border-radius:22px;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#17120a;
-  font-size:34px;
+  color:#111;
+  font-size:32px;
   font-weight:900;
+  margin-bottom:18px;
   box-shadow:0 15px 50px rgba(242,184,75,.2);
-  margin-bottom:20px;
 }
 
 .welcome h1{
-  font-size:clamp(25px,5vw,42px);
+  font-size:clamp(25px,5vw,40px);
   margin-bottom:10px;
 }
 
 .welcome p{
   color:var(--muted);
-  max-width:560px;
+  max-width:550px;
   line-height:1.6;
 }
 
@@ -301,15 +292,15 @@ body.light .header{
   flex-wrap:wrap;
   justify-content:center;
   gap:8px;
-  margin-top:22px;
+  margin-top:20px;
 }
 
 .suggestion{
   padding:9px 12px;
+  border-radius:11px;
   border:1px solid var(--border);
   background:var(--panel);
   color:var(--text);
-  border-radius:12px;
   cursor:pointer;
 }
 
@@ -317,36 +308,29 @@ body.light .header{
   border-color:var(--accent);
 }
 
-/* MESSAGES */
+/* MESSAGE */
 
 .message{
   display:flex;
-  gap:12px;
-  margin:20px 0;
-  animation:appear .25s ease;
+  gap:11px;
+  margin:21px 0;
+  animation:fade .2s ease;
 }
 
-@keyframes appear{
-  from{
-    opacity:0;
-    transform:translateY(6px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
+@keyframes fade{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:none}
 }
 
 .avatar{
-  flex:0 0 34px;
   width:34px;
   height:34px;
+  flex:0 0 34px;
   border-radius:11px;
-  display:grid;
-  place-items:center;
   background:var(--panel2);
   border:1px solid var(--border);
-  font-size:15px;
+  display:grid;
+  place-items:center;
 }
 
 .message.user .avatar{
@@ -355,47 +339,47 @@ body.light .header{
 }
 
 .message-body{
-  min-width:0;
   flex:1;
+  min-width:0;
 }
 
 .message-name{
-  font-size:12px;
+  font-size:11px;
   color:var(--muted);
   margin-bottom:5px;
 }
 
 .message-text{
-  line-height:1.7;
   white-space:pre-wrap;
   word-break:break-word;
+  line-height:1.7;
 }
 
 .message-image{
-  max-width:280px;
-  max-height:300px;
+  max-width:300px;
+  max-height:320px;
+  display:block;
   border-radius:14px;
   margin-bottom:8px;
-  display:block;
 }
 
-.message-actions{
+.actions{
   display:flex;
   gap:5px;
   margin-top:8px;
 }
 
-.message-actions button{
+.actions button{
   border:0;
   background:var(--panel2);
   color:var(--muted);
-  border-radius:8px;
   padding:5px 8px;
-  cursor:pointer;
+  border-radius:8px;
   font-size:11px;
+  cursor:pointer;
 }
 
-.message-actions button:hover{
+.actions button:hover{
   color:var(--text);
 }
 
@@ -407,21 +391,16 @@ body.light .header{
   padding:8px 0;
 }
 
-.typing span{
+.typing i{
   width:7px;
   height:7px;
-  background:var(--muted);
   border-radius:50%;
+  background:var(--muted);
   animation:bounce 1s infinite;
 }
 
-.typing span:nth-child(2){
-  animation-delay:.15s;
-}
-
-.typing span:nth-child(3){
-  animation-delay:.3s;
-}
+.typing i:nth-child(2){animation-delay:.15s}
+.typing i:nth-child(3){animation-delay:.3s}
 
 @keyframes bounce{
   0%,60%,100%{transform:translateY(0);opacity:.4}
@@ -432,12 +411,12 @@ body.light .header{
 
 .composer-wrap{
   position:fixed;
-  bottom:0;
   left:270px;
   right:0;
-  padding:14px 16px 18px;
+  bottom:0;
+  padding:12px 15px 17px;
   background:linear-gradient(transparent,var(--bg) 30%);
-  z-index:6;
+  z-index:20;
 }
 
 .composer{
@@ -448,32 +427,32 @@ body.light .header{
 .preview{
   display:none;
   align-items:center;
-  gap:10px;
+  gap:9px;
   padding:8px;
-  margin-bottom:8px;
-  background:var(--panel);
+  margin-bottom:7px;
   border:1px solid var(--border);
-  border-radius:13px;
+  background:var(--panel);
+  border-radius:12px;
 }
 
-.preview.visible{
+.preview.show{
   display:flex;
 }
 
 .preview img{
-  width:48px;
-  height:48px;
+  width:45px;
+  height:45px;
+  border-radius:8px;
   object-fit:cover;
-  border-radius:9px;
 }
 
-.preview-text{
+.preview-info{
   flex:1;
-  font-size:12px;
   color:var(--muted);
+  font-size:11px;
 }
 
-.remove-image{
+.preview button{
   border:0;
   background:transparent;
   color:var(--muted);
@@ -483,50 +462,18 @@ body.light .header{
 .input-box{
   display:flex;
   align-items:flex-end;
-  gap:7px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:17px;
+  gap:6px;
   padding:8px;
-  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  background:var(--panel);
+  border-radius:17px;
+  box-shadow:0 15px 50px rgba(0,0,0,.18);
 }
 
-.input-box:focus-within{
-  border-color:rgba(242,184,75,.6);
-}
-
-textarea{
-  flex:1;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--text);
-  min-height:42px;
-  max-height:130px;
-  padding:11px 5px;
-  font:inherit;
-}
-
-textarea::placeholder{
-  color:var(--muted);
-}
-
-.send-btn{
-  width:43px;
-  height:43px;
-  border:0;
-  border-radius:13px;
-  background:var(--accent);
-  color:#111;
-  cursor:pointer;
-  font-size:17px;
-  font-weight:800;
-}
-
-.tool-btn{
+.tool{
   width:40px;
   height:40px;
+  flex-shrink:0;
   border:0;
   border-radius:11px;
   background:var(--panel2);
@@ -534,29 +481,57 @@ textarea::placeholder{
   cursor:pointer;
 }
 
-.tool-btn.active{
+.tool.active{
   background:var(--danger);
   color:white;
+}
+
+textarea{
+  flex:1;
+  min-height:42px;
+  max-height:130px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  padding:10px 4px;
+}
+
+textarea::placeholder{
+  color:var(--muted);
+}
+
+.send{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:12px;
+  background:var(--accent);
+  color:#111;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
 }
 
 .disclaimer{
   text-align:center;
   color:var(--muted);
-  font-size:10px;
-  margin-top:7px;
+  font-size:9px;
+  margin-top:6px;
 }
 
-/* SETTINGS */
+/* MODAL */
 
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
   backdrop-filter:blur(5px);
   display:none;
   place-items:center;
-  z-index:100;
   padding:15px;
+  z-index:100;
 }
 
 .modal.show{
@@ -569,9 +544,8 @@ textarea::placeholder{
   overflow:auto;
   background:var(--panel);
   border:1px solid var(--border);
-  border-radius:20px;
+  border-radius:19px;
   padding:20px;
-  box-shadow:0 30px 100px rgba(0,0,0,.35);
 }
 
 .modal-head{
@@ -581,51 +555,66 @@ textarea::placeholder{
   margin-bottom:20px;
 }
 
-.modal-head h2{
-  font-size:19px;
-}
-
 .close{
+  width:34px;
+  height:34px;
   border:0;
+  border-radius:9px;
   background:var(--panel2);
   color:var(--text);
-  width:35px;
-  height:35px;
-  border-radius:10px;
   cursor:pointer;
 }
 
 .setting{
-  margin-bottom:17px;
+  margin-bottom:16px;
 }
 
 .setting label{
   display:block;
-  font-size:12px;
   color:var(--muted);
-  margin-bottom:7px;
+  font-size:11px;
+  margin-bottom:6px;
 }
 
 .setting input,
 .setting select{
   width:100%;
   padding:11px;
-  border-radius:11px;
+  border-radius:10px;
   border:1px solid var(--border);
   background:var(--panel2);
   color:var(--text);
-  outline:none;
+  outline:0;
 }
 
-.save-settings{
+.save{
   width:100%;
   padding:12px;
   border:0;
-  border-radius:12px;
+  border-radius:11px;
   background:var(--accent);
   color:#111;
   font-weight:800;
   cursor:pointer;
+}
+
+.memory-box{
+  padding:12px;
+  border-radius:11px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  margin-bottom:15px;
+}
+
+.memory-box h3{
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.memory-box p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
 }
 
 /* MOBILE */
@@ -634,9 +623,9 @@ textarea::placeholder{
 
   .sidebar{
     position:fixed;
-    left:-285px;
     top:0;
     bottom:0;
+    left:-280px;
     box-shadow:20px 0 50px rgba(0,0,0,.3);
   }
 
@@ -658,29 +647,11 @@ textarea::placeholder{
   }
 
   .chat{
-    padding:18px 12px 125px;
-  }
-
-  .message{
-    margin:16px 0;
+    padding:18px 11px 140px;
   }
 
   .message-image{
-    max-width:220px;
-  }
-
-  .welcome{
-    min-height:60vh;
-  }
-
-  .welcome-logo{
-    width:60px;
-    height:60px;
-    font-size:28px;
-  }
-
-  .header-actions .icon-btn:nth-child(2){
-    display:none;
+    max-width:230px;
   }
 }
 </style>
@@ -690,308 +661,508 @@ textarea::placeholder{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-    <div class="brand">
-      <div class="logo">✦</div>
-      <div class="brand-text">
-        <strong>Aura AI</strong>
-        <span>Advance Assistant</span>
+  <div class="logo-area">
+    <div class="logo">✦</div>
+
+    <div class="logo-text">
+      <strong>Aura AI</strong>
+      <span>Advance Memory AI</span>
+    </div>
+  </div>
+
+  <button class="new-chat" id="newChat">
+    ＋ नया चैट
+  </button>
+
+  <div class="history-title">
+    पिछला चैट
+  </div>
+
+  <div class="history" id="history"></div>
+
+  <div class="side-bottom">
+
+    <button class="side-btn" id="themeBtn">
+      🌙 थीम बदलें
+    </button>
+
+    <button class="side-btn" id="memoryBtn">
+      🧠 Memory देखें
+    </button>
+
+    <button class="side-btn" id="settingsBtn">
+      ⚙️ Settings
+    </button>
+
+    <button class="side-btn" id="clearBtn">
+      🗑️ चैट साफ करीं
+    </button>
+
+  </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<section class="main">
+
+<header class="header">
+
+  <div class="header-left">
+
+    <button class="menu" id="menuBtn">
+      ☰
+    </button>
+
+    <div>
+      <div class="ai-title">
+        Aura AI Advance
+      </div>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        Memory Online
       </div>
     </div>
 
-    <button class="new-chat" id="newChatBtn">＋ नया चैट</button>
+  </div>
 
-    <div class="history-title">चैट हिस्ट्री</div>
-    <div class="history" id="history"></div>
+  <div class="header-buttons">
 
-    <div class="sidebar-bottom">
-      <button class="side-btn" id="themeBtn">🌙 थीम बदलें</button>
-      <button class="side-btn" id="settingsBtn">⚙️ सेटिंग्स</button>
-      <button class="side-btn" id="clearBtn">🗑️ चैट साफ करीं</button>
+    <button class="icon" id="voiceBtn">
+      🔊
+    </button>
+
+    <button class="icon" id="headerNew">
+      ＋
+    </button>
+
+    <button class="icon" id="headerSettings">
+      ⚙️
+    </button>
+
+  </div>
+
+</header>
+
+
+<main class="chat" id="chatBox">
+
+  <div class="chat-inner" id="chatInner">
+
+    <div class="welcome" id="welcome">
+
+      <div class="welcome-logo">
+        ✦
+      </div>
+
+      <h1>
+        प्रणाम! हम Aura AI हईं 👋
+      </h1>
+
+      <p>
+        अब हम एके चैट में पिछली बातचीत के context याद रख सकत बानी।
+        रउआँ सवाल पूछीं, फोटो भेजीं या माइक से बोलीं।
+      </p>
+
+      <div class="suggestions">
+
+        <button class="suggestion">
+          💡 एगो नया आइडिया दीं
+        </button>
+
+        <button class="suggestion">
+          📚 पढ़ाई में मदद करीं
+        </button>
+
+        <button class="suggestion">
+          🧠 Memory कैसे काम करेला?
+        </button>
+
+        <button class="suggestion">
+          👋 हमरा के याद बा?
+        </button>
+
+      </div>
+
     </div>
 
-  </aside>
+  </div>
 
-  <!-- MAIN -->
-  <section class="main">
+</main>
 
-    <header class="header">
-
-      <div class="header-left">
-        <button class="menu" id="menuBtn">☰</button>
-
-        <div>
-          <div class="ai-name">Aura AI Advance</div>
-          <div class="online">
-            <span class="dot"></span>
-            ऑनलाइन
-          </div>
-        </div>
-      </div>
-
-      <div class="header-actions">
-        <button class="icon-btn" id="voiceToggle" title="आवाज">🔊</button>
-        <button class="icon-btn" id="newHeaderBtn" title="नया चैट">＋</button>
-        <button class="icon-btn" id="settingsHeaderBtn" title="सेटिंग्स">⚙️</button>
-      </div>
-
-    </header>
-
-    <main class="chat" id="chatBox">
-      <div class="chat-inner" id="chatInner">
-
-        <div class="welcome" id="welcome">
-
-          <div class="welcome-logo">✦</div>
-
-          <h1>प्रणाम! हम Aura AI हईं 👋</h1>
-
-          <p>
-            रउआँ सवाल पूछीं, फोटो भेजीं, माइक से बोलीं—
-            हम आसान भोजपुरी में मदद करे के कोशिश करब।
-          </p>
-
-          <div class="suggestions">
-            <button class="suggestion">🌍 मौसम के बारे में बताईं</button>
-            <button class="suggestion">💡 एगो नया आइडिया दीं</button>
-            <button class="suggestion">📚 पढ़ाई में मदद करीं</button>
-            <button class="suggestion">🧠 कुछ नया सिखाईं</button>
-          </div>
-
-        </div>
-
-      </div>
-    </main>
-
-  </section>
-
+</section>
 </div>
+
 
 <!-- COMPOSER -->
 
 <div class="composer-wrap">
 
-  <div class="composer">
+<div class="composer">
 
-    <div class="preview" id="preview">
+  <div class="preview" id="preview">
 
-      <img id="previewImg" src="" alt="फोटो">
+    <img id="previewImg" src="" alt="फोटो">
 
-      <div class="preview-text">
-        📷 फोटो भेजे खातिर तैयार बा
-      </div>
-
-      <button class="remove-image" id="removeImage">✕</button>
-
+    <div class="preview-info">
+      📷 फोटो भेजे खातिर तैयार बा
     </div>
 
-    <form class="input-box" id="chatForm">
-
-      <input
-        type="file"
-        id="imageInput"
-        accept="image/*"
-        hidden
-      >
-
-      <button
-        type="button"
-        class="tool-btn"
-        id="imageBtn"
-        title="फोटो जोड़ीं"
-      >📷</button>
-
-      <button
-        type="button"
-        class="tool-btn"
-        id="micBtn"
-        title="बोलीं"
-      >🎙️</button>
-
-      <textarea
-        id="chatInput"
-        rows="1"
-        placeholder="Aura AI से कुछ पूछीं..."
-      ></textarea>
-
-      <button
-        type="submit"
-        class="send-btn"
-        title="भेजीं"
-      >➤</button>
-
-    </form>
-
-    <div class="disclaimer">
-      Aura AI Advance • Gemini powered • जवाब के हमेशा जाँच लीं
-    </div>
+    <button id="removeImage">
+      ✕
+    </button>
 
   </div>
 
+
+  <form class="input-box" id="form">
+
+    <input
+      type="file"
+      id="imageInput"
+      accept="image/*"
+      hidden
+    >
+
+    <button
+      type="button"
+      class="tool"
+      id="imageBtn"
+    >
+      📷
+    </button>
+
+    <button
+      type="button"
+      class="tool"
+      id="micBtn"
+    >
+      🎙️
+    </button>
+
+    <textarea
+      id="input"
+      rows="1"
+      placeholder="Aura AI से कुछ पूछीं..."
+    ></textarea>
+
+    <button
+      type="submit"
+      class="send"
+    >
+      ➤
+    </button>
+
+  </form>
+
+  <div class="disclaimer">
+    Aura AI Advance • Conversation Memory Enabled
+  </div>
+
 </div>
+</div>
+
 
 <!-- SETTINGS MODAL -->
 
 <div class="modal" id="settingsModal">
 
-  <div class="modal-card">
+<div class="modal-card">
 
-    <div class="modal-head">
-      <h2>⚙️ Aura AI Settings</h2>
-      <button class="close" id="closeSettings">✕</button>
-    </div>
+  <div class="modal-head">
 
-    <div class="setting">
-      <label>Gemini API Key</label>
-      <input
-        type="password"
-        id="apiKey"
-        placeholder="अपन Gemini API Key डालें"
-      >
-    </div>
+    <h2>⚙️ Aura AI Settings</h2>
 
-    <div class="setting">
-      <label>AI Model</label>
-
-      <select id="modelSelect">
-        <option value="gemini-3.1-flash-lite">
-          Gemini 3.1 Flash Lite
-        </option>
-
-        <option value="gemini-2.5-flash">
-          Gemini 2.5 Flash
-        </option>
-      </select>
-    </div>
-
-    <div class="setting">
-      <label>भाषा</label>
-
-      <select id="languageSelect">
-        <option value="bho">भोजपुरी</option>
-        <option value="hi">हिंदी</option>
-        <option value="en">English</option>
-      </select>
-    </div>
-
-    <button class="save-settings" id="saveSettings">
-      💾 सेटिंग सेव करीं
+    <button class="close" id="closeSettings">
+      ✕
     </button>
 
   </div>
 
+  <div class="setting">
+
+    <label>
+      Gemini API Key
+    </label>
+
+    <input
+      type="password"
+      id="apiKey"
+      placeholder="Gemini API Key"
+    >
+
+  </div>
+
+  <div class="setting">
+
+    <label>
+      Gemini Model
+    </label>
+
+    <select id="model">
+
+      <option value="gemini-3.1-flash-lite">
+        Gemini 3.1 Flash Lite
+      </option>
+
+      <option value="gemini-2.5-flash">
+        Gemini 2.5 Flash
+      </option>
+
+    </select>
+
+  </div>
+
+  <button class="save" id="saveSettings">
+    💾 सेटिंग सेव करीं
+  </button>
+
 </div>
+</div>
+
+
+<!-- MEMORY MODAL -->
+
+<div class="modal" id="memoryModal">
+
+<div class="modal-card">
+
+  <div class="modal-head">
+
+    <h2>🧠 Aura Memory</h2>
+
+    <button class="close" id="closeMemory">
+      ✕
+    </button>
+
+  </div>
+
+  <div class="memory-box">
+
+    <h3>
+      Conversation Memory
+    </h3>
+
+    <p>
+      वर्तमान चैट के पिछला messages API request में
+      context के रूप में भेजल जाला।
+    </p>
+
+  </div>
+
+  <div class="memory-box">
+
+    <h3>
+      Long-Term Memory
+    </h3>
+
+    <p id="longMemoryText">
+      अभी कवनो saved memory नइखे।
+    </p>
+
+  </div>
+
+  <button class="save" id="clearMemory">
+    🗑️ Long-Term Memory साफ करीं
+  </button>
+
+</div>
+</div>
+
 
 <script>
 
-/* =========================
-   ELEMENTS
-========================= */
+/* =====================================
+   BASIC SETTINGS
+===================================== */
 
-const chatBox = document.getElementById("chatBox");
-const chatInner = document.getElementById("chatInner");
-const chatInput = document.getElementById("chatInput");
-const chatForm = document.getElementById("chatForm");
+const chatBox =
+document.getElementById("chatBox");
 
-const sidebar = document.getElementById("sidebar");
-const historyBox = document.getElementById("history");
+const chatInner =
+document.getElementById("chatInner");
 
-const imageInput = document.getElementById("imageInput");
-const imageBtn = document.getElementById("imageBtn");
+const input =
+document.getElementById("input");
 
-const preview = document.getElementById("preview");
-const previewImg = document.getElementById("previewImg");
-const removeImage = document.getElementById("removeImage");
+const form =
+document.getElementById("form");
 
-const micBtn = document.getElementById("micBtn");
+const sidebar =
+document.getElementById("sidebar");
 
-const settingsModal = document.getElementById("settingsModal");
-const apiKeyInput = document.getElementById("apiKey");
-const modelSelect = document.getElementById("modelSelect");
-const languageSelect = document.getElementById("languageSelect");
+const historyBox =
+document.getElementById("history");
 
-/* =========================
-   STATE
-========================= */
+const apiKeyInput =
+document.getElementById("apiKey");
 
-let apiKey = localStorage.getItem("aura_api_key") || "";
-let selectedModel =
-  localStorage.getItem("aura_model") ||
-  "gemini-3.1-flash-lite";
+const modelSelect =
+document.getElementById("model");
 
-let language =
-  localStorage.getItem("aura_language") || "bho";
+const preview =
+document.getElementById("preview");
+
+const previewImg =
+document.getElementById("previewImg");
+
+const imageInput =
+document.getElementById("imageInput");
+
+let apiKey =
+localStorage.getItem("aura_api_key") || "";
+
+let model =
+localStorage.getItem("aura_model") ||
+"gemini-3.1-flash-lite";
 
 let voiceEnabled =
-  localStorage.getItem("aura_voice") !== "false";
-
-let pendingImage = null;
-let busy = false;
+localStorage.getItem("aura_voice") !== "false";
 
 let messages = [];
 
-/* =========================
-   INIT
-========================= */
+let pendingImage = null;
+
+let busy = false;
+
+let longMemory =
+JSON.parse(
+  localStorage.getItem("aura_long_memory") || "[]"
+);
 
 apiKeyInput.value = apiKey;
-modelSelect.value = selectedModel;
-languageSelect.value = language;
+modelSelect.value = model;
 
-if(localStorage.getItem("aura_theme") === "light"){
-  document.body.classList.add("light");
+
+/* =====================================
+   MEMORY LIMIT
+===================================== */
+
+/*
+  बहुत ज्यादा messages API में भेजने से
+  request बड़ी हो सकती है।
+
+  इसलिए आखिरी 30 messages भेजे जाते हैं।
+*/
+
+const MAX_MEMORY_MESSAGES = 30;
+
+
+/* =====================================
+   SYSTEM PROMPT
+===================================== */
+
+function getSystemPrompt(){
+
+  let memoryText =
+    longMemory.length
+      ? longMemory.join("\n")
+      : "कोई saved long-term memory नइखे।";
+
+  return `
+
+तू Aura AI Advance हउ।
+
+तोर नाम Aura AI Advance बा।
+
+तू उपयोगकर्ता के साथ पिछली बातचीत के context
+का ध्यान रख के जवाब देब।
+
+जरूरी नियम:
+
+1. उपयोगकर्ता भोजपुरी में पूछे त भोजपुरी में जवाब दे।
+2. हिंदी में पूछे त हिंदी में जवाब दे।
+3. English में पूछे त English में जवाब दे।
+4. सरल, साफ और मददगार भाषा इस्तेमाल कर।
+5. अगर पिछली बातचीत में कोई relevant जानकारी बा,
+   त ओकर इस्तेमाल कर।
+6. पुरानी जानकारी और current सवाल में conflict होखे
+   त current user message के प्राथमिकता दे।
+7. फोटो मिले त फोटो के देखकर जवाब दे।
+8. बिना जानकारी के चीज invent मत कर।
+9. अगर उपयोगकर्ता पूछे कि तोहरा के के बनवले बा,
+   त साफ कह:
+   "हमार निर्माण प्रद्युम्न कुमार कइले बानी।"
+
+Long-term memory:
+${memoryText}
+
+`;
 }
 
-loadHistory();
 
-/* =========================
+/* =====================================
    SETTINGS
-========================= */
-
-document.getElementById("settingsBtn").onclick = openSettings;
-document.getElementById("settingsHeaderBtn").onclick = openSettings;
-
-document.getElementById("closeSettings").onclick = () => {
-  settingsModal.classList.remove("show");
-};
-
-settingsModal.addEventListener("click",e=>{
-  if(e.target === settingsModal){
-    settingsModal.classList.remove("show");
-  }
-});
+===================================== */
 
 function openSettings(){
+
   apiKeyInput.value = apiKey;
-  modelSelect.value = selectedModel;
-  languageSelect.value = language;
-  settingsModal.classList.add("show");
+  modelSelect.value = model;
+
+  document
+    .getElementById("settingsModal")
+    .classList.add("show");
 }
 
-document.getElementById("saveSettings").onclick = () => {
+document
+.getElementById("settingsBtn")
+.onclick = openSettings;
 
-  apiKey = apiKeyInput.value.trim();
-  selectedModel = modelSelect.value;
-  language = languageSelect.value;
+document
+.getElementById("headerSettings")
+.onclick = openSettings;
 
-  localStorage.setItem("aura_api_key",apiKey);
-  localStorage.setItem("aura_model",selectedModel);
-  localStorage.setItem("aura_language",language);
+document
+.getElementById("closeSettings")
+.onclick = () => {
 
-  settingsModal.classList.remove("show");
+  document
+    .getElementById("settingsModal")
+    .classList.remove("show");
 
-  alert("सेटिंग सेव हो गइल! ✅");
 };
 
-/* =========================
+document
+.getElementById("saveSettings")
+.onclick = () => {
+
+  apiKey =
+    apiKeyInput.value.trim();
+
+  model =
+    modelSelect.value;
+
+  localStorage.setItem(
+    "aura_api_key",
+    apiKey
+  );
+
+  localStorage.setItem(
+    "aura_model",
+    model
+  );
+
+  document
+    .getElementById("settingsModal")
+    .classList.remove("show");
+
+  alert("Settings सेव हो गइल ✅");
+};
+
+
+/* =====================================
    THEME
-========================= */
+===================================== */
 
-document.getElementById("themeBtn").onclick = toggleTheme;
-
-function toggleTheme(){
+document
+.getElementById("themeBtn")
+.onclick = () => {
 
   document.body.classList.toggle("light");
 
@@ -1001,13 +1172,23 @@ function toggleTheme(){
       ? "light"
       : "dark"
   );
+};
+
+if(
+  localStorage.getItem("aura_theme")
+  === "light"
+){
+  document.body.classList.add("light");
 }
 
-/* =========================
-   VOICE TOGGLE
-========================= */
 
-document.getElementById("voiceToggle").onclick = () => {
+/* =====================================
+   VOICE
+===================================== */
+
+document
+.getElementById("voiceBtn")
+.onclick = () => {
 
   voiceEnabled = !voiceEnabled;
 
@@ -1016,43 +1197,66 @@ document.getElementById("voiceToggle").onclick = () => {
     voiceEnabled
   );
 
-  document.getElementById("voiceToggle").textContent =
+  document.getElementById(
+    "voiceBtn"
+  ).textContent =
     voiceEnabled ? "🔊" : "🔇";
 
-  if(!voiceEnabled && speechSynthesis){
+  if(!voiceEnabled &&
+     "speechSynthesis" in window){
+
     speechSynthesis.cancel();
   }
 };
 
-/* =========================
-   MOBILE MENU
-========================= */
 
-document.getElementById("menuBtn").onclick = () => {
+/* =====================================
+   MOBILE MENU
+===================================== */
+
+document
+.getElementById("menuBtn")
+.onclick = () => {
+
   sidebar.classList.toggle("open");
 };
 
-/* =========================
-   NEW CHAT
-========================= */
 
-document.getElementById("newChatBtn").onclick = newChat;
-document.getElementById("newHeaderBtn").onclick = newChat;
+/* =====================================
+   NEW CHAT
+===================================== */
+
+document
+.getElementById("newChat")
+.onclick = newChat;
+
+document
+.getElementById("headerNew")
+.onclick = newChat;
 
 function newChat(){
 
   messages = [];
   pendingImage = null;
 
+  document
+    .getElementById("preview")
+    .classList.remove("show");
+
   chatInner.innerHTML = `
+
     <div class="welcome" id="welcome">
 
-      <div class="welcome-logo">✦</div>
+      <div class="welcome-logo">
+        ✦
+      </div>
 
-      <h1>नया चैट शुरू करीं 👋</h1>
+      <h1>
+        नया चैट शुरू करीं 👋
+      </h1>
 
       <p>
-        रउआँ कुछ पूछीं, फोटो भेजीं भा माइक से बोलीं।
+        पिछला chat history में सुरक्षित बा।
       </p>
 
       <div class="suggestions">
@@ -1078,71 +1282,82 @@ function newChat(){
 
   sidebar.classList.remove("open");
 
-  chatInput.focus();
+  input.focus();
 }
 
-/* =========================
-   CLEAR CHAT
-========================= */
 
-document.getElementById("clearBtn").onclick = () => {
-
-  if(!confirm("सगरी चैट साफ करे के बा?")) return;
-
-  messages = [];
-
-  localStorage.removeItem("aura_current_chat");
-
-  newChat();
-};
-
-/* =========================
+/* =====================================
    SUGGESTIONS
-========================= */
+===================================== */
 
 function attachSuggestions(){
 
-  document.querySelectorAll(".suggestion").forEach(btn=>{
-    btn.onclick = () => {
-      chatInput.value = btn.textContent.replace(/^[^\w]+/,"").trim();
+  document
+  .querySelectorAll(".suggestion")
+  .forEach(button => {
+
+    button.onclick = () => {
+
+      input.value =
+        button.textContent
+        .replace(/^[^a-zA-Z0-9अ-ह]+/,"")
+        .trim();
+
       sendMessage();
     };
+
   });
 }
 
 attachSuggestions();
 
-/* =========================
-   IMAGE
-========================= */
 
-imageBtn.onclick = () => imageInput.click();
+/* =====================================
+   IMAGE
+===================================== */
+
+document
+.getElementById("imageBtn")
+.onclick = () => {
+
+  imageInput.click();
+};
 
 imageInput.onchange = () => {
 
-  const file = imageInput.files?.[0];
+  const file =
+    imageInput.files?.[0];
 
   if(!file) return;
 
   if(!file.type.startsWith("image/")){
-    alert("कृपया image file चुनीं।");
+
+    alert("सिर्फ image चुनल जा सकेला।");
     return;
   }
 
-  const reader = new FileReader();
+  const reader =
+    new FileReader();
 
   reader.onload = () => {
 
-    const dataUrl = reader.result;
+    const dataUrl =
+      reader.result;
 
     pendingImage = {
+
       mimeType:file.type,
-      base64:dataUrl.split(",")[1],
-      dataUrl
+
+      base64:
+        dataUrl.split(",")[1],
+
+      dataUrl:dataUrl
     };
 
-    previewImg.src = dataUrl;
-    preview.classList.add("visible");
+    previewImg.src =
+      dataUrl;
+
+    preview.classList.add("show");
   };
 
   reader.readAsDataURL(file);
@@ -1150,162 +1365,259 @@ imageInput.onchange = () => {
   imageInput.value = "";
 };
 
-removeImage.onclick = clearImage;
+document
+.getElementById("removeImage")
+.onclick = clearImage;
 
 function clearImage(){
 
   pendingImage = null;
+
   previewImg.src = "";
-  preview.classList.remove("visible");
+
+  preview.classList.remove("show");
 }
 
-/* =========================
+
+/* =====================================
    TEXTAREA
-========================= */
+===================================== */
 
-chatInput.addEventListener("input",()=>{
+input.addEventListener(
+"input",
+() => {
 
-  chatInput.style.height = "auto";
+  input.style.height = "auto";
 
-  chatInput.style.height =
-    Math.min(chatInput.scrollHeight,130) + "px";
+  input.style.height =
+    Math.min(
+      input.scrollHeight,
+      130
+    ) + "px";
 });
 
-chatInput.addEventListener("keydown",e=>{
 
-  if(e.key === "Enter" && !e.shiftKey){
+input.addEventListener(
+"keydown",
+e => {
+
+  if(
+    e.key === "Enter" &&
+    !e.shiftKey
+  ){
 
     e.preventDefault();
+
     sendMessage();
   }
+
 });
 
-/* =========================
-   FORM
-========================= */
 
-chatForm.addEventListener("submit",e=>{
+/* =====================================
+   FORM
+===================================== */
+
+form.addEventListener(
+"submit",
+e => {
+
   e.preventDefault();
+
   sendMessage();
 });
 
-/* =========================
-   SEND
-========================= */
+
+/* =====================================
+   SEND MESSAGE
+===================================== */
 
 async function sendMessage(){
 
   if(busy) return;
 
-  const text = chatInput.value.trim();
+  const text =
+    input.value.trim();
 
-  if(!text && !pendingImage) return;
+  if(!text && !pendingImage)
+    return;
 
   if(!apiKey){
 
     openSettings();
 
-    alert("पहिले Gemini API Key डाल के सेव करीं।");
+    alert(
+      "पहिले Gemini API Key डाल के सेव करीं।"
+    );
 
     return;
   }
 
-  const image = pendingImage;
+  const image =
+    pendingImage;
 
-  chatInput.value = "";
-  chatInput.style.height = "auto";
+  input.value = "";
+
+  input.style.height = "auto";
 
   clearImage();
 
-  const welcome = document.getElementById("welcome");
+  document
+    .getElementById("welcome")
+    ?.remove();
 
-  if(welcome) welcome.remove();
+  /*
+    पहले user message को local memory में डालते हैं।
+  */
+
+  const userMessage = {
+
+    role:"user",
+
+    text:
+      text ||
+      "एह फोटो में का बा, बताईं।",
+
+    image:image?.dataUrl || null
+  };
+
+  messages.push(userMessage);
 
   addMessage(
-    text || "एह फोटो के बारे में बताईं।",
+    userMessage.text,
     "user",
-    image?.dataUrl
+    userMessage.image
   );
-
-  messages.push({
-    role:"user",
-    text:text || "एह फोटो के बारे में बताईं।"
-  });
 
   saveCurrentChat();
 
+  /*
+    अब Gemini को पूरा context भेजा जाएगा।
+  */
+
   await askGemini(
-    text || "एह फोटो में का बा, विस्तार से बताईं।",
+    userMessage.text,
     image
   );
 }
 
-/* =========================
+
+/* =====================================
    ADD MESSAGE
-========================= */
+===================================== */
 
-function addMessage(text,type,imageUrl=null){
+function addMessage(
+  text,
+  role,
+  imageUrl=null
+){
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "message " + type;
+  const wrapper =
+    document.createElement("div");
 
-  const avatar = document.createElement("div");
-  avatar.className = "avatar";
+  wrapper.className =
+    "message " + role;
+
+  const avatar =
+    document.createElement("div");
+
+  avatar.className =
+    "avatar";
+
   avatar.textContent =
-    type === "user" ? "👤" : "✦";
+    role === "user"
+      ? "👤"
+      : "✦";
 
-  const body = document.createElement("div");
-  body.className = "message-body";
+  const body =
+    document.createElement("div");
 
-  const name = document.createElement("div");
-  name.className = "message-name";
+  body.className =
+    "message-body";
+
+  const name =
+    document.createElement("div");
+
+  name.className =
+    "message-name";
+
   name.textContent =
-    type === "user" ? "रउआँ" : "Aura AI";
+    role === "user"
+      ? "रउआँ"
+      : "Aura AI";
 
   body.appendChild(name);
 
+
   if(imageUrl){
 
-    const img = document.createElement("img");
+    const img =
+      document.createElement("img");
 
-    img.className = "message-image";
-    img.src = imageUrl;
+    img.className =
+      "message-image";
+
+    img.src =
+      imageUrl;
 
     body.appendChild(img);
   }
 
-  const textNode = document.createElement("div");
 
-  textNode.className = "message-text";
-  textNode.textContent = text;
+  const textElement =
+    document.createElement("div");
 
-  body.appendChild(textNode);
+  textElement.className =
+    "message-text";
 
-  if(type === "assistant"){
+  textElement.textContent =
+    text;
 
-    const actions = document.createElement("div");
+  body.appendChild(
+    textElement
+  );
 
-    actions.className = "message-actions";
 
-    const copy = document.createElement("button");
+  if(role === "assistant"){
 
-    copy.textContent = "📋 Copy";
+    const actions =
+      document.createElement("div");
 
-    copy.onclick = () => {
+    actions.className =
+      "actions";
 
-      navigator.clipboard.writeText(text);
+    const copy =
+      document.createElement("button");
 
-      copy.textContent = "✅ Copied";
+    copy.textContent =
+      "📋 Copy";
 
-      setTimeout(()=>{
-        copy.textContent = "📋 Copy";
-      },1200);
+    copy.onclick = async () => {
+
+      try{
+
+        await navigator
+          .clipboard
+          .writeText(text);
+
+        copy.textContent =
+          "✅ Copied";
+
+        setTimeout(
+          () =>
+            copy.textContent =
+              "📋 Copy",
+          1200
+        );
+
+      }catch(e){}
     };
 
     actions.appendChild(copy);
 
     body.appendChild(actions);
   }
+
 
   wrapper.appendChild(avatar);
   wrapper.appendChild(body);
@@ -1314,22 +1626,30 @@ function addMessage(text,type,imageUrl=null){
 
   scrollBottom();
 
-  return textNode;
+  return textElement;
 }
 
-/* =========================
+
+/* =====================================
    TYPING
-========================= */
+===================================== */
 
-function addTyping(){
+function showTyping(){
 
-  const wrapper = document.createElement("div");
+  const div =
+    document.createElement("div");
 
-  wrapper.className = "message assistant";
-  wrapper.id = "typingMessage";
+  div.className =
+    "message assistant";
 
-  wrapper.innerHTML = `
-    <div class="avatar">✦</div>
+  div.id =
+    "typing";
+
+  div.innerHTML = `
+
+    <div class="avatar">
+      ✦
+    </div>
 
     <div class="message-body">
 
@@ -1338,212 +1658,595 @@ function addTyping(){
       </div>
 
       <div class="typing">
-        <span></span>
-        <span></span>
-        <span></span>
+
+        <i></i>
+        <i></i>
+        <i></i>
+
       </div>
 
     </div>
   `;
 
-  chatInner.appendChild(wrapper);
+  chatInner.appendChild(div);
 
   scrollBottom();
 }
 
-function removeTyping(){
+function hideTyping(){
 
-  document.getElementById("typingMessage")?.remove();
+  document
+    .getElementById("typing")
+    ?.remove();
 }
 
-/* =========================
-   GEMINI
-========================= */
 
-async function askGemini(promptText,imageData){
+/* =====================================
+   ⭐ MAIN MEMORY SYSTEM
+===================================== */
+
+async function askGemini(
+  currentText,
+  imageData
+){
 
   busy = true;
 
-  addTyping();
+  showTyping();
 
-  const endpoint =
-    `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  /*
+    यही सबसे महत्वपूर्ण हिस्सा है।
 
-  const systemPrompt = `
+    पुरानी messages को Gemini format में बदला जा रहा है।
+  */
 
-तू Aura AI Advance हउ।
+  const history =
+    messages
+      .slice(-MAX_MEMORY_MESSAGES)
+      .map(message => {
 
-तोर व्यवहार:
-- हमेशा मददगार रह।
-- सरल भाषा में जवाब दे।
-- उपयोगकर्ता भोजपुरी में पूछे त भोजपुरी में जवाब दे।
-- हिंदी में पूछे त हिंदी में जवाब दे।
-- English में पूछे त English में जवाब दे।
-- गलत जानकारी confidently मत दे।
-- जरूरत हो त जवाब को points में समझा।
-- फोटो मिले त फोटो के ध्यान से देखकर जवाब दे।
+        return {
 
-निर्माता:
-अगर उपयोगकर्ता पूछे कि Aura AI के के बनवले बा,
-त कह:
-"हमार निर्माण प्रद्युम्न कुमार कइले बानी।"
+          role:
+            message.role === "assistant"
+              ? "model"
+              : "user",
 
-तोर उद्देश्य:
-उपयोगकर्ता के पढ़ाई, जानकारी, writing, ideas,
-coding और रोजमर्रा के सवाल में मदद करना।
-`;
+          parts:[
+            {
+              text:message.text
+            }
+          ]
 
-  const parts = [
-    {
-      text: promptText
-    }
-  ];
+        };
+
+      });
+
+
+  /*
+    Current image वाली message में image भी जोड़ते हैं।
+    इसलिए आखिरी user message को दोबारा image के साथ बनाते हैं।
+  */
 
   if(imageData){
 
-    parts.push({
-      inline_data:{
-        mime_type:imageData.mimeType,
-        data:imageData.base64
-      }
-    });
+    const last =
+      history[history.length - 1];
+
+    if(last){
+
+      last.parts.push({
+
+        inline_data:{
+          mime_type:
+            imageData.mimeType,
+
+          data:
+            imageData.base64
+        }
+
+      });
+    }
   }
+
+
+  const endpoint =
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
 
   try{
 
-    const response = await fetch(endpoint,{
+    const response =
+      await fetch(
+        endpoint,
+        {
 
-      method:"POST",
+          method:"POST",
 
-      headers:{
-        "Content-Type":"application/json"
-      },
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-      body:JSON.stringify({
+          body:JSON.stringify({
 
-        system_instruction:{
-          parts:[
-            {
-              text:systemPrompt
+            system_instruction:{
+              parts:[
+                {
+                  text:
+                    getSystemPrompt()
+                }
+              ]
+            },
+
+            /*
+              ⭐ पूरा conversation context
+              Gemini को यहीं भेजा जा रहा है।
+            */
+
+            contents:history,
+
+            generationConfig:{
+
+              temperature:.7,
+
+              maxOutputTokens:2048
             }
-          ]
-        },
 
-        contents:[
-          {
-            role:"user",
-            parts
-          }
-        ],
-
-        generationConfig:{
-          temperature:.7,
-          maxOutputTokens:2048
+          })
         }
+      );
 
-      })
 
-    });
+    const data =
+      await response.json();
 
-    const data = await response.json();
 
-    if(!response.ok || data.error){
+    if(
+      !response.ok ||
+      data.error
+    ){
+
       throw new Error(
         data.error?.message ||
         `HTTP ${response.status}`
       );
     }
 
+
     const reply =
       data.candidates
-      ?.map(c =>
-        c.content?.parts
-        ?.map(p=>p.text || "")
-        .join("")
-      )
-      .filter(Boolean)
-      .join("\n")
+        ?.map(
+          candidate =>
+            candidate.content
+              ?.parts
+              ?.map(
+                part =>
+                  part.text || ""
+              )
+              .join("")
+        )
+        .filter(Boolean)
+        .join("\n")
       ||
       "माफ करीं, अभी जवाब ना मिलल।";
 
-    removeTyping();
 
-    const textNode =
-      addMessage(reply,"assistant");
+    hideTyping();
+
+
+    addMessage(
+      reply,
+      "assistant"
+    );
+
+
+    /*
+      AI का जवाब भी memory में।
+    */
 
     messages.push({
+
       role:"assistant",
+
       text:reply
     });
 
+
     saveCurrentChat();
+
+
+    /*
+      Basic long-term memory detection
+    */
+
+    detectMemory(currentText);
+
 
     speak(reply);
 
+
   }catch(error){
 
-    removeTyping();
+    hideTyping();
 
     addMessage(
-      "गड़बड़ भइल: " + error.message,
+      "गड़बड़ भइल: " +
+      error.message,
       "assistant"
     );
 
   }finally{
 
     busy = false;
+
     scrollBottom();
   }
 }
 
-/* =========================
-   SPEECH OUTPUT
-========================= */
 
-function speak(text){
+/* =====================================
+   BASIC LONG-TERM MEMORY
+===================================== */
 
-  if(!voiceEnabled) return;
+/*
+  यह simple local memory है।
 
-  if(!("speechSynthesis" in window)) return;
+  Example:
+  "मेरा नाम राहुल है"
+  "मुझे क्रिकेट पसंद है"
 
-  speechSynthesis.cancel();
+  इनको browser में save किया जा सकता है।
+*/
 
-  const clean =
-    text
-      .replace(/[*_#`~>]/g,"")
-      .trim();
+function detectMemory(text){
 
-  const utterance =
-    new SpeechSynthesisUtterance(clean);
+  const patterns = [
 
-  utterance.lang =
-    language === "en"
-      ? "en-US"
-      : "hi-IN";
+    /मेरा नाम\s+(.+)/i,
 
-  utterance.rate = .95;
-  utterance.pitch = 1.04;
+    /हमार नाम\s+(.+)/i,
 
-  const voices =
-    speechSynthesis.getVoices();
+    /मुझे\s+(.+)\s+पसंद\s+है/i,
 
-  const voice =
-    voices.find(v =>
-      language === "en"
-        ? v.lang.startsWith("en")
-        : v.lang.startsWith("hi")
-    );
+    /हमके\s+(.+)\s+पसंद\s+बा/i
 
-  if(voice){
-    utterance.voice = voice;
+  ];
+
+
+  for(
+    const pattern of patterns
+  ){
+
+    const match =
+      text.match(pattern);
+
+    if(!match) continue;
+
+
+    let memory =
+      text.trim();
+
+
+    if(
+      !longMemory.includes(memory)
+    ){
+
+      longMemory.push(memory);
+
+      /*
+        Maximum 20 memories
+      */
+
+      longMemory =
+        longMemory.slice(-20);
+
+      localStorage.setItem(
+        "aura_long_memory",
+        JSON.stringify(
+          longMemory
+        )
+      );
+    }
+
+    break;
   }
 
-  speechSynthesis.speak(utterance);
+  updateMemoryUI();
 }
 
-/* =========================
+
+/* =====================================
+   MEMORY UI
+===================================== */
+
+function updateMemoryUI(){
+
+  const box =
+    document.getElementById(
+      "longMemoryText"
+    );
+
+  if(!longMemory.length){
+
+    box.textContent =
+      "अभी कवनो saved memory नइखे।";
+
+    return;
+  }
+
+  box.textContent =
+    longMemory
+      .map(
+        memory =>
+          "• " + memory
+      )
+      .join("\n");
+}
+
+
+document
+.getElementById("memoryBtn")
+.onclick = () => {
+
+  updateMemoryUI();
+
+  document
+    .getElementById("memoryModal")
+    .classList.add("show");
+};
+
+
+document
+.getElementById("closeMemory")
+.onclick = () => {
+
+  document
+    .getElementById("memoryModal")
+    .classList.remove("show");
+};
+
+
+document
+.getElementById("clearMemory")
+.onclick = () => {
+
+  if(
+    !confirm(
+      "Long-term memory साफ करीं?"
+    )
+  ) return;
+
+  longMemory = [];
+
+  localStorage.removeItem(
+    "aura_long_memory"
+  );
+
+  updateMemoryUI();
+};
+
+
+/* =====================================
+   CHAT STORAGE
+===================================== */
+
+function saveCurrentChat(){
+
+  localStorage.setItem(
+    "aura_current_chat",
+    JSON.stringify(messages)
+  );
+
+  saveHistory();
+}
+
+
+function saveHistory(){
+
+  const first =
+    messages.find(
+      m => m.role === "user"
+    );
+
+  if(!first) return;
+
+
+  let history =
+    JSON.parse(
+      localStorage.getItem(
+        "aura_history"
+      ) || "[]"
+    );
+
+
+  const title =
+    first.text.slice(0,50);
+
+
+  const item = {
+
+    id:Date.now(),
+
+    title:title,
+
+    messages:messages
+  };
+
+
+  /*
+    current chat को सबसे ऊपर रखें।
+  */
+
+  history =
+    history.filter(
+      h => h.title !== title
+    );
+
+
+  history.unshift(item);
+
+
+  /*
+    maximum 30 chats
+  */
+
+  history =
+    history.slice(0,30);
+
+
+  localStorage.setItem(
+    "aura_history",
+    JSON.stringify(history)
+  );
+
+
+  loadHistory();
+}
+
+
+/* =====================================
+   LOAD HISTORY
+===================================== */
+
+function loadHistory(){
+
+  historyBox.innerHTML = "";
+
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "aura_history"
+      ) || "[]"
+    );
+
+
+  history.forEach(item => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "history-item";
+
+    div.textContent =
+      "💬 " + item.title;
+
+    div.onclick = () => {
+
+      messages =
+        item.messages || [];
+
+      chatInner.innerHTML = "";
+
+      messages.forEach(message => {
+
+        addMessage(
+          message.text,
+          message.role,
+          message.image
+        );
+
+      });
+
+      sidebar
+        .classList
+        .remove("open");
+
+      scrollBottom();
+    };
+
+
+    historyBox.appendChild(div);
+  });
+}
+
+loadHistory();
+
+
+/* =====================================
+   RESTORE CURRENT CHAT
+===================================== */
+
+function restoreChat(){
+
+  const saved =
+    localStorage.getItem(
+      "aura_current_chat"
+    );
+
+  if(!saved) return;
+
+  try{
+
+    const savedMessages =
+      JSON.parse(saved);
+
+    if(
+      !Array.isArray(savedMessages) ||
+      !savedMessages.length
+    ){
+      return;
+    }
+
+    messages =
+      savedMessages;
+
+    document
+      .getElementById("welcome")
+      ?.remove();
+
+
+    messages.forEach(message => {
+
+      addMessage(
+        message.text,
+        message.role,
+        message.image
+      );
+
+    });
+
+  }catch(error){
+
+    console.log(
+      "Chat restore failed",
+      error
+    );
+  }
+}
+
+restoreChat();
+updateMemoryUI();
+
+
+/* =====================================
+   CLEAR CHAT
+===================================== */
+
+document
+.getElementById("clearBtn")
+.onclick = () => {
+
+  if(
+    !confirm(
+      "वर्तमान चैट साफ करीं?"
+    )
+  ) return;
+
+  messages = [];
+
+  localStorage.removeItem(
+    "aura_current_chat"
+  );
+
+  newChat();
+};
+
+
+/* =====================================
    SPEECH INPUT
-========================= */
+===================================== */
 
 const SpeechRecognition =
   window.SpeechRecognition ||
@@ -1558,47 +2261,60 @@ if(SpeechRecognition){
     new SpeechRecognition();
 
   recognition.continuous = false;
+
   recognition.interimResults = false;
 
-  recognition.lang =
-    language === "en"
-      ? "en-US"
-      : "hi-IN";
+  recognition.lang = "hi-IN";
+
 
   recognition.onstart = () => {
 
     listening = true;
 
-    micBtn.classList.add("active");
-    micBtn.textContent = "⏹️";
+    document
+      .getElementById("micBtn")
+      .classList
+      .add("active");
+
+    document
+      .getElementById("micBtn")
+      .textContent = "⏹️";
   };
 
-  recognition.onresult = event => {
 
-    const transcript =
-      event.results[0][0].transcript;
+  recognition.onresult =
+    event => {
 
-    chatInput.value = transcript;
+      const transcript =
+        event
+          .results[0][0]
+          .transcript;
 
-    sendMessage();
-  };
+      input.value =
+        transcript;
 
-  recognition.onerror = () => {
-    stopListening();
-  };
+      sendMessage();
+    };
 
-  recognition.onend = () => {
-    stopListening();
-  };
+
+  recognition.onerror =
+    () => stopListening();
+
+
+  recognition.onend =
+    () => stopListening();
 
 }else{
 
-  micBtn.disabled = true;
-  micBtn.title =
-    "आपके browser में voice support नइखे";
+  document
+    .getElementById("micBtn")
+    .disabled = true;
 }
 
-micBtn.onclick = () => {
+
+document
+.getElementById("micBtn")
+.onclick = () => {
 
   if(!recognition) return;
 
@@ -1614,189 +2330,154 @@ micBtn.onclick = () => {
   }
 };
 
+
 function stopListening(){
 
   listening = false;
 
-  micBtn.classList.remove("active");
-  micBtn.textContent = "🎙️";
+  const button =
+    document.getElementById(
+      "micBtn"
+    );
+
+  button.classList.remove(
+    "active"
+  );
+
+  button.textContent = "🎙️";
 
   try{
     recognition?.stop();
   }catch(e){}
 }
 
-/* =========================
-   HISTORY
-========================= */
 
-function saveCurrentChat(){
+/* =====================================
+   SPEECH OUTPUT
+===================================== */
 
-  if(messages.length === 0) return;
+function speak(text){
 
-  localStorage.setItem(
-    "aura_current_chat",
-    JSON.stringify(messages)
+  if(!voiceEnabled) return;
+
+  if(
+    !("speechSynthesis" in window)
+  ) return;
+
+  speechSynthesis.cancel();
+
+
+  const clean =
+    text
+      .replace(
+        /[*_#`~>]/g,
+        ""
+      )
+      .trim();
+
+
+  const utterance =
+    new SpeechSynthesisUtterance(
+      clean
+    );
+
+
+  utterance.lang = "hi-IN";
+
+  utterance.rate = .95;
+
+  utterance.pitch = 1.03;
+
+
+  const voices =
+    speechSynthesis.getVoices();
+
+
+  const hindiVoice =
+    voices.find(
+      v =>
+        v.lang &&
+        v.lang
+          .toLowerCase()
+          .startsWith("hi")
+    );
+
+
+  if(hindiVoice){
+
+    utterance.voice =
+      hindiVoice;
+  }
+
+
+  speechSynthesis.speak(
+    utterance
   );
-
-  saveHistoryPreview();
 }
 
-function saveHistoryPreview(){
 
-  const first =
-    messages.find(m=>m.role==="user");
-
-  if(!first) return;
-
-  let history =
-    JSON.parse(
-      localStorage.getItem("aura_history") || "[]"
-    );
-
-  const item = {
-    id:Date.now(),
-    title:first.text.slice(0,45),
-    messages:messages
-  };
-
-  history = history.filter(
-    h => h.title !== item.title
-  );
-
-  history.unshift(item);
-
-  history =
-    history.slice(0,30);
-
-  localStorage.setItem(
-    "aura_history",
-    JSON.stringify(history)
-  );
-
-  loadHistory();
-}
-
-function loadHistory(){
-
-  historyBox.innerHTML = "";
-
-  const history =
-    JSON.parse(
-      localStorage.getItem("aura_history") || "[]"
-    );
-
-  history.forEach(item=>{
-
-    const div =
-      document.createElement("div");
-
-    div.className = "history-item";
-    div.textContent =
-      "💬 " + item.title;
-
-    div.onclick = () => loadChat(item);
-
-    historyBox.appendChild(div);
-  });
-}
-
-function loadChat(item){
-
-  messages =
-    item.messages || [];
-
-  chatInner.innerHTML = "";
-
-  messages.forEach(m=>{
-
-    addMessage(
-      m.text,
-      m.role === "user"
-        ? "user"
-        : "assistant"
-    );
-
-  });
-
-  sidebar.classList.remove("open");
-
-  scrollBottom();
-}
-
-/* =========================
-   CURRENT CHAT RESTORE
-========================= */
-
-function restoreCurrentChat(){
-
-  const saved =
-    localStorage.getItem(
-      "aura_current_chat"
-    );
-
-  if(!saved) return;
-
-  try{
-
-    const savedMessages =
-      JSON.parse(saved);
-
-    if(!Array.isArray(savedMessages) ||
-       savedMessages.length === 0) return;
-
-    messages = savedMessages;
-
-    const welcome =
-      document.getElementById("welcome");
-
-    if(welcome) welcome.remove();
-
-    messages.forEach(m=>{
-
-      addMessage(
-        m.text,
-        m.role === "user"
-          ? "user"
-          : "assistant"
-      );
-
-    });
-
-  }catch(e){}
-}
-
-restoreCurrentChat();
-
-/* =========================
+/* =====================================
    SCROLL
-========================= */
+===================================== */
 
 function scrollBottom(){
 
-  setTimeout(()=>{
+  setTimeout(() => {
 
     chatBox.scrollTo({
-      top:chatBox.scrollHeight,
-      behavior:"smooth"
+
+      top:
+        chatBox.scrollHeight,
+
+      behavior:
+        "smooth"
+
     });
 
   },50);
 }
 
-/* =========================
-   VOICES
-========================= */
 
-if("speechSynthesis" in window){
+/* =====================================
+   CLOSE MODALS ON BACKDROP
+===================================== */
 
-  speechSynthesis.onvoiceschanged = () => {
-    speechSynthesis.getVoices();
-  };
+document
+.querySelectorAll(".modal")
+.forEach(modal => {
 
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target === modal
+      ){
+
+        modal.classList
+          .remove("show");
+      }
+    }
+  );
+
+});
+
+
+/* =====================================
+   VOICES READY
+===================================== */
+
+if(
+  "speechSynthesis" in window
+){
+
+  speechSynthesis.onvoiceschanged =
+    () => {
+      speechSynthesis.getVoices();
+    };
 }
 
 </script>
 
 </body>
-</html>
+  </html>
