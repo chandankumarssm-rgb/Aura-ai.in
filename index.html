@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gemini — पर्सनल AI सहायक</title>
+  <title>Aura AI Advance</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
       --accent-grad: linear-gradient(90deg, #4285f4, #9b72cb, #d96570);
       --border-subtle: #333537;
       --radius-pill: 9999px;
-      --radius-card: 16px;
+      --radius-card: 18px;
     }
 
     * {
@@ -29,17 +29,22 @@
       padding: 0;
     }
 
-    body {
-      height: 100vh;
-      width: 100vw;
+    html, body {
+      height: 100%;
+      width: 100%;
       background-color: var(--bg-main);
       color: var(--text-main);
       font-family: 'Google Sans', 'Roboto', sans-serif;
-      display: flex;
       overflow: hidden;
     }
 
-    /* Side navigation bar */
+    .app-container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* बायाँ साइडबार */
     aside {
       width: 280px;
       background-color: var(--bg-sidebar);
@@ -48,6 +53,7 @@
       padding: 16px 12px;
       gap: 16px;
       border-right: 1px solid var(--border-subtle);
+      flex-shrink: 0;
       transition: all 0.3s ease;
     }
 
@@ -55,7 +61,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 8px;
+      padding: 0 4px;
     }
 
     .icon-btn {
@@ -90,11 +96,40 @@
       font-size: 0.95rem;
       cursor: pointer;
       font-weight: 500;
-      transition: background 0.2s;
     }
 
     .new-chat-btn:hover {
       background: #37393b;
+    }
+
+    .api-key-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .api-key-box input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .api-key-box button {
+      background: #383b40;
+      color: var(--text-main);
+      border: none;
+      padding: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
 
     .chat-history-list {
@@ -103,13 +138,14 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-top: 10px;
     }
 
     .history-title {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      padding: 8px 12px 4px 12px;
+      padding: 8px 10px 4px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .history-item {
@@ -117,42 +153,57 @@
       border-radius: var(--radius-pill);
       font-size: 0.9rem;
       color: var(--text-sub);
-      text-decoration: none;
+      cursor: pointer;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      cursor: pointer;
-      transition: background 0.2s;
     }
 
     .history-item:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    /* Main container */
+    /* मुख्य बातचीत एरिया */
     main {
       flex: 1;
       display: flex;
       flex-direction: column;
+      height: 100%;
+      min-width: 0;
       position: relative;
     }
 
-    /* Top bar */
     header {
-      padding: 14px 24px;
+      height: 64px;
+      padding: 0 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
 
-    .model-selector {
-      font-size: 1.15rem;
+    .brand-title {
+      font-size: 1.25rem;
       font-weight: 500;
       color: var(--text-sub);
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .voice-toggle-badge {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-sub);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
       cursor: pointer;
     }
 
@@ -164,38 +215,40 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 500;
+      font-weight: 600;
       color: #fff;
     }
 
-    /* Chat area */
+    /* स्क्रोल आ स्लाइडिंग एरिया */
     #chat-scroll-view {
       flex: 1;
       overflow-y: auto;
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      overflow-x: hidden;
+      padding: 16px 24px 32px 24px;
+      scroll-behavior: smooth;
     }
 
     .chat-container {
       width: 100%;
       max-width: 820px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 32px;
+      min-height: 100%;
     }
 
-    /* Hero greetings when empty */
+    /* वेलकम स्क्रीन */
     .hero-view {
-      margin-top: 60px;
+      margin: auto 0;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
+      padding: 40px 0;
     }
 
     .hero-title {
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 500;
       background: var(--accent-grad);
       -webkit-background-clip: text;
@@ -204,43 +257,39 @@
     }
 
     .hero-sub {
-      font-size: 2.8rem;
+      font-size: 3rem;
       color: #444746;
       font-weight: 500;
-      margin-top: -8px;
+      margin-top: -12px;
     }
 
-    /* Message styling */
+    /* चैट मैसेज */
     .message-row {
       display: flex;
       gap: 16px;
-      line-height: 1.6;
-      font-size: 1rem;
+      width: 100%;
     }
 
     .message-row.user {
       justify-content: flex-end;
     }
 
-    .message-bubble {
-      max-width: 85%;
-      padding: 12px 18px;
-      border-radius: var(--radius-card);
-    }
-
     .message-row.user .message-bubble {
       background-color: var(--bg-surface);
       color: var(--text-main);
-      border-radius: 20px 20px 4px 20px;
+      padding: 14px 20px;
+      border-radius: 22px 22px 4px 22px;
+      max-width: 80%;
+      line-height: 1.5;
+      font-size: 1rem;
+      word-break: break-word;
     }
 
     .message-row.model {
-      display: flex;
-      gap: 16px;
       align-items: flex-start;
     }
 
-    .gemini-sparkle-icon {
+    .aura-sparkle-icon {
       width: 28px;
       height: 28px;
       flex-shrink: 0;
@@ -250,14 +299,20 @@
     .message-row.model .message-text {
       color: var(--text-main);
       flex: 1;
+      line-height: 1.7;
+      font-size: 1rem;
+      word-break: break-word;
+      white-space: pre-wrap;
     }
 
-    /* Input dock */
+    /* इनपुट बार */
     .input-area-wrapper {
-      padding: 16px 24px 24px 24px;
+      padding: 12px 24px 20px 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex-shrink: 0;
+      background: var(--bg-main);
     }
 
     .input-box {
@@ -266,11 +321,11 @@
       background: var(--bg-input);
       border-radius: 28px;
       border: 1px solid var(--border-subtle);
-      padding: 12px 16px;
+      padding: 12px 18px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
 
     .input-box textarea {
@@ -282,8 +337,9 @@
       font-size: 1rem;
       resize: none;
       outline: none;
-      min-height: 48px;
-      max-height: 150px;
+      min-height: 38px;
+      max-height: 160px;
+      line-height: 1.5;
     }
 
     .input-box textarea::placeholder {
@@ -305,96 +361,196 @@
     .disclaimer-text {
       font-size: 0.75rem;
       color: var(--text-muted);
-      margin-top: 10px;
+      margin-top: 8px;
       text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      aside {
+        display: none;
+      }
+      .hero-title {
+        font-size: 2.3rem;
+      }
+      .hero-sub {
+        font-size: 2.1rem;
+      }
+      #chat-scroll-view {
+        padding: 12px 14px 20px 14px;
+      }
+      .input-area-wrapper {
+        padding: 8px 12px 14px 12px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- बायाँ साइडबार -->
-  <aside id="sidebar">
-    <div class="sidebar-top">
-      <button class="icon-btn" title="मेनू">&#9776;</button>
-    </div>
-    <button class="new-chat-btn">
-      <span>＋</span>
-      <span>नया चैट शुरू करीं</span>
-    </button>
-    <div class="chat-history-list">
-      <div class="history-title">हाल के गपशप</div>
-      <div class="history-item">Aura AI Voice प्रोजेक्ट</div>
-      <div class="history-item">वेबसाइट खातिर नया डिजाइन</div>
-      <div class="history-item">भोजपुरी ट्रांसलेशन सवाल</div>
-    </div>
-  </aside>
-
-  <!-- मुख्य बातचीत एरिया -->
-  <main>
-    <header>
-      <div class="model-selector">
-        <span>Gemini Advanced</span>
-        <span style="font-size: 0.75rem;">▼</span>
+  <div class="app-container">
+    <!-- बायाँ साइडबार -->
+    <aside id="sidebar">
+      <div class="sidebar-top">
+        <button class="icon-btn" title="मेनू">&#9776;</button>
       </div>
-      <div class="avatar">U</div>
-    </header>
 
-    <div id="chat-scroll-view">
-      <div class="chat-container" id="chat-thread">
-        <!-- वेलकम स्क्रीन -->
-        <div class="hero-view" id="hero-view">
-          <div class="hero-title">प्रणाम, मित्र</div>
-          <div class="hero-sub">आज हम रउआँ के कइसे मदद करीं?</div>
+      <button class="new-chat-btn" id="new-chat-btn">
+        <span>＋</span>
+        <span>नया चैट शुरू करीं</span>
+      </button>
+
+      <div class="api-key-box">
+        <input type="password" id="api-key-input" placeholder="Gemini API Key...">
+        <button id="save-key-btn">Save Key</button>
+      </div>
+
+      <div class="chat-history-list">
+        <div class="history-title">हाल के गपशप</div>
+        <div class="history-item">Aura AI प्रोजेक्ट</div>
+        <div class="history-item">प्रद्युम्न जी के निर्देश</div>
+      </div>
+    </aside>
+
+    <!-- बातचीत के मुख्य एरिया -->
+    <main>
+      <header>
+        <div class="brand-title">
+          <span>Aura AI Advance</span>
+          <span style="font-size: 0.75rem;">▼</span>
         </div>
-      </div>
-    </div>
+        <div class="header-controls">
+          <button id="voice-toggle" class="voice-toggle-badge">🔊 आवाज: चालू</button>
+          <div class="avatar">P</div>
+        </div>
+      </header>
 
-    <!-- इनपुट बार -->
-    <div class="input-area-wrapper">
-      <div class="input-box">
-        <textarea id="prompt-input" rows="1" placeholder="कवनो सवाल पूछीं भा मदद माँगीं..."></textarea>
-        <div class="input-toolbar">
-          <div class="toolbar-left">
-            <button class="icon-btn" title="फोटो भा फाइल जोड़ीं">📎</button>
-            <button class="icon-btn" title="माइक">🎙️</button>
-          </div>
-          <div class="toolbar-right">
-            <button id="send-btn" class="icon-btn" title="भेजीं" style="color: var(--accent-blue);">➔</button>
+      <!-- स्क्रोल आ स्लाइड होखे वाला चैट सेक्शन -->
+      <div id="chat-scroll-view">
+        <div class="chat-container" id="chat-thread">
+          <div class="hero-view" id="hero-view">
+            <div class="hero-title">प्रणाम!</div>
+            <div class="hero-sub">आज हम रउआँ के कइसे मदद करीं?</div>
           </div>
         </div>
       </div>
-      <div class="disclaimer-text">
-        Gemini गलत जानकारी दे सकेला, एहसे जरूरी बातन के जाँच खुद क लीं।
+
+      <!-- नीचे इनपुट बार -->
+      <div class="input-area-wrapper">
+        <div class="input-box">
+          <textarea id="prompt-input" rows="1" placeholder="Aura AI से कुछुओ पूछीं..."></textarea>
+          <div class="input-toolbar">
+            <div class="toolbar-left">
+              <button class="icon-btn" id="mic-btn" title="माइक">🎙️</button>
+            </div>
+            <div class="toolbar-right">
+              <button id="send-btn" class="icon-btn" title="भेजीं" style="color: var(--accent-blue);">➔</button>
+            </div>
+          </div>
+        </div>
+        <div class="disclaimer-text">
+          Aura AI Advance गलत जानकारी भी दे सकेला, जरूरी जानकारी के जाँच क लीं।
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 
   <script>
     const sendBtn = document.getElementById('send-btn');
     const promptInput = document.getElementById('prompt-input');
     const chatThread = document.getElementById('chat-thread');
     const heroView = document.getElementById('hero-view');
+    const chatScrollView = document.getElementById('chat-scroll-view');
+    const apiKeyInput = document.getElementById('api-key-input');
+    const saveKeyBtn = document.getElementById('save-key-btn');
+    const newChatBtn = document.getElementById('new-chat-btn');
+    const micBtn = document.getElementById('mic-btn');
+    const voiceToggleBtn = document.getElementById('voice-toggle');
 
-    function sendMessage() {
-      const text = promptInput.value.trim();
-      if (!text) return;
+    let apiKey = localStorage.getItem('aura_api_key') || '';
+    let isVoiceActive = true;
 
-      // अगर वेलकम मैसेज बा त हटा दीं
-      if (heroView) heroView.style.display = 'none';
+    if (apiKey) apiKeyInput.value = apiKey;
 
-      // 1. यूजर के मैसेज UI में जोड़ीं
+    saveKeyBtn.addEventListener('click', () => {
+      apiKey = apiKeyInput.value.trim();
+      if (apiKey) {
+        localStorage.setItem('aura_api_key', apiKey);
+        alert('API Key सेव हो गइल!');
+      } else {
+        alert('कृपया सही API Key डालीं');
+      }
+    });
+
+    voiceToggleBtn.addEventListener('click', () => {
+      isVoiceActive = !isVoiceActive;
+      voiceToggleBtn.textContent = isVoiceActive ? '🔊 आवाज: चालू' : '🔇 आवाज: बंद';
+      if (!isVoiceActive && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    });
+
+    newChatBtn.addEventListener('click', () => {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      chatThread.innerHTML = `
+        <div class="hero-view" id="hero-view">
+          <div class="hero-title">प्रणाम!</div>
+          <div class="hero-sub">आज हम रउआँ के कइसे मदद करीं?</div>
+        </div>
+      `;
+    });
+
+    function scrollToBottom() {
+      chatScrollView.scrollTop = chatScrollView.scrollHeight;
+    }
+
+    // आवाज के मधुर, शांत आ नेचुरल बनावे वाला फंक्शन
+    function speakText(text) {
+      if (!isVoiceActive || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      // मार्कडाउन आ गैर-जरूरी सिंबल हटावे खातिर
+      const cleanText = text.replace(/[*_#`~>]/g, '').trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+
+      // सिस्टम में उपलब्ध सभसे बढ़िया आ शांत हिंदी आवाज खोजल
+      const voices = window.speechSynthesis.getVoices();
+      const naturalVoice = voices.find(v => 
+        (v.lang.includes('hi') || v.lang.includes('IN')) && 
+        (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Swara') || v.name.includes('Kavya'))
+      ) || voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
+
+      if (naturalVoice) {
+        utterance.voice = naturalVoice;
+      }
+
+      utterance.lang = 'hi-IN';
+      utterance.rate = 0.95;   // हल्का धीमा ताकि आवाज शांत आ नेचुरल लागे
+      utterance.pitch = 1.05;  // मधुर टोन खातिर
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
+    function appendUserMessage(text) {
+      const hero = document.getElementById('hero-view');
+      if (hero) hero.remove();
+
       const userRow = document.createElement('div');
       userRow.className = 'message-row user';
       userRow.innerHTML = `<div class="message-bubble">${text}</div>`;
       chatThread.appendChild(userRow);
+      scrollToBottom();
+    }
 
-      promptInput.value = '';
-
-      // 2. Gemini के जवाब के सिमुलेशन
+    function appendModelSkeleton() {
       const modelRow = document.createElement('div');
       modelRow.className = 'message-row model';
       modelRow.innerHTML = `
-        <svg class="gemini-sparkle-icon" viewBox="0 0 24 24" fill="none">
+        <svg class="aura-sparkle-icon" viewBox="0 0 24 24" fill="none">
           <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#sparkle-gradient)"/>
           <defs>
             <linearGradient id="sparkle-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
@@ -404,20 +560,85 @@
             </linearGradient>
           </defs>
         </svg>
-        <div class="message-text">रउआँ के सवाल मिल गइल! हम एगो AI बानी आ रउआँ जइसन कहब, ओइसहीं काम करब।</div>
+        <div class="message-text">सोच रहल बानी...</div>
       `;
       chatThread.appendChild(modelRow);
-
-      window.scrollTo(0, document.body.scrollHeight);
+      scrollToBottom();
+      return modelRow.querySelector('.message-text');
     }
 
-    sendBtn.addEventListener('click', sendMessage);
+    async function askAura(queryText) {
+      appendUserMessage(queryText);
+      const textPlaceholder = appendModelSkeleton();
+
+      if (!apiKey) {
+        textPlaceholder.textContent = 'कृपया साइडबार में आपन Gemini API Key डाल के Save करीं।';
+        return;
+      }
+
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+      // सिस्टम इंस्ट्रक्शन: निर्माता के नाम प्रद्युम्न कुमार
+      const systemInstruction = "रउआँ 'Aura AI Advance' हईं। रउआँ के निर्माण 'प्रद्युम्न कुमार' कइले बानी। जब भी केहू पूछे कि रउआँ के के बनवले बा भा रउआँ के निर्माता के हवें, त गर्व से आ साफ-साफ बताईं कि 'हमार निर्माण प्रद्युम्न कुमार कइले बानी'। बातचीत हमेशा मददगार, मधुर, सरल आ भोजपुरी में करीं।";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: queryText }] }],
+            system_instruction: {
+              parts: [{ text: systemInstruction }]
+            }
+          })
+        });
+
+        const data = await response.json();
+        if (data.error) throw new Error(data.error.message || 'API एरर');
+
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'कवनो जवाब ना मिलल।';
+        textPlaceholder.textContent = reply;
+        scrollToBottom();
+
+        // मधुर आवाज में जवाब सुनाई
+        speakText(reply);
+      } catch (err) {
+        textPlaceholder.textContent = 'माफ़ करीं, कवनो समस्या आ गइल: ' + err.message;
+        scrollToBottom();
+      }
+    }
+
+    function handleSend() {
+      const text = promptInput.value.trim();
+      if (!text) return;
+      promptInput.value = '';
+      askAura(text);
+    }
+
+    sendBtn.addEventListener('click', handleSend);
     promptInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
-        sendMessage();
+        handleSend();
       }
     });
+
+    // माइक इनपुट
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'hi-IN';
+      recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        promptInput.value = transcript;
+        handleSend();
+      };
+      micBtn.addEventListener('click', () => {
+        recognition.start();
+      });
+    } else {
+      micBtn.style.display = 'none';
+    }
   </script>
 </body>
 </html>
