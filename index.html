@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="bho">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#0b0d12">
-<title>Aura AI Advance V2</title>
+<title>Aura AI Advance V3</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -48,14 +48,10 @@ button,input,textarea,select{
   font:inherit;
 }
 
-/* APP */
-
 .app{
   height:100vh;
   display:flex;
 }
-
-/* SIDEBAR */
 
 .sidebar{
   width:270px;
@@ -76,17 +72,19 @@ button,input,textarea,select{
   padding:7px 5px 18px;
 }
 
-.logo{
-  width:42px;
-  height:42px;
-  border-radius:14px;
+.logo,.welcome-logo{
   display:grid;
   place-items:center;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:#111;
-  font-size:22px;
   font-weight:900;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  font-size:22px;
 }
 
 .logo-text strong{
@@ -111,7 +109,9 @@ button,input,textarea,select{
   margin-bottom:15px;
 }
 
-.new-chat:hover{
+.new-chat:hover,
+.suggestion:hover,
+.icon:hover{
   border-color:var(--accent);
 }
 
@@ -163,16 +163,12 @@ button,input,textarea,select{
   color:var(--text);
 }
 
-/* MAIN */
-
 .main{
   flex:1;
   min-width:0;
   display:flex;
   flex-direction:column;
 }
-
-/* HEADER */
 
 .header{
   height:62px;
@@ -234,12 +230,6 @@ button,input,textarea,select{
   cursor:pointer;
 }
 
-.icon:hover{
-  border-color:var(--accent);
-}
-
-/* CHAT */
-
 .chat{
   flex:1;
   overflow-y:auto;
@@ -250,8 +240,6 @@ button,input,textarea,select{
   width:min(850px,100%);
   margin:auto;
 }
-
-/* WELCOME */
 
 .welcome{
   min-height:58vh;
@@ -265,13 +253,8 @@ button,input,textarea,select{
 .welcome-logo{
   width:70px;
   height:70px;
-  display:grid;
-  place-items:center;
   border-radius:22px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#111;
   font-size:32px;
-  font-weight:900;
   margin-bottom:18px;
 }
 
@@ -302,12 +285,6 @@ button,input,textarea,select{
   color:var(--text);
   cursor:pointer;
 }
-
-.suggestion:hover{
-  border-color:var(--accent);
-}
-
-/* MESSAGE */
 
 .message{
   display:flex;
@@ -378,12 +355,6 @@ button,input,textarea,select{
   cursor:pointer;
 }
 
-.actions button:hover{
-  color:var(--text);
-}
-
-/* TYPING */
-
 .typing{
   display:flex;
   gap:4px;
@@ -405,8 +376,6 @@ button,input,textarea,select{
   0%,60%,100%{transform:translateY(0);opacity:.4}
   30%{transform:translateY(-5px);opacity:1}
 }
-
-/* COMPOSER */
 
 .composer-wrap{
   position:fixed;
@@ -482,7 +451,7 @@ button,input,textarea,select{
 
 .tool.active{
   background:var(--danger);
-  color:white;
+  color:#fff;
 }
 
 textarea{
@@ -513,14 +482,17 @@ textarea::placeholder{
   cursor:pointer;
 }
 
+.send:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .disclaimer{
   text-align:center;
   color:var(--muted);
   font-size:9px;
   margin-top:6px;
 }
-
-/* MODAL */
 
 .modal{
   position:fixed;
@@ -585,7 +557,6 @@ textarea::placeholder{
   outline:0;
 }
 
-/* 400 COLORS PALETTE */
 .color-palette-container{
   max-height:180px;
   overflow-y:auto;
@@ -597,7 +568,7 @@ textarea::placeholder{
 
 .color-grid{
   display:grid;
-  grid-template-columns:repeat(20, 1fr);
+  grid-template-columns:repeat(20,1fr);
   gap:4px;
 }
 
@@ -606,25 +577,7 @@ textarea::placeholder{
   aspect-ratio:1;
   border-radius:4px;
   cursor:pointer;
-  border:1px solid rgba(0,0,0,0.2);
-  transition:transform .1s;
-}
-
-.color-dot:hover{
-  transform:scale(1.3);
-  z-index:2;
-  box-shadow:0 0 6px rgba(255,255,255,0.8);
-}
-
-.save{
-  width:100%;
-  padding:12px;
-  border:0;
-  border-radius:11px;
-  background:var(--accent);
-  color:#111;
-  font-weight:800;
-  cursor:pointer;
+  border:1px solid rgba(0,0,0,.2);
 }
 
 .memory-box{
@@ -644,9 +597,26 @@ textarea::placeholder{
   color:var(--muted);
   font-size:11px;
   line-height:1.5;
+  white-space:pre-wrap;
 }
 
-/* MOBILE */
+.save{
+  width:100%;
+  padding:12px;
+  border:0;
+  border-radius:11px;
+  background:var(--accent);
+  color:#111;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.model-badge{
+  display:inline-block;
+  margin-top:5px;
+  font-size:9px;
+  color:var(--accent2);
+}
 
 @media(max-width:750px){
 
@@ -690,25 +660,19 @@ textarea::placeholder{
 
 <div class="app">
 
-<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
 
   <div class="logo-area">
     <div class="logo">✦</div>
-
     <div class="logo-text">
       <strong>Aura AI</strong>
-      <span>Advance Memory AI</span>
+      <span>Advance Multi-Model AI</span>
     </div>
   </div>
 
-  <button class="new-chat" id="newChat">
-    ＋ नया चैट
-  </button>
+  <button class="new-chat" id="newChat">＋ नया चैट</button>
 
-  <div class="history-title">
-    पिछला चैट
-  </div>
+  <div class="history-title">पिछला चैट</div>
 
   <div class="history" id="history"></div>
 
@@ -723,7 +687,7 @@ textarea::placeholder{
     </button>
 
     <button class="side-btn" id="settingsBtn">
-      ⚙️ UI रंग आ Settings
+      ⚙️ Settings
     </button>
 
     <button class="side-btn" id="clearBtn">
@@ -734,27 +698,20 @@ textarea::placeholder{
 
 </aside>
 
-
-<!-- MAIN -->
-
 <section class="main">
 
 <header class="header">
 
   <div class="header-left">
 
-    <button class="menu" id="menuBtn">
-      ☰
-    </button>
+    <button class="menu" id="menuBtn">☰</button>
 
     <div>
-      <div class="ai-title">
-        Aura AI Advance
-      </div>
+      <div class="ai-title">Aura AI Advance</div>
 
       <div class="status">
         <span class="status-dot"></span>
-        Memory Online
+        <span id="statusText">AI Online</span>
       </div>
     </div>
 
@@ -762,22 +719,13 @@ textarea::placeholder{
 
   <div class="header-buttons">
 
-    <button class="icon" id="voiceBtn">
-      🔊
-    </button>
-
-    <button class="icon" id="headerNew">
-      ＋
-    </button>
-
-    <button class="icon" id="headerSettings">
-      ⚙️
-    </button>
+    <button class="icon" id="voiceBtn">🔊</button>
+    <button class="icon" id="headerNew">＋</button>
+    <button class="icon" id="headerSettings">⚙️</button>
 
   </div>
 
 </header>
-
 
 <main class="chat" id="chatBox">
 
@@ -785,36 +733,23 @@ textarea::placeholder{
 
     <div class="welcome" id="welcome">
 
-      <div class="welcome-logo">
-        ✦
-      </div>
+      <div class="welcome-logo">✦</div>
 
-      <h1>
-        प्रणाम! हम Aura AI हईं 👋
-      </h1>
+      <h1>प्रणाम! हम Aura AI हईं 👋</h1>
 
       <p>
-        अब हम एके चैट में पिछली बातचीत के context याद रख सकत बानी।
+        Gemini और Anthropic model support के साथ Aura AI।
         रउआँ सवाल पूछीं, फोटो भेजीं या माइक से बोलीं।
       </p>
 
+      <div class="model-badge" id="welcomeModel"></div>
+
       <div class="suggestions">
 
-        <button class="suggestion">
-          💡 एगो नया आइडिया दीं
-        </button>
-
-        <button class="suggestion">
-          📚 पढ़ाई में मदद करीं
-        </button>
-
-        <button class="suggestion">
-          🧠 Memory कैसे काम करेला?
-        </button>
-
-        <button class="suggestion">
-          👋 हमरा के याद बा?
-        </button>
+        <button class="suggestion">💡 एगो नया आइडिया दीं</button>
+        <button class="suggestion">📚 पढ़ाई में मदद करीं</button>
+        <button class="suggestion">🧠 Memory कैसे काम करेला?</button>
+        <button class="suggestion">👋 हमरा के याद बा?</button>
 
       </div>
 
@@ -826,9 +761,6 @@ textarea::placeholder{
 
 </section>
 </div>
-
-
-<!-- COMPOSER -->
 
 <div class="composer-wrap">
 
@@ -842,12 +774,9 @@ textarea::placeholder{
       📷 फोटो भेजे खातिर तैयार बा
     </div>
 
-    <button id="removeImage">
-      ✕
-    </button>
+    <button id="removeImage">✕</button>
 
   </div>
-
 
   <form class="input-box" id="form">
 
@@ -858,19 +787,11 @@ textarea::placeholder{
       hidden
     >
 
-    <button
-      type="button"
-      class="tool"
-      id="imageBtn"
-    >
+    <button type="button" class="tool" id="imageBtn">
       📷
     </button>
 
-    <button
-      type="button"
-      class="tool"
-      id="micBtn"
-    >
+    <button type="button" class="tool" id="micBtn">
       🎙️
     </button>
 
@@ -880,44 +801,31 @@ textarea::placeholder{
       placeholder="Aura AI से कुछ पूछीं..."
     ></textarea>
 
-    <button
-      type="submit"
-      class="send"
-    >
+    <button type="submit" class="send" id="sendBtn">
       ➤
     </button>
 
   </form>
 
   <div class="disclaimer">
-    Aura AI Advance • Conversation Memory Enabled
+    Aura AI Advance • Multi-Model AI • Conversation Memory
   </div>
 
 </div>
 </div>
-
-
-<!-- SETTINGS MODAL -->
 
 <div class="modal" id="settingsModal">
 
 <div class="modal-card">
 
   <div class="modal-head">
-
     <h2>⚙️ Aura AI Settings</h2>
-
-    <button class="close" id="closeSettings">
-      ✕
-    </button>
-
+    <button class="close" id="closeSettings">✕</button>
   </div>
 
   <div class="setting">
 
-    <label>
-      🎨 UI Accent Color (400 शेड्स में से चुनीं):
-    </label>
+    <label>🎨 UI Accent Color</label>
 
     <div class="color-palette-container">
       <div class="color-grid" id="colorGrid"></div>
@@ -927,11 +835,13 @@ textarea::placeholder{
 
   <div class="setting">
 
-    <label>
-      Gemini Model
-    </label>
+    <label>🤖 AI Model</label>
 
     <select id="model">
+
+      <option value="gemini-3.8-flash">
+        Gemini 3.8 Flash
+      </option>
 
       <option value="gemini-2.5-flash">
         Gemini 2.5 Flash
@@ -939,6 +849,10 @@ textarea::placeholder{
 
       <option value="gemini-2.5-pro">
         Gemini 2.5 Pro
+      </option>
+
+      <option value="claude">
+        Anthropic Claude
       </option>
 
     </select>
@@ -952,41 +866,28 @@ textarea::placeholder{
 </div>
 </div>
 
-
-<!-- MEMORY MODAL -->
-
 <div class="modal" id="memoryModal">
 
 <div class="modal-card">
 
   <div class="modal-head">
-
     <h2>🧠 Aura Memory</h2>
-
-    <button class="close" id="closeMemory">
-      ✕
-    </button>
-
+    <button class="close" id="closeMemory">✕</button>
   </div>
 
   <div class="memory-box">
 
-    <h3>
-      Conversation Memory
-    </h3>
+    <h3>Conversation Memory</h3>
 
     <p>
-      वर्तमान चैट के पिछला messages API request में
-      context के रूप में भेजल जाला।
+      वर्तमान चैट के messages context के रूप में AI के भेजल जाला।
     </p>
 
   </div>
 
   <div class="memory-box">
 
-    <h3>
-      Long-Term Memory
-    </h3>
+    <h3>Long-Term Memory</h3>
 
     <p id="longMemoryText">
       अभी कवनो saved memory नइखे।
@@ -1001,14 +902,30 @@ textarea::placeholder{
 </div>
 </div>
 
-
 <script>
 
-/* =====================================
-   PERMANENT API KEY & SETTINGS
-===================================== */
+/* =========================================================
+   API CONFIGURATION
+   =========================================================
+   IMPORTANT:
+   API keys को frontend HTML में रखने के बजाय backend में रखें.
+   ========================================================= */
 
-const PERMANENT_API_KEY = "AQ.Ab8RN6L_LYdB3MkUddRwW4Oyag3I_QPOsCVddJm9DFNCKQSfJw";
+const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
+
+/*
+   Claude के लिए backend endpoint.
+   Example:
+   /api/claude
+
+   इस endpoint पर Anthropic API key server-side होनी चाहिए.
+*/
+const CLAUDE_ENDPOINT = "/api/claude";
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
 const chatBox = document.getElementById("chatBox");
 const chatInner = document.getElementById("chatInner");
@@ -1020,9 +937,17 @@ const modelSelect = document.getElementById("model");
 const preview = document.getElementById("preview");
 const previewImg = document.getElementById("previewImg");
 const imageInput = document.getElementById("imageInput");
+const sendBtn = document.getElementById("sendBtn");
+const statusText = document.getElementById("statusText");
+const welcomeModel = document.getElementById("welcomeModel");
 
-let model = localStorage.getItem("aura_model") || "gemini-2.5-flash";
-let voiceEnabled = localStorage.getItem("aura_voice") !== "false";
+let model =
+  localStorage.getItem("aura_model") ||
+  "gemini-3.8-flash";
+
+let voiceEnabled =
+  localStorage.getItem("aura_voice") !== "false";
+
 let messages = [];
 let pendingImage = null;
 let busy = false;
@@ -1031,70 +956,119 @@ let longMemory = JSON.parse(
   localStorage.getItem("aura_long_memory") || "[]"
 );
 
+const MAX_MEMORY_MESSAGES = 30;
+
 modelSelect.value = model;
 
 
-/* =====================================
-   400 COLORS GENERATOR & THEME APPLIER
-===================================== */
+/* =========================================================
+   MODEL NAME
+   ========================================================= */
 
-function applyAccentColor(color1, color2){
-  document.documentElement.style.setProperty('--accent', color1);
-  document.documentElement.style.setProperty('--accent2', color2 || color1);
-  localStorage.setItem("aura_accent", color1);
-  localStorage.setItem("aura_accent2", color2 || color1);
+function getModelName(){
+
+  const names = {
+    "gemini-3.8-flash":"Gemini 3.8 Flash",
+    "gemini-2.5-flash":"Gemini 2.5 Flash",
+    "gemini-2.5-pro":"Gemini 2.5 Pro",
+    "claude":"Anthropic Claude"
+  };
+
+  return names[model] || model;
+}
+
+function updateModelUI(){
+
+  welcomeModel.textContent =
+    "Current Model: " + getModelName();
+
+  statusText.textContent =
+    getModelName() + " Online";
+}
+
+updateModelUI();
+
+
+/* =========================================================
+   COLOR PALETTE
+   ========================================================= */
+
+function applyAccentColor(color1,color2){
+
+  document.documentElement.style.setProperty(
+    "--accent",
+    color1
+  );
+
+  document.documentElement.style.setProperty(
+    "--accent2",
+    color2 || color1
+  );
+
+  localStorage.setItem("aura_accent",color1);
+  localStorage.setItem(
+    "aura_accent2",
+    color2 || color1
+  );
 }
 
 function initColorPalette(){
-  const grid = document.getElementById("colorGrid");
+
+  const grid =
+    document.getElementById("colorGrid");
+
   grid.innerHTML = "";
 
-  /*
-    400 यूनिक शेड्स तैयार कइल जाता (40 Hues x 10 Lightness steps)
-  */
-  for(let h = 0; h < 360; h += 9){ // 40 hues
-    for(let l = 20; l <= 85; l += 6.5){ // 10 lightness levels = 400 colors
-      const color = `hsl(${h}, 85%, ${l}%)`;
-      const lighter = `hsl(${h}, 90%, ${Math.min(l + 12, 95)}%)`;
+  for(let h=0;h<360;h+=9){
 
-      const dot = document.createElement("div");
+    for(let l=20;l<=85;l+=6.5){
+
+      const color =
+        `hsl(${h},85%,${l}%)`;
+
+      const lighter =
+        `hsl(${h},90%,${Math.min(l+12,95)}%)`;
+
+      const dot =
+        document.createElement("div");
+
       dot.className = "color-dot";
+
       dot.style.backgroundColor = color;
+
       dot.title = color;
 
-      dot.onclick = () => {
-        applyAccentColor(color, lighter);
-      };
+      dot.onclick = () =>
+        applyAccentColor(color,lighter);
 
       grid.appendChild(dot);
     }
   }
 }
 
-// सेव भइल रंग लोड करीं
-const savedAccent = localStorage.getItem("aura_accent");
-const savedAccent2 = localStorage.getItem("aura_accent2");
+const savedAccent =
+  localStorage.getItem("aura_accent");
+
+const savedAccent2 =
+  localStorage.getItem("aura_accent2");
+
 if(savedAccent){
-  applyAccentColor(savedAccent, savedAccent2);
+  applyAccentColor(
+    savedAccent,
+    savedAccent2
+  );
 }
 
 initColorPalette();
 
 
-/* =====================================
-   MEMORY LIMIT
-===================================== */
-
-const MAX_MEMORY_MESSAGES = 30;
-
-
-/* =====================================
+/* =========================================================
    SYSTEM PROMPT
-===================================== */
+   ========================================================= */
 
 function getSystemPrompt(){
 
-  let memoryText =
+  const memoryText =
     longMemory.length
       ? longMemory.join("\n")
       : "कोई saved long-term memory नइखे।";
@@ -1102,19 +1076,24 @@ function getSystemPrompt(){
   return `
 तू Aura AI Advance हउ।
 तोर नाम Aura AI Advance बा।
-तू उपयोगकर्ता के साथ पिछली बातचीत के context का ध्यान रख के जवाब देब।
 
-जरूरी नियम:
-1. उपयोगकर्ता भोजपुरी में पूछे त भोजपुरी में जवाब दे।
+उपयोगकर्ता के current message के प्राथमिकता दे।
+Relevant previous conversation context के ध्यान में रख।
+बिना जानकारी के चीज invent मत कर।
+
+भाषा नियम:
+1. भोजपुरी में पूछे त भोजपुरी में जवाब दे।
 2. हिंदी में पूछे त हिंदी में जवाब दे।
 3. English में पूछे त English में जवाब दे।
-4. सरल, साफ और मददगार भाषा इस्तेमाल कर।
-5. अगर पिछली बातचीत में कोई relevant जानकारी बा, त ओकर इस्तेमाल कर।
-6. पुरानी जानकारी और current सवाल में conflict होखे त current user message के प्राथमिकता दे।
-7. फोटो मिले त फोटो के देखकर जवाब दे।
-8. बिना जानकारी के चीज invent मत कर।
-9. अगर उपयोगकर्ता पूछे कि तोहरा के के बनवले बा, त साफ कह:
-   "हमार निर्माण प्रद्युम्न कुमार कइले बानी।"
+4. सरल और साफ भाषा इस्तेमाल कर।
+5. फोटो मिले त फोटो को analyze करके जवाब दे।
+6. अगर previous conversation में relevant जानकारी हो त उसका इस्तेमाल कर।
+7. Current message और पुरानी जानकारी में conflict होखे त current message के priority दे।
+
+अगर उपयोगकर्ता पूछे:
+"तोहरा के के बनवले बा?"
+त जवाब दे:
+"हमार निर्माण प्रद्युम्न कुमार कइले बानी।"
 
 Long-term memory:
 ${memoryText}
@@ -1122,481 +1101,1102 @@ ${memoryText}
 }
 
 
-/* =====================================
+/* =========================================================
    SETTINGS
-===================================== */
+   ========================================================= */
 
 function openSettings(){
+
   modelSelect.value = model;
-  document.getElementById("settingsModal").classList.add("show");
+
+  document
+    .getElementById("settingsModal")
+    .classList.add("show");
 }
 
-document.getElementById("settingsBtn").onclick = openSettings;
-document.getElementById("headerSettings").onclick = openSettings;
+document.getElementById("settingsBtn")
+  .onclick = openSettings;
 
-document.getElementById("closeSettings").onclick = () => {
-  document.getElementById("settingsModal").classList.remove("show");
-};
+document.getElementById("headerSettings")
+  .onclick = openSettings;
 
-document.getElementById("saveSettings").onclick = () => {
-  model = modelSelect.value;
-  localStorage.setItem("aura_model", model);
-  document.getElementById("settingsModal").classList.remove("show");
-  alert("Settings सेव हो गइल ✅");
-};
+document.getElementById("closeSettings")
+  .onclick = () => {
+
+    document
+      .getElementById("settingsModal")
+      .classList.remove("show");
+  };
+
+document.getElementById("saveSettings")
+  .onclick = () => {
+
+    model = modelSelect.value;
+
+    localStorage.setItem(
+      "aura_model",
+      model
+    );
+
+    updateModelUI();
+
+    document
+      .getElementById("settingsModal")
+      .classList.remove("show");
+  };
 
 
-/* =====================================
+/* =========================================================
    THEME
-===================================== */
+   ========================================================= */
 
-document.getElementById("themeBtn").onclick = () => {
-  document.body.classList.toggle("light");
-  localStorage.setItem(
-    "aura_theme",
-    document.body.classList.contains("light") ? "light" : "dark"
-  );
-};
+document.getElementById("themeBtn")
+  .onclick = () => {
 
-if(localStorage.getItem("aura_theme") === "light"){
+    document.body.classList.toggle("light");
+
+    localStorage.setItem(
+      "aura_theme",
+      document.body.classList.contains("light")
+        ? "light"
+        : "dark"
+    );
+  };
+
+if(
+  localStorage.getItem("aura_theme")
+  === "light"
+){
   document.body.classList.add("light");
 }
 
 
-/* =====================================
+/* =========================================================
    VOICE
-===================================== */
+   ========================================================= */
 
-document.getElementById("voiceBtn").onclick = () => {
-  voiceEnabled = !voiceEnabled;
-  localStorage.setItem("aura_voice", voiceEnabled);
-  document.getElementById("voiceBtn").textContent = voiceEnabled ? "🔊" : "🔇";
+document.getElementById("voiceBtn")
+  .onclick = () => {
 
-  if(!voiceEnabled && "speechSynthesis" in window){
-    speechSynthesis.cancel();
-  }
-};
+    voiceEnabled = !voiceEnabled;
+
+    localStorage.setItem(
+      "aura_voice",
+      voiceEnabled
+    );
+
+    document.getElementById(
+      "voiceBtn"
+    ).textContent =
+      voiceEnabled ? "🔊" : "🔇";
+
+    if(
+      !voiceEnabled &&
+      "speechSynthesis" in window
+    ){
+      speechSynthesis.cancel();
+    }
+  };
 
 
-/* =====================================
+/* =========================================================
    MOBILE MENU
-===================================== */
+   ========================================================= */
 
-document.getElementById("menuBtn").onclick = () => {
-  sidebar.classList.toggle("open");
-};
+document.getElementById("menuBtn")
+  .onclick = () => {
+
+    sidebar.classList.toggle("open");
+  };
 
 
-/* =====================================
+/* =========================================================
    NEW CHAT
-===================================== */
+   ========================================================= */
 
-document.getElementById("newChat").onclick = newChat;
-document.getElementById("headerNew").onclick = newChat;
+document.getElementById("newChat")
+  .onclick = newChat;
+
+document.getElementById("headerNew")
+  .onclick = newChat;
 
 function newChat(){
+
   messages = [];
+
   pendingImage = null;
-  document.getElementById("preview").classList.remove("show");
+
+  clearImage();
+
+  localStorage.removeItem(
+    "aura_current_chat"
+  );
 
   chatInner.innerHTML = `
+
     <div class="welcome" id="welcome">
+
       <div class="welcome-logo">✦</div>
+
       <h1>नया चैट शुरू करीं 👋</h1>
-      <p>पिछला chat history में सुरक्षित बा।</p>
-      <div class="suggestions">
-        <button class="suggestion">💡 एगो नया आइडिया दीं</button>
-        <button class="suggestion">📚 पढ़ाई में मदद करीं</button>
-        <button class="suggestion">🧠 कुछ नया सिखाईं</button>
+
+      <p>
+        पिछला chat history में सुरक्षित बा।
+      </p>
+
+      <div class="model-badge">
+        Current Model: ${escapeHTML(getModelName())}
       </div>
+
+      <div class="suggestions">
+
+        <button class="suggestion">
+          💡 एगो नया आइडिया दीं
+        </button>
+
+        <button class="suggestion">
+          📚 पढ़ाई में मदद करीं
+        </button>
+
+        <button class="suggestion">
+          🧠 कुछ नया सिखाईं
+        </button>
+
+      </div>
+
     </div>
   `;
 
   attachSuggestions();
+
   sidebar.classList.remove("open");
+
   input.focus();
 }
 
 
-/* =====================================
+/* =========================================================
    SUGGESTIONS
-===================================== */
+   ========================================================= */
 
 function attachSuggestions(){
-  document.querySelectorAll(".suggestion").forEach(button => {
-    button.onclick = () => {
-      input.value = button.textContent.replace(/^[^a-zA-Z0-9अ-ह]+/,"").trim();
-      sendMessage();
-    };
-  });
+
+  document
+    .querySelectorAll(".suggestion")
+    .forEach(button => {
+
+      button.onclick = () => {
+
+        input.value =
+          button.textContent
+            .replace(
+              /^[^a-zA-Z0-9अ-ह]+/,
+              ""
+            )
+            .trim();
+
+        sendMessage();
+      };
+    });
 }
 
 attachSuggestions();
 
 
-/* =====================================
+/* =========================================================
    IMAGE
-===================================== */
+   ========================================================= */
 
-document.getElementById("imageBtn").onclick = () => {
-  imageInput.click();
-};
+document.getElementById("imageBtn")
+  .onclick = () => {
+
+    imageInput.click();
+  };
 
 imageInput.onchange = () => {
-  const file = imageInput.files?.[0];
+
+  const file =
+    imageInput.files?.[0];
+
   if(!file) return;
 
   if(!file.type.startsWith("image/")){
-    alert("सिर्फ image चुनल जा सकेला।");
+
+    alert(
+      "सिर्फ image चुनल जा सकेला।"
+    );
+
     return;
   }
 
-  const reader = new FileReader();
+  const reader =
+    new FileReader();
+
   reader.onload = () => {
-    const dataUrl = reader.result;
+
+    const dataUrl =
+      reader.result;
+
     pendingImage = {
-      mimeType: file.type,
-      base64: dataUrl.split(",")[1],
-      dataUrl: dataUrl
+
+      mimeType:file.type,
+
+      base64:
+        dataUrl.split(",")[1],
+
+      dataUrl:dataUrl
     };
-    previewImg.src = dataUrl;
+
+    previewImg.src =
+      dataUrl;
+
     preview.classList.add("show");
   };
 
   reader.readAsDataURL(file);
+
   imageInput.value = "";
 };
 
-document.getElementById("removeImage").onclick = clearImage;
+document.getElementById("removeImage")
+  .onclick = clearImage;
 
 function clearImage(){
+
   pendingImage = null;
+
   previewImg.src = "";
-  preview.classList.remove("show");
+
+  preview.classList.remove(
+    "show"
+  );
 }
 
 
-/* =====================================
+/* =========================================================
    TEXTAREA
-===================================== */
+   ========================================================= */
 
-input.addEventListener("input", () => {
-  input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 130) + "px";
-});
+input.addEventListener(
+  "input",
+  () => {
 
-input.addEventListener("keydown", e => {
-  if(e.key === "Enter" && !e.shiftKey){
-    e.preventDefault();
+    input.style.height =
+      "auto";
+
+    input.style.height =
+      Math.min(
+        input.scrollHeight,
+        130
+      ) + "px";
+  }
+);
+
+input.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+
+      sendMessage();
+    }
+  }
+);
+
+form.addEventListener(
+  "submit",
+  event => {
+
+    event.preventDefault();
+
     sendMessage();
   }
-});
+);
 
 
-/* =====================================
-   FORM
-===================================== */
-
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  sendMessage();
-});
-
-
-/* =====================================
+/* =========================================================
    SEND MESSAGE
-===================================== */
+   ========================================================= */
 
 async function sendMessage(){
+
   if(busy) return;
 
-  const text = input.value.trim();
-  if(!text && !pendingImage) return;
+  const text =
+    input.value.trim();
 
-  const image = pendingImage;
+  if(!text && !pendingImage)
+    return;
+
+  const image =
+    pendingImage;
+
   input.value = "";
-  input.style.height = "auto";
+
+  input.style.height =
+    "auto";
+
   clearImage();
 
-  document.getElementById("welcome")?.remove();
+  document
+    .getElementById("welcome")
+    ?.remove();
 
   const userMessage = {
-    role: "user",
-    text: text || "एह फोटो में का बा, बताईं।",
-    image: image?.dataUrl || null
+
+    role:"user",
+
+    text:
+      text ||
+      "एह फोटो में का बा, बताईं।",
+
+    image:
+      image?.dataUrl || null
   };
 
-  messages.push(userMessage);
-  addMessage(userMessage.text, "user", userMessage.image);
+  messages.push(
+    userMessage
+  );
+
+  addMessage(
+    userMessage.text,
+    "user",
+    userMessage.image
+  );
+
   saveCurrentChat();
 
-  await askGemini(userMessage.text, image);
+  await askAI(
+    userMessage.text,
+    image
+  );
 }
 
 
-/* =====================================
+/* =========================================================
    ADD MESSAGE
-===================================== */
+   ========================================================= */
 
-function addMessage(text, role, imageUrl=null){
-  const wrapper = document.createElement("div");
-  wrapper.className = "message " + role;
+function addMessage(
+  text,
+  role,
+  imageUrl=null
+){
 
-  const avatar = document.createElement("div");
-  avatar.className = "avatar";
-  avatar.textContent = role === "user" ? "👤" : "✦";
+  const wrapper =
+    document.createElement("div");
 
-  const body = document.createElement("div");
-  body.className = "message-body";
+  wrapper.className =
+    "message " + role;
 
-  const name = document.createElement("div");
-  name.className = "message-name";
-  name.textContent = role === "user" ? "रउआँ" : "Aura AI";
+  const avatar =
+    document.createElement("div");
+
+  avatar.className =
+    "avatar";
+
+  avatar.textContent =
+    role === "user"
+      ? "👤"
+      : "✦";
+
+  const body =
+    document.createElement("div");
+
+  body.className =
+    "message-body";
+
+  const name =
+    document.createElement("div");
+
+  name.className =
+    "message-name";
+
+  name.textContent =
+    role === "user"
+      ? "रउआँ"
+      : "Aura AI";
 
   body.appendChild(name);
 
   if(imageUrl){
-    const img = document.createElement("img");
-    img.className = "message-image";
-    img.src = imageUrl;
+
+    const img =
+      document.createElement("img");
+
+    img.className =
+      "message-image";
+
+    img.src =
+      imageUrl;
+
     body.appendChild(img);
   }
 
-  const textElement = document.createElement("div");
-  textElement.className = "message-text";
-  textElement.textContent = text;
-  body.appendChild(textElement);
+  const textElement =
+    document.createElement("div");
+
+  textElement.className =
+    "message-text";
+
+  textElement.textContent =
+    text;
+
+  body.appendChild(
+    textElement
+  );
 
   if(role === "assistant"){
-    const actions = document.createElement("div");
-    actions.className = "actions";
 
-    const copy = document.createElement("button");
-    copy.textContent = "📋 Copy";
-    copy.onclick = async () => {
-      try{
-        await navigator.clipboard.writeText(text);
-        copy.textContent = "✅ Copied";
-        setTimeout(() => copy.textContent = "📋 Copy", 1200);
-      }catch(e){}
-    };
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "actions";
+
+    const copy =
+      document.createElement("button");
+
+    copy.textContent =
+      "📋 Copy";
+
+    copy.onclick =
+      async () => {
+
+        try{
+
+          await navigator.clipboard
+            .writeText(text);
+
+          copy.textContent =
+            "✅ Copied";
+
+          setTimeout(
+            () => {
+              copy.textContent =
+                "📋 Copy";
+            },
+            1200
+          );
+
+        }catch(error){}
+      };
 
     actions.appendChild(copy);
+
     body.appendChild(actions);
   }
 
   wrapper.appendChild(avatar);
+
   wrapper.appendChild(body);
+
   chatInner.appendChild(wrapper);
 
   scrollBottom();
+
   return textElement;
 }
 
 
-/* =====================================
+/* =========================================================
    TYPING
-===================================== */
+   ========================================================= */
 
 function showTyping(){
-  const div = document.createElement("div");
-  div.className = "message assistant";
-  div.id = "typing";
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "message assistant";
+
+  div.id =
+    "typing";
+
   div.innerHTML = `
+
     <div class="avatar">✦</div>
+
     <div class="message-body">
-      <div class="message-name">Aura AI</div>
-      <div class="typing">
-        <i></i><i></i><i></i>
+
+      <div class="message-name">
+        Aura AI
       </div>
+
+      <div class="typing">
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
+
     </div>
   `;
+
   chatInner.appendChild(div);
+
   scrollBottom();
 }
 
 function hideTyping(){
-  document.getElementById("typing")?.remove();
+
+  document
+    .getElementById("typing")
+    ?.remove();
 }
 
 
-/* =====================================
-   MAIN MEMORY SYSTEM & GEMINI CALL
-===================================== */
+/* =========================================================
+   MAIN AI ROUTER
+   ========================================================= */
 
-async function askGemini(currentText, imageData){
+async function askAI(
+  currentText,
+  imageData
+){
+
   busy = true;
+
+  sendBtn.disabled = true;
+
   showTyping();
 
-  const history = messages
-    .slice(-MAX_MEMORY_MESSAGES)
-    .map(message => ({
-      role: message.role === "assistant" ? "model" : "user",
-      parts: [{ text: message.text }]
-    }));
-
-  if(imageData){
-    const last = history[history.length - 1];
-    if(last){
-      last.parts.push({
-        inline_data: {
-          mime_type: imageData.mimeType,
-          data: imageData.base64
-        }
-      });
-    }
-  }
-
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(PERMANENT_API_KEY)}`;
-
   try{
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: getSystemPrompt() }]
-        },
-        contents: history,
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 2048
-        }
-      })
-    });
 
-    const data = await response.json();
+    if(model === "claude"){
 
-    if(!response.ok || data.error){
-      throw new Error(data.error?.message || `HTTP ${response.status}`);
+      await askClaude(
+        currentText,
+        imageData
+      );
+
+    }else{
+
+      await askGemini(
+        currentText,
+        imageData
+      );
     }
-
-    const reply = data.candidates
-      ?.map(candidate =>
-        candidate.content?.parts?.map(part => part.text || "").join("")
-      )
-      .filter(Boolean)
-      .join("\n") || "माफ करीं, अभी जवाब ना मिलल।";
-
-    hideTyping();
-    addMessage(reply, "assistant");
-
-    messages.push({ role: "assistant", text: reply });
-    saveCurrentChat();
-    detectMemory(currentText);
-    speak(reply);
 
   }catch(error){
+
     hideTyping();
-    addMessage("गड़बड़ भइल: " + error.message, "assistant");
+
+    addMessage(
+      "गड़बड़ भइल: " +
+      error.message,
+      "assistant"
+    );
+
   }finally{
+
     busy = false;
+
+    sendBtn.disabled = false;
+
     scrollBottom();
   }
 }
 
 
-/* =====================================
-   BASIC LONG-TERM MEMORY
-===================================== */
+/* =========================================================
+   GEMINI
+   ========================================================= */
+
+async function askGemini(
+  currentText,
+  imageData
+){
+
+  if(
+    !GEMINI_API_KEY ||
+    GEMINI_API_KEY ===
+      "YOUR_GEMINI_API_KEY"
+  ){
+
+    throw new Error(
+      "Gemini API key configure नइखे।"
+    );
+  }
+
+  const history =
+    messages
+      .slice(-MAX_MEMORY_MESSAGES)
+      .map(message => {
+
+        const parts = [
+          {
+            text:
+              message.text
+          }
+        ];
+
+        return {
+
+          role:
+            message.role === "assistant"
+              ? "model"
+              : "user",
+
+          parts
+        };
+      });
+
+  if(imageData){
+
+    const last =
+      history[
+        history.length - 1
+      ];
+
+    if(last){
+
+      last.parts.push({
+
+        inline_data:{
+
+          mime_type:
+            imageData.mimeType,
+
+          data:
+            imageData.base64
+        }
+      });
+    }
+  }
+
+  const endpoint =
+    "https://generativelanguage.googleapis.com/" +
+    "v1beta/models/" +
+    encodeURIComponent(model) +
+    ":generateContent?key=" +
+    encodeURIComponent(
+      GEMINI_API_KEY
+    );
+
+  const response =
+    await fetch(
+      endpoint,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+
+          system_instruction:{
+            parts:[
+              {
+                text:
+                  getSystemPrompt()
+              }
+            ]
+          },
+
+          contents:
+            history,
+
+          generationConfig:{
+            maxOutputTokens:4096
+          }
+
+        })
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if(
+    !response.ok ||
+    data.error
+  ){
+
+    throw new Error(
+      data.error?.message ||
+      `HTTP ${response.status}`
+    );
+  }
+
+  const reply =
+    data.candidates
+      ?.map(candidate =>
+        candidate.content
+          ?.parts
+          ?.map(
+            part =>
+              part.text || ""
+          )
+          .join("")
+      )
+      .filter(Boolean)
+      .join("\n")
+      ||
+      "माफ करीं, अभी जवाब ना मिलल।";
+
+  hideTyping();
+
+  addMessage(
+    reply,
+    "assistant"
+  );
+
+  messages.push({
+
+    role:"assistant",
+
+    text:reply
+  });
+
+  saveCurrentChat();
+
+  detectMemory(
+    currentText
+  );
+
+  speak(reply);
+}
+
+
+/* =========================================================
+   CLAUDE
+   ========================================================= */
+
+async function askClaude(
+  currentText,
+  imageData
+){
+
+  const response =
+    await fetch(
+      CLAUDE_ENDPOINT,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+
+          message:
+            currentText,
+
+          image:
+            imageData
+              ? {
+                  mimeType:
+                    imageData.mimeType,
+
+                  base64:
+                    imageData.base64
+                }
+              : null,
+
+          history:
+            messages.slice(
+              -MAX_MEMORY_MESSAGES
+            ),
+
+          system:
+            getSystemPrompt()
+        })
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if(!response.ok){
+
+    throw new Error(
+      data.error ||
+      `Claude HTTP ${response.status}`
+    );
+  }
+
+  const reply =
+    data.reply ||
+    data.text ||
+    "Claude से जवाब ना मिलल।";
+
+  hideTyping();
+
+  addMessage(
+    reply,
+    "assistant"
+  );
+
+  messages.push({
+
+    role:"assistant",
+
+    text:reply
+  });
+
+  saveCurrentChat();
+
+  detectMemory(
+    currentText
+  );
+
+  speak(reply);
+}
+
+
+/* =========================================================
+   LONG-TERM MEMORY
+   ========================================================= */
 
 function detectMemory(text){
+
   const patterns = [
+
     /मेरा नाम\s+(.+)/i,
+
     /हमार नाम\s+(.+)/i,
+
     /मुझे\s+(.+)\s+पसंद\s+है/i,
-    /हमके\s+(.+)\s+पसंद\s+बा/i
+
+    /हमके\s+(.+)\s+पसंद\s+बा/i,
+
+    /मेरा पसंदीदा\s+(.+)/i,
+
+    /हमार पसंदीदा\s+(.+)/i
+
   ];
 
-  for(const pattern of patterns){
-    const match = text.match(pattern);
-    if(!match) continue;
+  for(
+    const pattern of patterns
+  ){
 
-    let memory = text.trim();
-    if(!longMemory.includes(memory)){
-      longMemory.push(memory);
-      longMemory = longMemory.slice(-20);
-      localStorage.setItem("aura_long_memory", JSON.stringify(longMemory));
+    const match =
+      text.match(pattern);
+
+    if(!match)
+      continue;
+
+    const memory =
+      text.trim();
+
+    if(
+      !longMemory.includes(
+        memory
+      )
+    ){
+
+      longMemory.push(
+        memory
+      );
+
+      longMemory =
+        longMemory.slice(
+          -20
+        );
+
+      localStorage.setItem(
+        "aura_long_memory",
+        JSON.stringify(
+          longMemory
+        )
+      );
     }
+
     break;
   }
+
   updateMemoryUI();
 }
 
 
-/* =====================================
+/* =========================================================
    MEMORY UI
-===================================== */
+   ========================================================= */
 
 function updateMemoryUI(){
-  const box = document.getElementById("longMemoryText");
+
+  const box =
+    document.getElementById(
+      "longMemoryText"
+    );
+
   if(!longMemory.length){
-    box.textContent = "अभी कवनो saved memory नइखे।";
+
+    box.textContent =
+      "अभी कवनो saved memory नइखे।";
+
     return;
   }
-  box.textContent = longMemory.map(memory => "• " + memory).join("\n");
+
+  box.textContent =
+    longMemory
+      .map(
+        memory =>
+          "• " + memory
+      )
+      .join("\n");
 }
 
-document.getElementById("memoryBtn").onclick = () => {
-  updateMemoryUI();
-  document.getElementById("memoryModal").classList.add("show");
-};
+document.getElementById("memoryBtn")
+  .onclick = () => {
 
-document.getElementById("closeMemory").onclick = () => {
-  document.getElementById("memoryModal").classList.remove("show");
-};
+    updateMemoryUI();
 
-document.getElementById("clearMemory").onclick = () => {
-  if(!confirm("Long-term memory साफ करीं?")) return;
-  longMemory = [];
-  localStorage.removeItem("aura_long_memory");
-  updateMemoryUI();
-};
+    document
+      .getElementById("memoryModal")
+      .classList.add("show");
+  };
+
+document.getElementById("closeMemory")
+  .onclick = () => {
+
+    document
+      .getElementById("memoryModal")
+      .classList.remove("show");
+  };
+
+document.getElementById("clearMemory")
+  .onclick = () => {
+
+    if(
+      !confirm(
+        "Long-term memory साफ करीं?"
+      )
+    )
+      return;
+
+    longMemory = [];
+
+    localStorage.removeItem(
+      "aura_long_memory"
+    );
+
+    updateMemoryUI();
+  };
 
 
-/* =====================================
+/* =========================================================
    CHAT STORAGE
-===================================== */
+   ========================================================= */
 
 function saveCurrentChat(){
-  localStorage.setItem("aura_current_chat", JSON.stringify(messages));
+
+  localStorage.setItem(
+    "aura_current_chat",
+    JSON.stringify(messages)
+  );
+
   saveHistory();
 }
 
 function saveHistory(){
-  const first = messages.find(m => m.role === "user");
-  if(!first) return;
 
-  let history = JSON.parse(localStorage.getItem("aura_history") || "[]");
-  const title = first.text.slice(0,50);
-  const item = { id: Date.now(), title: title, messages: messages };
+  const first =
+    messages.find(
+      m => m.role === "user"
+    );
 
-  history = history.filter(h => h.title !== title);
+  if(!first)
+    return;
+
+  let history =
+    JSON.parse(
+      localStorage.getItem(
+        "aura_history"
+      ) || "[]"
+    );
+
+  const title =
+    first.text.slice(
+      0,
+      50
+    );
+
+  const item = {
+
+    id:Date.now(),
+
+    title,
+
+    messages
+  };
+
+  history =
+    history.filter(
+      h => h.title !== title
+    );
+
   history.unshift(item);
-  history = history.slice(0,30);
 
-  localStorage.setItem("aura_history", JSON.stringify(history));
+  history =
+    history.slice(
+      0,
+      30
+    );
+
+  localStorage.setItem(
+    "aura_history",
+    JSON.stringify(history)
+  );
+
   loadHistory();
 }
 
 function loadHistory(){
+
   historyBox.innerHTML = "";
-  const history = JSON.parse(localStorage.getItem("aura_history") || "[]");
+
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "aura_history"
+      ) || "[]"
+    );
 
   history.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "history-item";
-    div.textContent = "💬 " + item.title;
+
+    const div =
+      document.createElement(
+        "div"
+      );
+
+    div.className =
+      "history-item";
+
+    div.textContent =
+      "💬 " + item.title;
 
     div.onclick = () => {
-      messages = item.messages || [];
+
+      messages =
+        item.messages || [];
+
       chatInner.innerHTML = "";
 
-      messages.forEach(message => {
-        addMessage(message.text, message.role, message.image);
-      });
+      messages.forEach(
+        message => {
 
-      sidebar.classList.remove("open");
+          addMessage(
+            message.text,
+            message.role,
+            message.image
+          );
+        }
+      );
+
+      sidebar.classList.remove(
+        "open"
+      );
+
       scrollBottom();
     };
 
@@ -1607,147 +2207,352 @@ function loadHistory(){
 loadHistory();
 
 
-/* =====================================
+/* =========================================================
    RESTORE CURRENT CHAT
-===================================== */
+   ========================================================= */
 
 function restoreChat(){
-  const saved = localStorage.getItem("aura_current_chat");
-  if(!saved) return;
+
+  const saved =
+    localStorage.getItem(
+      "aura_current_chat"
+    );
+
+  if(!saved)
+    return;
 
   try{
-    const savedMessages = JSON.parse(saved);
-    if(!Array.isArray(savedMessages) || !savedMessages.length) return;
 
-    messages = savedMessages;
-    document.getElementById("welcome")?.remove();
+    const savedMessages =
+      JSON.parse(saved);
 
-    messages.forEach(message => {
-      addMessage(message.text, message.role, message.image);
-    });
+    if(
+      !Array.isArray(
+        savedMessages
+      ) ||
+      !savedMessages.length
+    )
+      return;
+
+    messages =
+      savedMessages;
+
+    document
+      .getElementById("welcome")
+      ?.remove();
+
+    messages.forEach(
+      message => {
+
+        addMessage(
+          message.text,
+          message.role,
+          message.image
+        );
+      }
+    );
+
   }catch(error){
-    console.log("Chat restore failed", error);
+
+    console.log(
+      "Chat restore failed",
+      error
+    );
   }
 }
 
 restoreChat();
+
 updateMemoryUI();
 
 
-/* =====================================
+/* =========================================================
    CLEAR CHAT
-===================================== */
+   ========================================================= */
 
-document.getElementById("clearBtn").onclick = () => {
-  if(!confirm("वर्तमान चैट साफ करीं?")) return;
-  messages = [];
-  localStorage.removeItem("aura_current_chat");
-  newChat();
-};
+document.getElementById("clearBtn")
+  .onclick = () => {
+
+    if(
+      !confirm(
+        "वर्तमान चैट साफ करीं?"
+      )
+    )
+      return;
+
+    messages = [];
+
+    localStorage.removeItem(
+      "aura_current_chat"
+    );
+
+    newChat();
+  };
 
 
-/* =====================================
+/* =========================================================
    SPEECH INPUT
-===================================== */
+   ========================================================= */
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
 let recognition = null;
 let listening = false;
 
 if(SpeechRecognition){
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.lang = "hi-IN";
 
-  recognition.onstart = () => {
-    listening = true;
-    document.getElementById("micBtn").classList.add("active");
-    document.getElementById("micBtn").textContent = "⏹️";
-  };
+  recognition =
+    new SpeechRecognition();
 
-  recognition.onresult = event => {
-    const transcript = event.results[0][0].transcript;
-    input.value = transcript;
-    sendMessage();
-  };
+  recognition.continuous =
+    false;
 
-  recognition.onerror = () => stopListening();
-  recognition.onend = () => stopListening();
+  recognition.interimResults =
+    false;
+
+  recognition.lang =
+    "hi-IN";
+
+  recognition.onstart =
+    () => {
+
+      listening = true;
+
+      const button =
+        document.getElementById(
+          "micBtn"
+        );
+
+      button.classList.add(
+        "active"
+      );
+
+      button.textContent =
+        "⏹️";
+    };
+
+  recognition.onresult =
+    event => {
+
+      const transcript =
+        event.results[0][0]
+          .transcript;
+
+      input.value =
+        transcript;
+
+      sendMessage();
+    };
+
+  recognition.onerror =
+    () => stopListening();
+
+  recognition.onend =
+    () => stopListening();
+
 }else{
-  document.getElementById("micBtn").disabled = true;
+
+  document.getElementById(
+    "micBtn"
+  ).disabled = true;
 }
 
-document.getElementById("micBtn").onclick = () => {
-  if(!recognition) return;
-  if(listening){
-    stopListening();
-  }else{
-    try{ recognition.start(); }catch(e){}
-  }
-};
+document.getElementById("micBtn")
+  .onclick = () => {
+
+    if(!recognition)
+      return;
+
+    if(listening){
+
+      stopListening();
+
+    }else{
+
+      try{
+
+        recognition.start();
+
+      }catch(error){}
+    }
+  };
 
 function stopListening(){
+
   listening = false;
-  const button = document.getElementById("micBtn");
-  button.classList.remove("active");
-  button.textContent = "🎙️";
-  try{ recognition?.stop(); }catch(e){}
+
+  const button =
+    document.getElementById(
+      "micBtn"
+    );
+
+  button.classList.remove(
+    "active"
+  );
+
+  button.textContent =
+    "🎙️";
+
+  try{
+
+    recognition?.stop();
+
+  }catch(error){}
 }
 
 
-/* =====================================
+/* =========================================================
    SPEECH OUTPUT
-===================================== */
+   ========================================================= */
 
 function speak(text){
-  if(!voiceEnabled || !("speechSynthesis" in window)) return;
+
+  if(
+    !voiceEnabled ||
+    !("speechSynthesis" in window)
+  )
+    return;
 
   speechSynthesis.cancel();
-  const clean = text.replace(/[*_#`~>]/g, "").trim();
-  const utterance = new SpeechSynthesisUtterance(clean);
 
-  utterance.lang = "hi-IN";
-  utterance.rate = 0.95;
-  utterance.pitch = 1.03;
+  const clean =
+    text
+      .replace(
+        /[*_#`~>]/g,
+        ""
+      )
+      .trim();
 
-  const voices = speechSynthesis.getVoices();
-  const hindiVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith("hi"));
+  const utterance =
+    new SpeechSynthesisUtterance(
+      clean
+    );
+
+  utterance.lang =
+    "hi-IN";
+
+  utterance.rate =
+    .95;
+
+  utterance.pitch =
+    1.03;
+
+  const voices =
+    speechSynthesis.getVoices();
+
+  const hindiVoice =
+    voices.find(
+      voice =>
+        voice.lang &&
+        voice.lang
+          .toLowerCase()
+          .startsWith("hi")
+    );
+
   if(hindiVoice){
-    utterance.voice = hindiVoice;
+
+    utterance.voice =
+      hindiVoice;
   }
 
-  speechSynthesis.speak(utterance);
+  speechSynthesis.speak(
+    utterance
+  );
 }
 
 
-/* =====================================
-   SCROLL & MODAL CLOSES
-===================================== */
+/* =========================================================
+   UTILITIES
+   ========================================================= */
 
 function scrollBottom(){
-  setTimeout(() => {
-    chatBox.scrollTo({
-      top: chatBox.scrollHeight,
-      behavior: "smooth"
-    });
-  }, 50);
+
+  setTimeout(
+    () => {
+
+      chatBox.scrollTo({
+
+        top:
+          chatBox.scrollHeight,
+
+        behavior:
+          "smooth"
+      });
+
+    },
+    50
+  );
 }
 
-document.querySelectorAll(".modal").forEach(modal => {
-  modal.addEventListener("click", event => {
-    if(event.target === modal){
-      modal.classList.remove("show");
-    }
+function escapeHTML(value){
+
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+/* =========================================================
+   MODAL CLOSE
+   ========================================================= */
+
+document
+  .querySelectorAll(".modal")
+  .forEach(modal => {
+
+    modal.addEventListener(
+      "click",
+      event => {
+
+        if(
+          event.target === modal
+        ){
+
+          modal.classList.remove(
+            "show"
+          );
+        }
+      }
+    );
   });
-});
 
-if("speechSynthesis" in window){
-  speechSynthesis.onvoiceschanged = () => {
-    speechSynthesis.getVoices();
-  };
+
+/* =========================================================
+   SPEECH VOICES
+   ========================================================= */
+
+if(
+  "speechSynthesis" in window
+){
+
+  speechSynthesis.onvoiceschanged =
+    () => {
+
+      speechSynthesis.getVoices();
+    };
 }
+
 </script>
 
 </body>
-</html>
+  </html>
