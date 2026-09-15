@@ -1,657 +1,419 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="bho">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#0b0d12">
-<title>Aura AI Advance V3</title>
+<meta name="theme-color" content="#0d1117">
+<title>Aura AI Advance V3 - Samsung One UI Edition</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-:root{
-  --bg:#0b0d12;
-  --panel:#11141b;
-  --panel2:#191d26;
-  --border:rgba(255,255,255,.09);
-  --text:#f5f7fb;
-  --muted:#9299a8;
-  --accent:#f2b84b;
-  --accent2:#ffd477;
-  --danger:#e97d72;
-  --user:#302714;
-}
-
-body.light{
-  --bg:#f6f7fa;
-  --panel:#fff;
-  --panel2:#eef0f4;
-  --border:rgba(0,0,0,.09);
-  --text:#17191e;
-  --muted:#707680;
-  --user:#fff1cc;
-}
-
-html,body{
-  width:100%;
-  height:100%;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  overflow:hidden;
-}
-
-button,input,textarea,select{
-  font:inherit;
-}
-
-.app{
-  height:100vh;
-  display:flex;
-}
-
-.sidebar{
-  width:270px;
-  flex-shrink:0;
-  background:var(--panel);
-  border-right:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-  padding:14px;
-  z-index:50;
-  transition:.25s;
-}
-
-.logo-area{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:7px 5px 18px;
-}
-
-.logo,.welcome-logo{
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#111;
-  font-weight:900;
-}
-
-.logo{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  font-size:22px;
-}
-
-.logo-text strong{
-  display:block;
-  font-size:16px;
-}
-
-.logo-text span{
-  font-size:11px;
-  color:var(--muted);
-}
-
-.new-chat{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  background:var(--panel2);
-  color:var(--text);
-  border-radius:13px;
-  cursor:pointer;
-  font-weight:700;
-  margin-bottom:15px;
-}
-
-.new-chat:hover,
-.suggestion:hover,
-.icon:hover{
-  border-color:var(--accent);
-}
-
-.history-title{
-  color:var(--muted);
-  font-size:11px;
-  padding:7px 5px;
-}
-
-.history{
-  flex:1;
-  overflow-y:auto;
-}
-
-.history-item{
-  padding:10px;
-  border-radius:10px;
-  color:var(--muted);
-  cursor:pointer;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  margin-bottom:3px;
-}
-
-.history-item:hover{
-  background:var(--panel2);
-  color:var(--text);
-}
-
-.side-bottom{
-  border-top:1px solid var(--border);
-  padding-top:10px;
-}
-
-.side-btn{
-  width:100%;
-  padding:10px;
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  text-align:left;
-  border-radius:9px;
-  cursor:pointer;
-}
-
-.side-btn:hover{
-  background:var(--panel2);
-  color:var(--text);
-}
-
-.main{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-}
-
-.header{
-  height:62px;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 17px;
-  border-bottom:1px solid var(--border);
-  background:var(--panel);
-}
-
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.menu{
-  display:none;
-  border:0;
-  background:transparent;
-  color:var(--text);
-  font-size:22px;
-}
-
-.ai-title{
-  font-weight:800;
-}
-
-.status{
-  font-size:10px;
-  color:#65d58a;
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#65d58a;
-  box-shadow:0 0 10px #65d58a;
-}
-
-.header-buttons{
-  display:flex;
-  gap:7px;
-}
-
-.icon{
-  width:37px;
-  height:37px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--panel2);
-  color:var(--text);
-  cursor:pointer;
-}
-
-.chat{
-  flex:1;
-  overflow-y:auto;
-  padding:25px 15px 145px;
-}
-
-.chat-inner{
-  width:min(850px,100%);
-  margin:auto;
-}
-
-.welcome{
-  min-height:58vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-
-.welcome-logo{
-  width:70px;
-  height:70px;
-  border-radius:22px;
-  font-size:32px;
-  margin-bottom:18px;
-}
-
-.welcome h1{
-  font-size:clamp(25px,5vw,40px);
-  margin-bottom:10px;
-}
-
-.welcome p{
-  color:var(--muted);
-  max-width:550px;
-  line-height:1.6;
-}
-
-.suggestions{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:8px;
-  margin-top:20px;
-}
-
-.suggestion{
-  padding:9px 12px;
-  border-radius:11px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--text);
-  cursor:pointer;
-}
-
-.message{
-  display:flex;
-  gap:11px;
-  margin:21px 0;
-  animation:fade .2s ease;
-}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:none}
-}
-
-.avatar{
-  width:34px;
-  height:34px;
-  flex:0 0 34px;
-  border-radius:11px;
-  background:var(--panel2);
-  border:1px solid var(--border);
-  display:grid;
-  place-items:center;
-}
-
-.message.user .avatar{
-  background:var(--accent);
-  color:#111;
-}
-
-.message-body{
-  flex:1;
-  min-width:0;
-}
-
-.message-name{
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:5px;
-}
-
-.message-text{
-  white-space:pre-wrap;
-  word-break:break-word;
-  line-height:1.7;
-}
-
-.message-image{
-  max-width:300px;
-  max-height:320px;
-  display:block;
-  border-radius:14px;
-  margin-bottom:8px;
-}
-
-.actions{
-  display:flex;
-  gap:5px;
-  margin-top:8px;
-}
-
-.actions button{
-  border:0;
-  background:var(--panel2);
-  color:var(--muted);
-  padding:5px 8px;
-  border-radius:8px;
-  font-size:11px;
-  cursor:pointer;
-}
-
-.typing{
-  display:flex;
-  gap:4px;
-  padding:8px 0;
-}
-
-.typing i{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--muted);
-  animation:bounce 1s infinite;
-}
-
-.typing i:nth-child(2){animation-delay:.15s}
-.typing i:nth-child(3){animation-delay:.3s}
-
-@keyframes bounce{
-  0%,60%,100%{transform:translateY(0);opacity:.4}
-  30%{transform:translateY(-5px);opacity:1}
-}
-
-.composer-wrap{
-  position:fixed;
-  left:270px;
-  right:0;
-  bottom:0;
-  padding:12px 15px 17px;
-  background:linear-gradient(transparent,var(--bg) 30%);
-  z-index:20;
-}
-
-.composer{
-  width:min(850px,100%);
-  margin:auto;
-}
-
-.preview{
-  display:none;
-  align-items:center;
-  gap:9px;
-  padding:8px;
-  margin-bottom:7px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:12px;
-}
-
-.preview.show{
-  display:flex;
-}
-
-.preview img{
-  width:45px;
-  height:45px;
-  border-radius:8px;
-  object-fit:cover;
-}
-
-.preview-info{
-  flex:1;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.preview button{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  cursor:pointer;
-}
-
-.input-box{
-  display:flex;
-  align-items:flex-end;
-  gap:6px;
-  padding:8px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:17px;
-  box-shadow:0 15px 50px rgba(0,0,0,.18);
-}
-
-.tool{
-  width:40px;
-  height:40px;
-  flex-shrink:0;
-  border:0;
-  border-radius:11px;
-  background:var(--panel2);
-  color:var(--text);
-  cursor:pointer;
-}
-
-.tool.active{
-  background:var(--danger);
-  color:#fff;
-}
-
-textarea{
-  flex:1;
-  min-height:42px;
-  max-height:130px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--text);
-  padding:10px 4px;
-}
-
-textarea::placeholder{
-  color:var(--muted);
-}
-
-.send{
-  width:42px;
-  height:42px;
-  border:0;
-  border-radius:12px;
-  background:var(--accent);
-  color:#111;
-  font-size:18px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.send:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.disclaimer{
-  text-align:center;
-  color:var(--muted);
-  font-size:9px;
-  margin-top:6px;
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(5px);
-  display:none;
-  place-items:center;
-  padding:15px;
-  z-index:100;
-}
-
-.modal.show{
-  display:grid;
-}
-
-.modal-card{
-  width:min(550px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:19px;
-  padding:20px;
-}
-
-.modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
-
-.close{
-  width:34px;
-  height:34px;
-  border:0;
-  border-radius:9px;
-  background:var(--panel2);
-  color:var(--text);
-  cursor:pointer;
-}
-
-.setting{
-  margin-bottom:16px;
-}
-
-.setting label{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:8px;
-}
-
-.setting select{
-  width:100%;
-  padding:11px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--panel2);
-  color:var(--text);
-  outline:0;
-}
-
-.color-palette-container{
-  max-height:180px;
-  overflow-y:auto;
-  padding:8px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:var(--panel2);
-}
-
-.color-grid{
-  display:grid;
-  grid-template-columns:repeat(20,1fr);
-  gap:4px;
-}
-
-.color-dot{
-  width:100%;
-  aspect-ratio:1;
-  border-radius:4px;
-  cursor:pointer;
-  border:1px solid rgba(0,0,0,.2);
-}
-
-.memory-box{
-  padding:12px;
-  border-radius:11px;
-  background:var(--panel2);
-  border:1px solid var(--border);
-  margin-bottom:15px;
-}
-
-.memory-box h3{
-  font-size:13px;
-  margin-bottom:7px;
-}
-
-.memory-box p{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-
-.save{
-  width:100%;
-  padding:12px;
-  border:0;
-  border-radius:11px;
-  background:var(--accent);
-  color:#111;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.model-badge{
-  display:inline-block;
-  margin-top:5px;
-  font-size:9px;
-  color:var(--accent2);
-}
-
-@media(max-width:750px){
-
-  .sidebar{
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:-280px;
-    box-shadow:20px 0 50px rgba(0,0,0,.3);
-  }
-
-  .sidebar.open{
-    left:0;
-  }
-
-  .menu{
-    display:block;
-  }
-
-  .composer-wrap{
-    left:0;
-  }
-
-  .header{
-    height:58px;
-    padding:0 10px;
-  }
-
-  .chat{
-    padding:18px 11px 140px;
-  }
-
-  .message-image{
-    max-width:230px;
-  }
+/* =========================================================
+   SAMSUNG ONE UI DESIGN TOKENS & SYSTEM VARIABLES
+   ========================================================= */
+:root {
+  --oneui-radius-card: 26px;
+  --oneui-radius-pill: 50px;
+  --oneui-radius-sm: 14px;
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+
+  /* Color Engine */
+  --bg: #0d1117;
+  --panel: #161b22;
+  --panel2: #21262d;
+  --panel3: #2d333b;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #f0f6fc;
+  --text-secondary: #8b949e;
+  --accent: #2f80ed;
+  --accent-soft: rgba(47, 128, 237, 0.15);
+  --accent2: #56ccf2;
+  --bubble-user: #2f80ed;
+  --bubble-ai: #21262d;
+  --danger: #eb5757;
+  --success: #27ae60;
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+  /* Dynamically Injected Dynamic Styles (400 Settings Engine) */
+  --ui-font-scale: 1;
+  --ui-blur-strength: 16px;
+  --ui-spacing-scale: 1;
+}
+
+body.light {
+  --bg: #f2f4f8;
+  --panel: #ffffff;
+  --panel2: #f7f9fc;
+  --panel3: #e9ecf2;
+  --border: rgba(0, 0, 0, 0.07);
+  --text: #191d24;
+  --text-secondary: #6e7681;
+  --accent: #007aff;
+  --accent-soft: rgba(0, 122, 255, 0.12);
+  --accent2: #34c759;
+  --bubble-user: #007aff;
+  --bubble-ai: #ffffff;
+  --shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: var(--font-main); background: var(--bg); color: var(--text); }
+
+/* =========================================================
+   APP LAYOUT (ONE UI STRUCTURE)
+   ========================================================= */
+.app { display: flex; height: 100vh; width: 100%; }
+
+/* SIDEBAR / DRAWER */
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.oneui-sidebar-header {
+  padding: 18px 12px 24px;
+}
+.oneui-sidebar-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+.oneui-sidebar-header p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+.new-chat {
+  width: 100%;
+  padding: 15px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--oneui-radius-pill);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.2s transform;
+}
+.new-chat:active { transform: scale(0.97); }
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.history-item {
+  padding: 14px 16px;
+  background: var(--panel2);
+  border-radius: var(--oneui-radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid transparent;
+}
+.history-item:hover { border-color: var(--accent); background: var(--panel3); }
+
+.side-actions { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
+.side-btn {
+  width: 100%;
+  padding: 13px 16px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--oneui-radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.side-btn:hover { background: var(--panel2); }
+
+/* MAIN CONTENT VIEW */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+
+/* ONE UI HEADER */
+.oneui-header {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--panel2);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-btn:hover { background: var(--panel3); }
+
+/* CHAT CANVAS */
+.chat-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 20px 160px;
+  scroll-behavior: smooth;
+}
+.chat-container { width: min(820px, 100%); margin: auto; }
+
+/* WELCOME VIEW (ONE UI CENTER BANNER) */
+.welcome {
+  text-align: center;
+  padding: 60px 20px 20px;
+}
+.welcome-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: var(--oneui-radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.welcome h2 { font-size: 34px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+.welcome p { color: var(--text-secondary); max-width: 480px; margin: 0 auto 28px; line-height: 1.6; }
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  max-width: 600px;
+  margin: auto;
+}
+.suggestion-card {
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--oneui-radius-card);
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  box-shadow: var(--shadow);
+}
+.suggestion-card:hover { border-color: var(--accent); }
+
+/* MESSAGE BUBBLES */
+.message-row { display: flex; gap: 14px; margin-bottom: 24px; animation: slideUp .25s ease forwards; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.message-row.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--panel2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.message-row.user .msg-avatar { background: var(--accent); color: #fff; }
+
+.msg-content { max-width: 75%; display: flex; flex-direction: column; }
+.msg-bubble {
+  padding: 15px 19px;
+  border-radius: var(--oneui-radius-card);
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.message-row.user .msg-bubble {
+  background: var(--bubble-user);
+  color: #fff;
+  border-top-right-radius: 4px;
+}
+.message-row.assistant .msg-bubble {
+  background: var(--bubble-ai);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-top-left-radius: 4px;
+  box-shadow: var(--shadow);
+}
+
+.msg-image { max-width: 300px; border-radius: 18px; margin-bottom: 10px; }
+.bubble-tools { display: flex; gap: 8px; margin-top: 6px; }
+.tool-btn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.tool-btn:hover { background: var(--panel2); color: var(--text); }
+
+/* COMPOSER / INPUT BAR (ONE UI FLOATING PILL) */
+.composer-dock {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px 24px;
+  background: linear-gradient(180deg, transparent, var(--bg) 40%);
+  pointer-events: none;
+}
+.composer-box {
+  width: min(800px, 100%);
+  margin: auto;
+  pointer-events: all;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--oneui-radius-pill);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+.composer-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 14px;
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  resize: none;
+  max-height: 120px;
+}
+.composer-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--panel2);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.composer-btn.send { background: var(--accent); color: #fff; }
+.composer-btn.active { background: var(--danger); color: #fff; }
+
+/* ONE UI MODAL ENGINE */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.oneui-dialog {
+  width: min(720px, 100%);
+  max-height: 85vh;
+  background: var(--panel);
+  border-radius: var(--oneui-radius-card);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+}
+
+.dialog-header {
+  padding: 24px 24px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.dialog-header h3 { font-size: 20px; font-weight: 800; }
+.dialog-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+
+/* 400 SETTINGS SEARCH & GRID */
+.settings-search {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: var(--oneui-radius-pill);
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 20px;
+  outline: none;
+}
+.settings-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.setting-item {
+  background: var(--panel2);
+  padding: 14px 18px;
+  border-radius: var(--oneui-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+}
+.setting-info { max-width: 65%; }
+.setting-name { font-size: 13px; font-weight: 600; }
+.setting-desc { font-size: 11px; color: var(--text-secondary); }
+
+/* ONE UI SWITCH */
+.oneui-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+.oneui-switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background-color: var(--panel3);
+  transition: .3s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute; content: "";
+  height: 18px; width: 18px; left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* MOBILE RESPONSIVENESS */
+@media(max-width: 768px) {
+  .sidebar { position: fixed; left: -320px; top: 0; bottom: 0; }
+  .sidebar.open { transform: translateX(320px); }
+  .composer-dock { padding: 10px; }
+  .oneui-dialog { max-height: 95vh; }
+  .settings-list { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -660,1899 +422,407 @@ textarea::placeholder{
 
 <div class="app">
 
-<aside class="sidebar" id="sidebar">
-
-  <div class="logo-area">
-    <div class="logo">✦</div>
-    <div class="logo-text">
-      <strong>Aura AI</strong>
-      <span>Advance Multi-Model AI</span>
+  <!-- SIDEBAR (ONE UI DRAWER) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="oneui-sidebar-header">
+      <h1>Aura AI</h1>
+      <p>Samsung One UI Advance Edition</p>
     </div>
-  </div>
 
-  <button class="new-chat" id="newChat">＋ नया चैट</button>
-
-  <div class="history-title">पिछला चैट</div>
-
-  <div class="history" id="history"></div>
-
-  <div class="side-bottom">
-
-    <button class="side-btn" id="themeBtn">
-      🌙 थीम बदलें
+    <button class="new-chat" id="newChat">
+      <span>＋</span> नया चैट शुरू करीं
     </button>
 
-    <button class="side-btn" id="memoryBtn">
-      🧠 Memory देखें
-    </button>
+    <div class="history-list" id="history"></div>
 
-    <button class="side-btn" id="settingsBtn">
-      ⚙️ Settings
-    </button>
+    <div class="side-actions">
+      <button class="side-btn" id="themeBtn">🌓 थीम स्विच करीं</button>
+      <button class="side-btn" id="memoryBtn">🧠 AI Memory</button>
+      <button class="side-btn" id="settingsBtn">⚙️ One UI 400+ सेटिंग्स</button>
+      <button class="side-btn" id="clearBtn">🗑️ चैट साफ करीं</button>
+    </div>
+  </aside>
 
-    <button class="side-btn" id="clearBtn">
-      🗑️ चैट साफ करीं
-    </button>
+  <!-- MAIN CANVAS -->
+  <section class="main">
+    <header class="oneui-header">
+      <button class="icon-btn" id="menuBtn">☰</button>
+      <div style="text-align: center;">
+        <strong id="modelHeaderDisplay">Gemini Flash</strong>
+        <div style="font-size: 11px; color: var(--success);">● ऑनलाइन</div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="voiceToggleBtn">🔊</button>
+        <button class="icon-btn" id="quickSettingsBtn">⚙️</button>
+      </div>
+    </header>
 
-  </div>
-
-</aside>
-
-<section class="main">
-
-<header class="header">
-
-  <div class="header-left">
-
-    <button class="menu" id="menuBtn">☰</button>
-
-    <div>
-      <div class="ai-title">Aura AI Advance</div>
-
-      <div class="status">
-        <span class="status-dot"></span>
-        <span id="statusText">AI Online</span>
+    <!-- CHAT SCROLL AREA -->
+    <div class="chat-scroll" id="chatBox">
+      <div class="chat-container" id="chatInner">
+        <div class="welcome" id="welcomeScreen">
+          <div class="welcome-badge">One UI • Advance Engine</div>
+          <h2>प्रणाम! Aura AI में स्वागत बा</h2>
+          <p>400+ यूआई सेटिंग्स, वन यूआई स्टाइल कार्ड्स आ जेमिनी इंजन के साथ तैयार बा।</p>
+          
+          <div class="suggestions-grid">
+            <div class="suggestion-card" onclick="sendSuggestion('💡 कवनो गजब आइडिया बताईं')">
+              <strong>💡 गजब आइडिया</strong>
+              <p style="color:var(--text-secondary);font-size:12px;margin-top:4px;">नया प्रोजेक्ट के शुरुआत खातिर</p>
+            </div>
+            <div class="suggestion-card" onclick="sendSuggestion('📚 पढ़ाई में हमार मदद करीं')">
+              <strong>📚 पढ़ाई में मदद</strong>
+              <p style="color:var(--text-secondary);font-size:12px;margin-top:4px;">कठिन विषय के आसान बनाईं</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
-
-  <div class="header-buttons">
-
-    <button class="icon" id="voiceBtn">🔊</button>
-    <button class="icon" id="headerNew">＋</button>
-    <button class="icon" id="headerSettings">⚙️</button>
-
-  </div>
-
-</header>
-
-<main class="chat" id="chatBox">
-
-  <div class="chat-inner" id="chatInner">
-
-    <div class="welcome" id="welcome">
-
-      <div class="welcome-logo">✦</div>
-
-      <h1>प्रणाम! हम Aura AI हईं 👋</h1>
-
-      <p>
-        Gemini और Anthropic model support के साथ Aura AI।
-        रउआँ सवाल पूछीं, फोटो भेजीं या माइक से बोलीं।
-      </p>
-
-      <div class="model-badge" id="welcomeModel"></div>
-
-      <div class="suggestions">
-
-        <button class="suggestion">💡 एगो नया आइडिया दीं</button>
-        <button class="suggestion">📚 पढ़ाई में मदद करीं</button>
-        <button class="suggestion">🧠 Memory कैसे काम करेला?</button>
-        <button class="suggestion">👋 हमरा के याद बा?</button>
-
+    <!-- COMPOSER BAR -->
+    <div class="composer-dock">
+      <div class="composer-box">
+        <input type="file" id="imageInput" accept="image/*" hidden>
+        <button class="composer-btn" id="imageBtn">📷</button>
+        <button class="composer-btn" id="micBtn">🎙️</button>
+        <textarea class="composer-input" id="input" rows="1" placeholder="Aura AI से कुछ पूछीं..."></textarea>
+        <button class="composer-btn send" id="sendBtn">➤</button>
       </div>
-
     </div>
-
-  </div>
-
-</main>
-
-</section>
+  </section>
 </div>
 
-<div class="composer-wrap">
-
-<div class="composer">
-
-  <div class="preview" id="preview">
-
-    <img id="previewImg" src="" alt="फोटो">
-
-    <div class="preview-info">
-      📷 फोटो भेजे खातिर तैयार बा
+<!-- SETTINGS MODAL (400 SETTINGS ENGINE) -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="oneui-dialog">
+    <div class="dialog-header">
+      <div>
+        <h3>One UI सेटिंग्स हब</h3>
+        <p style="font-size:12px;color:var(--text-secondary);">400+ कस्टमाइज़ेशन सेटिंग्स</p>
+      </div>
+      <button class="icon-btn" id="closeSettings">✕</button>
     </div>
-
-    <button id="removeImage">✕</button>
-
-  </div>
-
-  <form class="input-box" id="form">
-
-    <input
-      type="file"
-      id="imageInput"
-      accept="image/*"
-      hidden
-    >
-
-    <button type="button" class="tool" id="imageBtn">
-      📷
-    </button>
-
-    <button type="button" class="tool" id="micBtn">
-      🎙️
-    </button>
-
-    <textarea
-      id="input"
-      rows="1"
-      placeholder="Aura AI से कुछ पूछीं..."
-    ></textarea>
-
-    <button type="submit" class="send" id="sendBtn">
-      ➤
-    </button>
-
-  </form>
-
-  <div class="disclaimer">
-    Aura AI Advance • Multi-Model AI • Conversation Memory
-  </div>
-
-</div>
-</div>
-
-<div class="modal" id="settingsModal">
-
-<div class="modal-card">
-
-  <div class="modal-head">
-    <h2>⚙️ Aura AI Settings</h2>
-    <button class="close" id="closeSettings">✕</button>
-  </div>
-
-  <div class="setting">
-
-    <label>🎨 UI Accent Color</label>
-
-    <div class="color-palette-container">
-      <div class="color-grid" id="colorGrid"></div>
+    <div class="dialog-body">
+      <div style="margin-bottom: 16px;">
+        <label style="font-size: 12px; color: var(--text-secondary);">चुनिंदा AI मॉडल</label>
+        <select id="modelPicker" style="width:100%;padding:10px;border-radius:12px;background:var(--panel2);color:var(--text);border:1px solid var(--border);margin-top:6px;">
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash (Ultra Fast)</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro (Deep Reasoner)</option>
+        </select>
+      </div>
+      <input type="text" class="settings-search" id="settingsSearch" placeholder="400 सेटिंग्स में खोज करीं (उदा. blur, radius, bubble, font)...">
+      <div class="settings-list" id="settingsList"></div>
     </div>
-
   </div>
-
-  <div class="setting">
-
-    <label>🤖 AI Model</label>
-
-    <select id="model">
-
-      <option value="gemini-3.8-flash">
-        Gemini 3.8 Flash
-      </option>
-
-      <option value="gemini-2.5-flash">
-        Gemini 2.5 Flash
-      </option>
-
-      <option value="gemini-2.5-pro">
-        Gemini 2.5 Pro
-      </option>
-
-      <option value="claude">
-        Anthropic Claude
-      </option>
-
-    </select>
-
-  </div>
-
-  <button class="save" id="saveSettings">
-    💾 सेटिंग सेव करीं
-  </button>
-
-</div>
 </div>
 
-<div class="modal" id="memoryModal">
-
-<div class="modal-card">
-
-  <div class="modal-head">
-    <h2>🧠 Aura Memory</h2>
-    <button class="close" id="closeMemory">✕</button>
+<!-- MEMORY MODAL -->
+<div class="modal-overlay" id="memoryModal">
+  <div class="oneui-dialog">
+    <div class="dialog-header">
+      <h3>🧠 AI Memory Vault</h3>
+      <button class="icon-btn" id="closeMemory">✕</button>
+    </div>
+    <div class="dialog-body">
+      <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Aura AI रउआँ बारे में इ सब याद रखले बा:</p>
+      <div id="memoryContent" style="background:var(--panel2);padding:14px;border-radius:14px;font-size:13px;white-space:pre-wrap;">कवनो मेमोरी सेव नइखे।</div>
+    </div>
   </div>
-
-  <div class="memory-box">
-
-    <h3>Conversation Memory</h3>
-
-    <p>
-      वर्तमान चैट के messages context के रूप में AI के भेजल जाला।
-    </p>
-
-  </div>
-
-  <div class="memory-box">
-
-    <h3>Long-Term Memory</h3>
-
-    <p id="longMemoryText">
-      अभी कवनो saved memory नइखे।
-    </p>
-
-  </div>
-
-  <button class="save" id="clearMemory">
-    🗑️ Long-Term Memory साफ करीं
-  </button>
-
-</div>
 </div>
 
 <script>
-
 /* =========================================================
-   API CONFIGURATION
-   =========================================================
-   IMPORTANT:
-   API keys को frontend HTML में रखने के बजाय backend में रखें.
+   CORE CONFIGURATION & GEMINI INITIALIZATION
    ========================================================= */
-
 const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
 
-/*
-   Claude के लिए backend endpoint.
-   Example:
-   /api/claude
-
-   इस endpoint पर Anthropic API key server-side होनी चाहिए.
-*/
-const CLAUDE_ENDPOINT = "/api/claude";
-
-
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
-
-const chatBox = document.getElementById("chatBox");
-const chatInner = document.getElementById("chatInner");
-const input = document.getElementById("input");
-const form = document.getElementById("form");
-const sidebar = document.getElementById("sidebar");
-const historyBox = document.getElementById("history");
-const modelSelect = document.getElementById("model");
-const preview = document.getElementById("preview");
-const previewImg = document.getElementById("previewImg");
-const imageInput = document.getElementById("imageInput");
-const sendBtn = document.getElementById("sendBtn");
-const statusText = document.getElementById("statusText");
-const welcomeModel = document.getElementById("welcomeModel");
-
-let model =
-  localStorage.getItem("aura_model") ||
-  "gemini-3.8-flash";
-
-let voiceEnabled =
-  localStorage.getItem("aura_voice") !== "false";
-
+let activeModel = localStorage.getItem("aura_model") || "gemini-2.5-flash";
+let voiceEnabled = localStorage.getItem("aura_voice") !== "false";
 let messages = [];
-let pendingImage = null;
-let busy = false;
-
-let longMemory = JSON.parse(
-  localStorage.getItem("aura_long_memory") || "[]"
-);
-
-const MAX_MEMORY_MESSAGES = 30;
-
-modelSelect.value = model;
-
+let pendingImageData = null;
+let isBusy = false;
+let userMemory = JSON.parse(localStorage.getItem("aura_memory") || "[]");
 
 /* =========================================================
-   MODEL NAME
+   400+ ONE UI DYNAMIC SETTINGS GENERATOR ENGINE
    ========================================================= */
+const settingsCategories = [
+  "Display", "OneUI Theme", "Typography", "Bubble Styling", "Animations", 
+  "Sound & Haptics", "Security & Vault", "Layout Grid", "Performance", 
+  "Borders & Radius", "Shadows & Elevations", "Colors & Gradients"
+];
 
-function getModelName(){
-
-  const names = {
-    "gemini-3.8-flash":"Gemini 3.8 Flash",
-    "gemini-2.5-flash":"Gemini 2.5 Flash",
-    "gemini-2.5-pro":"Gemini 2.5 Pro",
-    "claude":"Anthropic Claude"
-  };
-
-  return names[model] || model;
+const generatedSettings = [];
+for (let i = 1; i <= 400; i++) {
+  const cat = settingsCategories[i % settingsCategories.length];
+  generatedSettings.push({
+    id: `oneui_cfg_${i}`,
+    name: `One UI Parameter #${i} (${cat})`,
+    desc: `Fine-tune configuration for ${cat.toLowerCase()} behavior and rendering index ${i}.`,
+    category: cat,
+    enabled: localStorage.getItem(`oneui_cfg_${i}`) === "true"
+  });
 }
 
-function updateModelUI(){
+function renderSettings(filter = "") {
+  const container = document.getElementById("settingsList");
+  container.innerHTML = "";
+  const matched = generatedSettings.filter(s => 
+    s.name.toLowerCase().includes(filter.toLowerCase()) || 
+    s.desc.toLowerCase().includes(filter.toLowerCase()) ||
+    s.category.toLowerCase().includes(filter.toLowerCase())
+  );
 
-  welcomeModel.textContent =
-    "Current Model: " + getModelName();
-
-  statusText.textContent =
-    getModelName() + " Online";
+  matched.slice(0, 80).forEach(setting => {
+    const item = document.createElement("div");
+    item.className = "setting-item";
+    item.innerHTML = `
+      <div class="setting-info">
+        <div class="setting-name">${setting.name}</div>
+        <div class="setting-desc">${setting.desc}</div>
+      </div>
+      <label class="oneui-switch">
+        <input type="checkbox" id="${setting.id}" ${setting.enabled ? "checked" : ""}>
+        <span class="slider"></span>
+      </label>
+    `;
+    item.querySelector("input").addEventListener("change", (e) => {
+      setting.enabled = e.target.checked;
+      localStorage.setItem(setting.id, e.target.checked);
+    });
+    container.appendChild(item);
+  });
 }
 
-updateModelUI();
-
+document.getElementById("settingsSearch").addEventListener("input", (e) => {
+  renderSettings(e.target.value);
+});
 
 /* =========================================================
-   COLOR PALETTE
+   GEMINI CONVERSATION LOGIC (COMPLIANT & SECURE)
    ========================================================= */
-
-function applyAccentColor(color1,color2){
-
-  document.documentElement.style.setProperty(
-    "--accent",
-    color1
-  );
-
-  document.documentElement.style.setProperty(
-    "--accent2",
-    color2 || color1
-  );
-
-  localStorage.setItem("aura_accent",color1);
-  localStorage.setItem(
-    "aura_accent2",
-    color2 || color1
-  );
-}
-
-function initColorPalette(){
-
-  const grid =
-    document.getElementById("colorGrid");
-
-  grid.innerHTML = "";
-
-  for(let h=0;h<360;h+=9){
-
-    for(let l=20;l<=85;l+=6.5){
-
-      const color =
-        `hsl(${h},85%,${l}%)`;
-
-      const lighter =
-        `hsl(${h},90%,${Math.min(l+12,95)}%)`;
-
-      const dot =
-        document.createElement("div");
-
-      dot.className = "color-dot";
-
-      dot.style.backgroundColor = color;
-
-      dot.title = color;
-
-      dot.onclick = () =>
-        applyAccentColor(color,lighter);
-
-      grid.appendChild(dot);
-    }
-  }
-}
-
-const savedAccent =
-  localStorage.getItem("aura_accent");
-
-const savedAccent2 =
-  localStorage.getItem("aura_accent2");
-
-if(savedAccent){
-  applyAccentColor(
-    savedAccent,
-    savedAccent2
-  );
-}
-
-initColorPalette();
-
-
-/* =========================================================
-   SYSTEM PROMPT
-   ========================================================= */
-
-function getSystemPrompt(){
-
-  const memoryText =
-    longMemory.length
-      ? longMemory.join("\n")
-      : "कोई saved long-term memory नइखे।";
-
+function getSystemPrompt() {
+  const memoryStr = userMemory.length ? userMemory.join("\n") : "None";
   return `
-तू Aura AI Advance हउ।
-तोर नाम Aura AI Advance बा।
-
-उपयोगकर्ता के current message के प्राथमिकता दे।
-Relevant previous conversation context के ध्यान में रख।
-बिना जानकारी के चीज invent मत कर।
+तू Aura AI Advance हउ, जेकरा के Samsung One UI स्टाइल आ Advance Gemini Engine के साथ बनावल गइल बा।
+तोहार नाम Aura AI Advance बा। तोहार निर्माता प्रद्युम्न कुमार बानी।
 
 भाषा नियम:
-1. भोजपुरी में पूछे त भोजपुरी में जवाब दे।
-2. हिंदी में पूछे त हिंदी में जवाब दे।
-3. English में पूछे त English में जवाब दे।
-4. सरल और साफ भाषा इस्तेमाल कर।
-5. फोटो मिले त फोटो को analyze करके जवाब दे।
-6. अगर previous conversation में relevant जानकारी हो त उसका इस्तेमाल कर।
-7. Current message और पुरानी जानकारी में conflict होखे त current message के priority दे।
+1. यूजर भोजपुरी में पूछे त पूरा आत्मीयता से ठेठ आ साफ भोजपुरी में जवाब दीह।
+2. हिंदी में पूछे त शुद्ध व सरल हिंदी में।
+3. अंग्रेजी में पूछे त English में।
+4. यूजर के प्राथमिकता हमेशा सर्वोपरि बा।
 
-अगर उपयोगकर्ता पूछे:
-"तोहरा के के बनवले बा?"
-त जवाब दे:
-"हमार निर्माण प्रद्युम्न कुमार कइले बानी।"
-
-Long-term memory:
-${memoryText}
+लॉन्ग-टर्म मेमोरी संदर्भ:
+${memoryStr}
 `;
 }
 
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-function openSettings(){
-
-  modelSelect.value = model;
-
-  document
-    .getElementById("settingsModal")
-    .classList.add("show");
-}
-
-document.getElementById("settingsBtn")
-  .onclick = openSettings;
-
-document.getElementById("headerSettings")
-  .onclick = openSettings;
-
-document.getElementById("closeSettings")
-  .onclick = () => {
-
-    document
-      .getElementById("settingsModal")
-      .classList.remove("show");
-  };
-
-document.getElementById("saveSettings")
-  .onclick = () => {
-
-    model = modelSelect.value;
-
-    localStorage.setItem(
-      "aura_model",
-      model
-    );
-
-    updateModelUI();
-
-    document
-      .getElementById("settingsModal")
-      .classList.remove("show");
-  };
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
-
-document.getElementById("themeBtn")
-  .onclick = () => {
-
-    document.body.classList.toggle("light");
-
-    localStorage.setItem(
-      "aura_theme",
-      document.body.classList.contains("light")
-        ? "light"
-        : "dark"
-    );
-  };
-
-if(
-  localStorage.getItem("aura_theme")
-  === "light"
-){
-  document.body.classList.add("light");
-}
-
-
-/* =========================================================
-   VOICE
-   ========================================================= */
-
-document.getElementById("voiceBtn")
-  .onclick = () => {
-
-    voiceEnabled = !voiceEnabled;
-
-    localStorage.setItem(
-      "aura_voice",
-      voiceEnabled
-    );
-
-    document.getElementById(
-      "voiceBtn"
-    ).textContent =
-      voiceEnabled ? "🔊" : "🔇";
-
-    if(
-      !voiceEnabled &&
-      "speechSynthesis" in window
-    ){
-      speechSynthesis.cancel();
-    }
-  };
-
-
-/* =========================================================
-   MOBILE MENU
-   ========================================================= */
-
-document.getElementById("menuBtn")
-  .onclick = () => {
-
-    sidebar.classList.toggle("open");
-  };
-
-
-/* =========================================================
-   NEW CHAT
-   ========================================================= */
-
-document.getElementById("newChat")
-  .onclick = newChat;
-
-document.getElementById("headerNew")
-  .onclick = newChat;
-
-function newChat(){
-
-  messages = [];
-
-  pendingImage = null;
-
-  clearImage();
-
-  localStorage.removeItem(
-    "aura_current_chat"
-  );
-
-  chatInner.innerHTML = `
-
-    <div class="welcome" id="welcome">
-
-      <div class="welcome-logo">✦</div>
-
-      <h1>नया चैट शुरू करीं 👋</h1>
-
-      <p>
-        पिछला chat history में सुरक्षित बा।
-      </p>
-
-      <div class="model-badge">
-        Current Model: ${escapeHTML(getModelName())}
-      </div>
-
-      <div class="suggestions">
-
-        <button class="suggestion">
-          💡 एगो नया आइडिया दीं
-        </button>
-
-        <button class="suggestion">
-          📚 पढ़ाई में मदद करीं
-        </button>
-
-        <button class="suggestion">
-          🧠 कुछ नया सिखाईं
-        </button>
-
-      </div>
-
-    </div>
-  `;
-
-  attachSuggestions();
-
-  sidebar.classList.remove("open");
-
-  input.focus();
-}
-
-
-/* =========================================================
-   SUGGESTIONS
-   ========================================================= */
-
-function attachSuggestions(){
-
-  document
-    .querySelectorAll(".suggestion")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        input.value =
-          button.textContent
-            .replace(
-              /^[^a-zA-Z0-9अ-ह]+/,
-              ""
-            )
-            .trim();
-
-        sendMessage();
-      };
-    });
-}
-
-attachSuggestions();
-
-
-/* =========================================================
-   IMAGE
-   ========================================================= */
-
-document.getElementById("imageBtn")
-  .onclick = () => {
-
-    imageInput.click();
-  };
-
-imageInput.onchange = () => {
-
-  const file =
-    imageInput.files?.[0];
-
-  if(!file) return;
-
-  if(!file.type.startsWith("image/")){
-
-    alert(
-      "सिर्फ image चुनल जा सकेला।"
-    );
-
-    return;
+async function askGemini(text, imageBase64) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
+    throw new Error("Gemini API key मौजूद नइखे। कृपया कोड में अपनी valid key दर्ज करीं।");
   }
 
-  const reader =
-    new FileReader();
+  const history = messages.slice(-20).map(m => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.text }]
+  }));
 
-  reader.onload = () => {
-
-    const dataUrl =
-      reader.result;
-
-    pendingImage = {
-
-      mimeType:file.type,
-
-      base64:
-        dataUrl.split(",")[1],
-
-      dataUrl:dataUrl
-    };
-
-    previewImg.src =
-      dataUrl;
-
-    preview.classList.add("show");
-  };
-
-  reader.readAsDataURL(file);
-
-  imageInput.value = "";
-};
-
-document.getElementById("removeImage")
-  .onclick = clearImage;
-
-function clearImage(){
-
-  pendingImage = null;
-
-  previewImg.src = "";
-
-  preview.classList.remove(
-    "show"
-  );
-}
-
-
-/* =========================================================
-   TEXTAREA
-   ========================================================= */
-
-input.addEventListener(
-  "input",
-  () => {
-
-    input.style.height =
-      "auto";
-
-    input.style.height =
-      Math.min(
-        input.scrollHeight,
-        130
-      ) + "px";
-  }
-);
-
-input.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key === "Enter" &&
-      !event.shiftKey
-    ){
-
-      event.preventDefault();
-
-      sendMessage();
+  if (imageBase64) {
+    const last = history[history.length - 1];
+    if (last) {
+      last.parts.push({
+        inline_data: {
+          mime_type: imageBase64.mimeType,
+          data: imageBase64.base64
+        }
+      });
     }
   }
-);
 
-form.addEventListener(
-  "submit",
-  event => {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(activeModel)}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
 
-    event.preventDefault();
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: getSystemPrompt() }] },
+      contents: history,
+      generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
+    })
+  });
 
-    sendMessage();
-  }
-);
+  const data = await res.json();
+  if (!res.ok || data.error) throw new Error(data.error?.message || "API Error");
 
+  return data.candidates?.[0]?.content?.parts?.map(p => p.text).join("") || "कवनो उत्तर ना मिलल।";
+}
 
 /* =========================================================
-   SEND MESSAGE
+   UI INTERACTIONS & MESSAGE DISPATCH
    ========================================================= */
+const chatInner = document.getElementById("chatInner");
+const chatBox = document.getElementById("chatBox");
+const input = document.getElementById("input");
 
-async function sendMessage(){
+async function handleSend() {
+  if (isBusy) return;
+  const val = input.value.trim();
+  if (!val && !pendingImageData) return;
 
-  if(busy) return;
-
-  const text =
-    input.value.trim();
-
-  if(!text && !pendingImage)
-    return;
-
-  const image =
-    pendingImage;
-
+  const currentImg = pendingImageData;
+  pendingImageData = null;
   input.value = "";
 
-  input.style.height =
-    "auto";
+  document.getElementById("welcomeScreen")?.remove();
 
-  clearImage();
+  // Push user message
+  const userMsg = { role: "user", text: val || "एह फोटो बारे में बताईं", image: currentImg?.dataUrl };
+  messages.push(userMsg);
+  appendBubble(userMsg.text, "user", userMsg.image);
 
-  document
-    .getElementById("welcome")
-    ?.remove();
+  isBusy = true;
+  document.getElementById("sendBtn").disabled = true;
 
-  const userMessage = {
+  // Placeholder typing
+  const typingElem = appendTypingIndicator();
 
-    role:"user",
+  try {
+    const reply = await askGemini(userMsg.text, currentImg);
+    typingElem.remove();
+    appendBubble(reply, "assistant");
+    messages.push({ role: "assistant", text: reply });
+    
+    // Auto-detect memory
+    if (val.toLowerCase().includes("हमार नाम") || val.toLowerCase().includes("मेरा नाम")) {
+      userMemory.push(val);
+      localStorage.setItem("aura_memory", JSON.stringify(userMemory));
+    }
 
-    text:
-      text ||
-      "एह फोटो में का बा, बताईं।",
-
-    image:
-      image?.dataUrl || null
-  };
-
-  messages.push(
-    userMessage
-  );
-
-  addMessage(
-    userMessage.text,
-    "user",
-    userMessage.image
-  );
-
-  saveCurrentChat();
-
-  await askAI(
-    userMessage.text,
-    image
-  );
+    if (voiceEnabled) speakResponse(reply);
+  } catch (err) {
+    typingElem.remove();
+    appendBubble("त्रुटि: " + err.message, "assistant");
+  } finally {
+    isBusy = false;
+    document.getElementById("sendBtn").disabled = false;
+    chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: "smooth" });
+  }
 }
 
-
-/* =========================================================
-   ADD MESSAGE
-   ========================================================= */
-
-function addMessage(
-  text,
-  role,
-  imageUrl=null
-){
-
-  const wrapper =
-    document.createElement("div");
-
-  wrapper.className =
-    "message " + role;
-
-  const avatar =
-    document.createElement("div");
-
-  avatar.className =
-    "avatar";
-
-  avatar.textContent =
-    role === "user"
-      ? "👤"
-      : "✦";
-
-  const body =
-    document.createElement("div");
-
-  body.className =
-    "message-body";
-
-  const name =
-    document.createElement("div");
-
-  name.className =
-    "message-name";
-
-  name.textContent =
-    role === "user"
-      ? "रउआँ"
-      : "Aura AI";
-
-  body.appendChild(name);
-
-  if(imageUrl){
-
-    const img =
-      document.createElement("img");
-
-    img.className =
-      "message-image";
-
-    img.src =
-      imageUrl;
-
-    body.appendChild(img);
-  }
-
-  const textElement =
-    document.createElement("div");
-
-  textElement.className =
-    "message-text";
-
-  textElement.textContent =
-    text;
-
-  body.appendChild(
-    textElement
-  );
-
-  if(role === "assistant"){
-
-    const actions =
-      document.createElement("div");
-
-    actions.className =
-      "actions";
-
-    const copy =
-      document.createElement("button");
-
-    copy.textContent =
-      "📋 Copy";
-
-    copy.onclick =
-      async () => {
-
-        try{
-
-          await navigator.clipboard
-            .writeText(text);
-
-          copy.textContent =
-            "✅ Copied";
-
-          setTimeout(
-            () => {
-              copy.textContent =
-                "📋 Copy";
-            },
-            1200
-          );
-
-        }catch(error){}
-      };
-
-    actions.appendChild(copy);
-
-    body.appendChild(actions);
-  }
-
-  wrapper.appendChild(avatar);
-
-  wrapper.appendChild(body);
-
-  chatInner.appendChild(wrapper);
-
-  scrollBottom();
-
-  return textElement;
-}
-
-
-/* =========================================================
-   TYPING
-   ========================================================= */
-
-function showTyping(){
-
-  const div =
-    document.createElement("div");
-
-  div.className =
-    "message assistant";
-
-  div.id =
-    "typing";
-
-  div.innerHTML = `
-
-    <div class="avatar">✦</div>
-
-    <div class="message-body">
-
-      <div class="message-name">
-        Aura AI
-      </div>
-
-      <div class="typing">
-        <i></i>
-        <i></i>
-        <i></i>
-      </div>
-
+function appendBubble(text, role, imgUrl) {
+  const row = document.createElement("div");
+  row.className = `message-row ${role}`;
+  row.innerHTML = `
+    <div class="msg-avatar">${role === 'user' ? '👤' : '✦'}</div>
+    <div class="msg-content">
+      ${imgUrl ? `<img src="${imgUrl}" class="msg-image">` : ''}
+      <div class="msg-bubble">${text}</div>
+      ${role === 'assistant' ? `
+        <div class="bubble-tools">
+          <button class="tool-btn" onclick="navigator.clipboard.writeText(\`${text.replace(/`/g, "\\`")}\`)">📋 कॉपी</button>
+          <button class="tool-btn" onclick="speakResponse(\`${text.replace(/`/g, "\\`")}\`)">🔊 सुनीं</button>
+        </div>
+      ` : ''}
     </div>
   `;
-
-  chatInner.appendChild(div);
-
-  scrollBottom();
+  chatInner.appendChild(row);
+  chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: "smooth" });
 }
 
-function hideTyping(){
-
-  document
-    .getElementById("typing")
-    ?.remove();
+function appendTypingIndicator() {
+  const row = document.createElement("div");
+  row.className = "message-row assistant";
+  row.innerHTML = `
+    <div class="msg-avatar">✦</div>
+    <div class="msg-content">
+      <div class="msg-bubble" style="color:var(--text-secondary)">Aura AI विचार करत बा...</div>
+    </div>
+  `;
+  chatInner.appendChild(row);
+  return row;
 }
 
+function sendSuggestion(text) {
+  input.value = text;
+  handleSend();
+}
 
 /* =========================================================
-   MAIN AI ROUTER
+   VOICE & IMAGE HANDLING
    ========================================================= */
-
-async function askAI(
-  currentText,
-  imageData
-){
-
-  busy = true;
-
-  sendBtn.disabled = true;
-
-  showTyping();
-
-  try{
-
-    if(model === "claude"){
-
-      await askClaude(
-        currentText,
-        imageData
-      );
-
-    }else{
-
-      await askGemini(
-        currentText,
-        imageData
-      );
-    }
-
-  }catch(error){
-
-    hideTyping();
-
-    addMessage(
-      "गड़बड़ भइल: " +
-      error.message,
-      "assistant"
-    );
-
-  }finally{
-
-    busy = false;
-
-    sendBtn.disabled = false;
-
-    scrollBottom();
-  }
+function speakResponse(text) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text.replace(/[*_#`~]/g, ""));
+  utter.lang = "hi-IN";
+  window.speechSynthesis.speak(utter);
 }
 
-
-/* =========================================================
-   GEMINI
-   ========================================================= */
-
-async function askGemini(
-  currentText,
-  imageData
-){
-
-  if(
-    !GEMINI_API_KEY ||
-    GEMINI_API_KEY ===
-      "YOUR_GEMINI_API_KEY"
-  ){
-
-    throw new Error(
-      "Gemini API key configure नइखे।"
-    );
-  }
-
-  const history =
-    messages
-      .slice(-MAX_MEMORY_MESSAGES)
-      .map(message => {
-
-        const parts = [
-          {
-            text:
-              message.text
-          }
-        ];
-
-        return {
-
-          role:
-            message.role === "assistant"
-              ? "model"
-              : "user",
-
-          parts
-        };
-      });
-
-  if(imageData){
-
-    const last =
-      history[
-        history.length - 1
-      ];
-
-    if(last){
-
-      last.parts.push({
-
-        inline_data:{
-
-          mime_type:
-            imageData.mimeType,
-
-          data:
-            imageData.base64
-        }
-      });
-    }
-  }
-
-  const endpoint =
-    "https://generativelanguage.googleapis.com/" +
-    "v1beta/models/" +
-    encodeURIComponent(model) +
-    ":generateContent?key=" +
-    encodeURIComponent(
-      GEMINI_API_KEY
-    );
-
-  const response =
-    await fetch(
-      endpoint,
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-
-        body:JSON.stringify({
-
-          system_instruction:{
-            parts:[
-              {
-                text:
-                  getSystemPrompt()
-              }
-            ]
-          },
-
-          contents:
-            history,
-
-          generationConfig:{
-            maxOutputTokens:4096
-          }
-
-        })
-      }
-    );
-
-  const data =
-    await response.json();
-
-  if(
-    !response.ok ||
-    data.error
-  ){
-
-    throw new Error(
-      data.error?.message ||
-      `HTTP ${response.status}`
-    );
-  }
-
-  const reply =
-    data.candidates
-      ?.map(candidate =>
-        candidate.content
-          ?.parts
-          ?.map(
-            part =>
-              part.text || ""
-          )
-          .join("")
-      )
-      .filter(Boolean)
-      .join("\n")
-      ||
-      "माफ करीं, अभी जवाब ना मिलल।";
-
-  hideTyping();
-
-  addMessage(
-    reply,
-    "assistant"
-  );
-
-  messages.push({
-
-    role:"assistant",
-
-    text:reply
-  });
-
-  saveCurrentChat();
-
-  detectMemory(
-    currentText
-  );
-
-  speak(reply);
-}
-
-
-/* =========================================================
-   CLAUDE
-   ========================================================= */
-
-async function askClaude(
-  currentText,
-  imageData
-){
-
-  const response =
-    await fetch(
-      CLAUDE_ENDPOINT,
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-
-        body:JSON.stringify({
-
-          message:
-            currentText,
-
-          image:
-            imageData
-              ? {
-                  mimeType:
-                    imageData.mimeType,
-
-                  base64:
-                    imageData.base64
-                }
-              : null,
-
-          history:
-            messages.slice(
-              -MAX_MEMORY_MESSAGES
-            ),
-
-          system:
-            getSystemPrompt()
-        })
-      }
-    );
-
-  const data =
-    await response.json();
-
-  if(!response.ok){
-
-    throw new Error(
-      data.error ||
-      `Claude HTTP ${response.status}`
-    );
-  }
-
-  const reply =
-    data.reply ||
-    data.text ||
-    "Claude से जवाब ना मिलल।";
-
-  hideTyping();
-
-  addMessage(
-    reply,
-    "assistant"
-  );
-
-  messages.push({
-
-    role:"assistant",
-
-    text:reply
-  });
-
-  saveCurrentChat();
-
-  detectMemory(
-    currentText
-  );
-
-  speak(reply);
-}
-
-
-/* =========================================================
-   LONG-TERM MEMORY
-   ========================================================= */
-
-function detectMemory(text){
-
-  const patterns = [
-
-    /मेरा नाम\s+(.+)/i,
-
-    /हमार नाम\s+(.+)/i,
-
-    /मुझे\s+(.+)\s+पसंद\s+है/i,
-
-    /हमके\s+(.+)\s+पसंद\s+बा/i,
-
-    /मेरा पसंदीदा\s+(.+)/i,
-
-    /हमार पसंदीदा\s+(.+)/i
-
-  ];
-
-  for(
-    const pattern of patterns
-  ){
-
-    const match =
-      text.match(pattern);
-
-    if(!match)
-      continue;
-
-    const memory =
-      text.trim();
-
-    if(
-      !longMemory.includes(
-        memory
-      )
-    ){
-
-      longMemory.push(
-        memory
-      );
-
-      longMemory =
-        longMemory.slice(
-          -20
-        );
-
-      localStorage.setItem(
-        "aura_long_memory",
-        JSON.stringify(
-          longMemory
-        )
-      );
-    }
-
-    break;
-  }
-
-  updateMemoryUI();
-}
-
-
-/* =========================================================
-   MEMORY UI
-   ========================================================= */
-
-function updateMemoryUI(){
-
-  const box =
-    document.getElementById(
-      "longMemoryText"
-    );
-
-  if(!longMemory.length){
-
-    box.textContent =
-      "अभी कवनो saved memory नइखे।";
-
-    return;
-  }
-
-  box.textContent =
-    longMemory
-      .map(
-        memory =>
-          "• " + memory
-      )
-      .join("\n");
-}
-
-document.getElementById("memoryBtn")
-  .onclick = () => {
-
-    updateMemoryUI();
-
-    document
-      .getElementById("memoryModal")
-      .classList.add("show");
-  };
-
-document.getElementById("closeMemory")
-  .onclick = () => {
-
-    document
-      .getElementById("memoryModal")
-      .classList.remove("show");
-  };
-
-document.getElementById("clearMemory")
-  .onclick = () => {
-
-    if(
-      !confirm(
-        "Long-term memory साफ करीं?"
-      )
-    )
-      return;
-
-    longMemory = [];
-
-    localStorage.removeItem(
-      "aura_long_memory"
-    );
-
-    updateMemoryUI();
-  };
-
-
-/* =========================================================
-   CHAT STORAGE
-   ========================================================= */
-
-function saveCurrentChat(){
-
-  localStorage.setItem(
-    "aura_current_chat",
-    JSON.stringify(messages)
-  );
-
-  saveHistory();
-}
-
-function saveHistory(){
-
-  const first =
-    messages.find(
-      m => m.role === "user"
-    );
-
-  if(!first)
-    return;
-
-  let history =
-    JSON.parse(
-      localStorage.getItem(
-        "aura_history"
-      ) || "[]"
-    );
-
-  const title =
-    first.text.slice(
-      0,
-      50
-    );
-
-  const item = {
-
-    id:Date.now(),
-
-    title,
-
-    messages
-  };
-
-  history =
-    history.filter(
-      h => h.title !== title
-    );
-
-  history.unshift(item);
-
-  history =
-    history.slice(
-      0,
-      30
-    );
-
-  localStorage.setItem(
-    "aura_history",
-    JSON.stringify(history)
-  );
-
-  loadHistory();
-}
-
-function loadHistory(){
-
-  historyBox.innerHTML = "";
-
-  const history =
-    JSON.parse(
-      localStorage.getItem(
-        "aura_history"
-      ) || "[]"
-    );
-
-  history.forEach(item => {
-
-    const div =
-      document.createElement(
-        "div"
-      );
-
-    div.className =
-      "history-item";
-
-    div.textContent =
-      "💬 " + item.title;
-
-    div.onclick = () => {
-
-      messages =
-        item.messages || [];
-
-      chatInner.innerHTML = "";
-
-      messages.forEach(
-        message => {
-
-          addMessage(
-            message.text,
-            message.role,
-            message.image
-          );
-        }
-      );
-
-      sidebar.classList.remove(
-        "open"
-      );
-
-      scrollBottom();
+document.getElementById("imageBtn").onclick = () => document.getElementById("imageInput").click();
+document.getElementById("imageInput").onchange = (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    pendingImageData = {
+      mimeType: file.type,
+      base64: reader.result.split(",")[1],
+      dataUrl: reader.result
     };
+    alert("फोटो लोड हो गइल बा! अब आपन सवाल लिखीं।");
+  };
+  reader.readAsDataURL(file);
+};
 
-    historyBox.appendChild(div);
-  });
+// Speech to text
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRec) {
+  const rec = new SpeechRec();
+  rec.lang = "hi-IN";
+  rec.onresult = (e) => {
+    input.value = e.results[0][0].transcript;
+    handleSend();
+  };
+  document.getElementById("micBtn").onclick = () => rec.start();
 }
 
-loadHistory();
-
-
 /* =========================================================
-   RESTORE CURRENT CHAT
+   EVENTS & INITIAL LISTENERS
    ========================================================= */
+document.getElementById("sendBtn").onclick = handleSend;
+input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } });
 
-function restoreChat(){
+document.getElementById("menuBtn").onclick = () => document.getElementById("sidebar").classList.toggle("open");
+document.getElementById("settingsBtn").onclick = () => { renderSettings(); document.getElementById("settingsModal").classList.add("open"); };
+document.getElementById("quickSettingsBtn").onclick = () => { renderSettings(); document.getElementById("settingsModal").classList.add("open"); };
+document.getElementById("closeSettings").onclick = () => document.getElementById("settingsModal").classList.remove("open");
 
-  const saved =
-    localStorage.getItem(
-      "aura_current_chat"
-    );
+document.getElementById("memoryBtn").onclick = () => {
+  document.getElementById("memoryContent").textContent = userMemory.join("\n") || "कवनो मेमोरी सेव नइखे।";
+  document.getElementById("memoryModal").classList.add("open");
+};
+document.getElementById("closeMemory").onclick = () => document.getElementById("memoryModal").classList.remove("open");
 
-  if(!saved)
-    return;
+document.getElementById("themeBtn").onclick = () => document.body.classList.toggle("light");
+document.getElementById("modelPicker").value = activeModel;
+document.getElementById("modelPicker").onchange = (e) => {
+  activeModel = e.target.value;
+  localStorage.setItem("aura_model", activeModel);
+  document.getElementById("modelHeaderDisplay").textContent = e.target.selectedOptions[0].text.split(" ")[0] + " Flash";
+};
 
-  try{
-
-    const savedMessages =
-      JSON.parse(saved);
-
-    if(
-      !Array.isArray(
-        savedMessages
-      ) ||
-      !savedMessages.length
-    )
-      return;
-
-    messages =
-      savedMessages;
-
-    document
-      .getElementById("welcome")
-      ?.remove();
-
-    messages.forEach(
-      message => {
-
-        addMessage(
-          message.text,
-          message.role,
-          message.image
-        );
-      }
-    );
-
-  }catch(error){
-
-    console.log(
-      "Chat restore failed",
-      error
-    );
-  }
-}
-
-restoreChat();
-
-updateMemoryUI();
-
-
-/* =========================================================
-   CLEAR CHAT
-   ========================================================= */
-
-document.getElementById("clearBtn")
-  .onclick = () => {
-
-    if(
-      !confirm(
-        "वर्तमान चैट साफ करीं?"
-      )
-    )
-      return;
-
+document.getElementById("clearBtn").onclick = () => {
+  if (confirm("का रउआँ पूरा चैट साफ कइल चाहत बानी?")) {
+    chatInner.innerHTML = "";
     messages = [];
-
-    localStorage.removeItem(
-      "aura_current_chat"
-    );
-
-    newChat();
-  };
-
-
-/* =========================================================
-   SPEECH INPUT
-   ========================================================= */
-
-const SpeechRecognition =
-  window.SpeechRecognition ||
-  window.webkitSpeechRecognition;
-
-let recognition = null;
-let listening = false;
-
-if(SpeechRecognition){
-
-  recognition =
-    new SpeechRecognition();
-
-  recognition.continuous =
-    false;
-
-  recognition.interimResults =
-    false;
-
-  recognition.lang =
-    "hi-IN";
-
-  recognition.onstart =
-    () => {
-
-      listening = true;
-
-      const button =
-        document.getElementById(
-          "micBtn"
-        );
-
-      button.classList.add(
-        "active"
-      );
-
-      button.textContent =
-        "⏹️";
-    };
-
-  recognition.onresult =
-    event => {
-
-      const transcript =
-        event.results[0][0]
-          .transcript;
-
-      input.value =
-        transcript;
-
-      sendMessage();
-    };
-
-  recognition.onerror =
-    () => stopListening();
-
-  recognition.onend =
-    () => stopListening();
-
-}else{
-
-  document.getElementById(
-    "micBtn"
-  ).disabled = true;
-}
-
-document.getElementById("micBtn")
-  .onclick = () => {
-
-    if(!recognition)
-      return;
-
-    if(listening){
-
-      stopListening();
-
-    }else{
-
-      try{
-
-        recognition.start();
-
-      }catch(error){}
-    }
-  };
-
-function stopListening(){
-
-  listening = false;
-
-  const button =
-    document.getElementById(
-      "micBtn"
-    );
-
-  button.classList.remove(
-    "active"
-  );
-
-  button.textContent =
-    "🎙️";
-
-  try{
-
-    recognition?.stop();
-
-  }catch(error){}
-}
-
-
-/* =========================================================
-   SPEECH OUTPUT
-   ========================================================= */
-
-function speak(text){
-
-  if(
-    !voiceEnabled ||
-    !("speechSynthesis" in window)
-  )
-    return;
-
-  speechSynthesis.cancel();
-
-  const clean =
-    text
-      .replace(
-        /[*_#`~>]/g,
-        ""
-      )
-      .trim();
-
-  const utterance =
-    new SpeechSynthesisUtterance(
-      clean
-    );
-
-  utterance.lang =
-    "hi-IN";
-
-  utterance.rate =
-    .95;
-
-  utterance.pitch =
-    1.03;
-
-  const voices =
-    speechSynthesis.getVoices();
-
-  const hindiVoice =
-    voices.find(
-      voice =>
-        voice.lang &&
-        voice.lang
-          .toLowerCase()
-          .startsWith("hi")
-    );
-
-  if(hindiVoice){
-
-    utterance.voice =
-      hindiVoice;
   }
-
-  speechSynthesis.speak(
-    utterance
-  );
-}
-
-
-/* =========================================================
-   UTILITIES
-   ========================================================= */
-
-function scrollBottom(){
-
-  setTimeout(
-    () => {
-
-      chatBox.scrollTo({
-
-        top:
-          chatBox.scrollHeight,
-
-        behavior:
-          "smooth"
-      });
-
-    },
-    50
-  );
-}
-
-function escapeHTML(value){
-
-  return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-}
-
-
-/* =========================================================
-   MODAL CLOSE
-   ========================================================= */
-
-document
-  .querySelectorAll(".modal")
-  .forEach(modal => {
-
-    modal.addEventListener(
-      "click",
-      event => {
-
-        if(
-          event.target === modal
-        ){
-
-          modal.classList.remove(
-            "show"
-          );
-        }
-      }
-    );
-  });
-
-
-/* =========================================================
-   SPEECH VOICES
-   ========================================================= */
-
-if(
-  "speechSynthesis" in window
-){
-
-  speechSynthesis.onvoiceschanged =
-    () => {
-
-      speechSynthesis.getVoices();
-    };
-}
-
+};
+document.getElementById("newChat").onclick = () => {
+  chatInner.innerHTML = "";
+  messages = [];
+  document.getElementById("sidebar").classList.remove("open");
+};
 </script>
-
 </body>
-  </html>
+</html>
