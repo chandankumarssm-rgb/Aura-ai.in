@@ -1,312 +1,637 @@
 <!DOCTYPE html>
-<html lang="bho">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#0e1217">
-<title>Aura AI Advance - Samsung One UI Edition</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0f18">
+<title>Aura AI Advance</title>
 
 <style>
-:root {
-  --bg: #0e1217;
-  --panel: #161b22;
-  --panel2: #21262d;
-  --panel3: #30363d;
-  --border: rgba(255, 255, 255, 0.1);
-  --text: #f0f6fc;
-  --text-muted: #8b949e;
-  --accent: #2f80ed;
-  --accent-glow: rgba(47, 128, 237, 0.25);
-  --bubble-user: #2f80ed;
-  --bubble-ai: #21262d;
-  --danger: #f85149;
-  --success: #3fb950;
-  --radius-card: 24px;
-  --radius-bubble: 20px;
-  --radius-pill: 50px;
-  --font-size: 15px;
-  --blur-val: 12px;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;
+  --surface:#101521;
+  --surface2:#171e2c;
+  --surface3:#222b3d;
+  --text:#f7f9ff;
+  --muted:#8d98ab;
+  --accent:#4f8cff;
+  --accent2:#7c5cff;
+  --user:#4f8cff;
+  --ai:#171e2c;
+  --border:rgba(255,255,255,.09);
+  --danger:#ff5263;
+  --success:#35d07f;
+  --radius:24px;
+  --bubble:21px;
+  --font:15px;
+  --shadow:0 18px 60px rgba(0,0,0,.35);
 }
 
-body.light {
-  --bg: #f4f6f9;
-  --panel: #ffffff;
-  --panel2: #edf0f5;
-  --panel3: #e1e4ea;
-  --border: rgba(0, 0, 0, 0.08);
-  --text: #1b1f24;
-  --text-muted: #6e7781;
-  --accent: #007aff;
-  --accent-glow: rgba(0, 122, 255, 0.15);
-  --bubble-user: #007aff;
-  --bubble-ai: #ffffff;
+body.light{
+  --bg:#f3f6fb;
+  --surface:#fff;
+  --surface2:#edf2f8;
+  --surface3:#e2e8f1;
+  --text:#101522;
+  --muted:#657084;
+  --ai:#fff;
+  --border:rgba(0,0,0,.08);
+  --shadow:0 18px 50px rgba(30,50,80,.12);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-size: var(--font-size); }
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
 
-.app { display: flex; width: 100%; height: 100vh; }
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+/* APP */
+.app{
+  width:100%;
+  height:100vh;
+  display:flex;
+  overflow:hidden;
+}
 
 /* SIDEBAR */
-.sidebar {
-  width: 300px;
-  background: var(--panel);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  z-index: 50;
-  transition: transform 0.3s ease;
+.sidebar{
+  width:310px;
+  height:100%;
+  background:linear-gradient(180deg,var(--surface),var(--bg));
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  padding:18px;
+  z-index:50;
+  transition:.3s ease;
 }
 
-.sidebar-header { padding: 12px 6px 20px; }
-.sidebar-header h2 { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-.sidebar-header span { font-size: 11px; color: var(--accent); background: var(--accent-glow); padding: 3px 8px; border-radius: var(--radius-pill); }
-
-.btn-new-chat {
-  width: 100%;
-  padding: 14px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-pill);
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 15px var(--accent-glow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
 }
 
-.history { flex: 1; overflow-y: auto; margin: 15px 0; display: flex; flex-direction: column; gap: 6px; }
-.history-item {
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: var(--panel2);
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.history-item:hover { background: var(--panel3); }
-
-.sidebar-footer { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
-.side-btn {
-  width: 100%;
-  padding: 12px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  border-radius: 12px;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-}
-.side-btn:hover { background: var(--panel2); }
-
-/* MAIN VIEW */
-.main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
-
-.header {
-  height: 60px;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
+.brand-left{
+  display:flex;
+  align-items:center;
+  gap:11px;
 }
 
-.icon-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background: var(--panel2);
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-.icon-btn:hover { background: var(--panel3); }
-
-/* CHAT BOX */
-.chat-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px 16px 140px;
-  scroll-behavior: smooth;
-}
-.chat-container { width: min(780px, 100%); margin: auto; }
-
-.welcome {
-  text-align: center;
-  padding: 50px 10px;
-}
-.welcome h1 { font-size: 28px; margin-bottom: 8px; font-weight: 800; }
-.welcome p { color: var(--text-muted); font-size: 14px; max-width: 460px; margin: 0 auto 20px; }
-
-.message-row { display: flex; gap: 12px; margin-bottom: 20px; }
-.message-row.user { flex-direction: row-reverse; }
-
-.msg-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--panel2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.message-row.user .msg-avatar { background: var(--accent); color: #fff; }
-
-.msg-bubble {
-  max-width: 75%;
-  padding: 14px 18px;
-  border-radius: var(--radius-bubble);
-  line-height: 1.6;
-  word-break: break-word;
-  white-space: pre-wrap;
-}
-.message-row.user .msg-bubble {
-  background: var(--bubble-user);
-  color: #fff;
-  border-top-right-radius: 4px;
-}
-.message-row.assistant .msg-bubble {
-  background: var(--bubble-ai);
-  border: 1px solid var(--border);
-  border-top-left-radius: 4px;
-}
-.msg-image { max-width: 260px; border-radius: 14px; margin-bottom: 8px; display: block; }
-
-.msg-actions { display: flex; gap: 8px; margin-top: 6px; }
-.action-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 11px;
-  cursor: pointer;
-  padding: 2px 6px;
-}
-.action-btn:hover { color: var(--text); }
-
-/* FLOATING INPUT COMPOSER */
-.composer-wrap {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px 20px 24px;
-  background: linear-gradient(180deg, transparent, var(--bg) 50%);
-  pointer-events: none;
-}
-.composer {
-  width: min(780px, 100%);
-  margin: auto;
-  pointer-events: all;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+.logo{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+  font-size:21px;
+  box-shadow:0 8px 28px var(--accent);
 }
 
-.composer textarea {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-size: var(--font-size);
-  resize: none;
-  max-height: 120px;
-  padding: 8px;
+.brand h1{
+  font-size:20px;
+  font-weight:850;
 }
 
-.composer-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background: var(--panel2);
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.badge{
+  font-size:9px;
+  color:#fff;
+  padding:4px 7px;
+  border-radius:20px;
+  background:var(--accent);
+  margin-top:3px;
+  display:inline-block;
 }
-.composer-btn.send { background: var(--accent); color: #fff; }
-.composer-btn.mic-active { background: var(--danger); color: #fff; }
 
-/* MODALS */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(var(--blur-val));
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  z-index: 200;
+.new-chat{
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:18px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  font-weight:800;
+  box-shadow:0 9px 28px var(--accent);
+  margin-bottom:14px;
 }
-.modal.open { display: flex; }
-.modal-content {
-  width: min(600px, 100%);
-  max-height: 85vh;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.modal-header {
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.modal-body { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
 
-/* REAL SETTINGS CONTROLS */
-.setting-box {
-  background: var(--panel2);
-  padding: 14px 16px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
+.history-title{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  padding:7px 5px;
 }
-.setting-box label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-.setting-box p { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
-.setting-box input[type="text"], .setting-box select {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--text);
-  outline: none;
-}
-.setting-box input[type="range"] { width: 100%; accent-color: var(--accent); }
 
-@media(max-width: 768px) {
-  .sidebar { position: fixed; left: -300px; top: 0; bottom: 0; }
-  .sidebar.open { transform: translateX(300px); }
+.history{
+  flex:1;
+  overflow-y:auto;
+  padding-right:2px;
+}
+
+.history-item{
+  position:relative;
+  padding:13px 45px 13px 14px;
+  border-radius:15px;
+  background:transparent;
+  margin-bottom:5px;
+  transition:.2s;
+  min-height:50px;
+}
+
+.history-item:hover,
+.history-item.active{
+  background:var(--surface2);
+}
+
+.history-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:13px;
+}
+
+.history-time{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.history-menu{
+  position:absolute;
+  right:7px;
+  top:12px;
+  width:31px;
+  height:31px;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:var(--muted);
+}
+
+.history-menu:hover{
+  background:var(--surface3);
+  color:var(--text);
+}
+
+.side-tools{
+  border-top:1px solid var(--border);
+  padding-top:10px;
+}
+
+.side-btn{
+  width:100%;
+  padding:12px;
+  border:0;
+  background:transparent;
+  color:var(--text);
+  border-radius:14px;
+  text-align:left;
+  margin-bottom:3px;
+}
+
+.side-btn:hover{background:var(--surface2)}
+
+/* MAIN */
+.main{
+  flex:1;
+  min-width:0;
+  height:100%;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+.header{
+  height:68px;
+  flex-shrink:0;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(16,21,33,.75);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  z-index:10;
+}
+
+body.light .header{
+  background:rgba(255,255,255,.75);
+}
+
+.header-center{text-align:center}
+
+.model-name{
+  font-weight:800;
+  font-size:14px;
+}
+
+.online{
+  color:var(--success);
+  font-size:10px;
+  margin-top:2px;
+}
+
+.icon{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:14px;
+  background:var(--surface2);
+  color:var(--text);
+}
+
+.icon:hover{background:var(--surface3)}
+
+.chat-scroll{
+  flex:1;
+  overflow-y:auto;
+  padding:25px 16px 150px;
+}
+
+.chat-container{
+  width:min(820px,100%);
+  margin:auto;
+}
+
+.welcome{
+  min-height:65vh;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:30px 10px;
+}
+
+.welcome-inner{
+  max-width:600px;
+}
+
+.welcome-logo{
+  width:80px;
+  height:80px;
+  border-radius:27px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 20px;
+  font-size:34px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 15px 55px var(--accent);
+}
+
+.welcome h2{
+  font-size:31px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.welcome p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+/* MESSAGES */
+.message-row{
+  display:flex;
+  gap:11px;
+  margin-bottom:22px;
+  animation:appear .22s ease;
+}
+
+.message-row.user{
+  flex-direction:row-reverse;
+}
+
+@keyframes appear{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+.avatar{
+  width:39px;
+  height:39px;
+  flex-shrink:0;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:var(--surface2);
+}
+
+.user .avatar{
+  background:var(--user);
+  color:#fff;
+}
+
+.message-content{
+  max-width:min(76%,680px);
+}
+
+.bubble{
+  padding:14px 17px;
+  border-radius:var(--bubble);
+  background:var(--ai);
+  border:1px solid var(--border);
+  line-height:1.65;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.user .bubble{
+  background:var(--user);
+  color:#fff;
+  border:0;
+  border-top-right-radius:5px;
+}
+
+.assistant .bubble{
+  border-top-left-radius:5px;
+}
+
+.msg-image{
+  display:block;
+  max-width:280px;
+  border-radius:15px;
+  margin-bottom:8px;
+}
+
+.actions{
+  display:flex;
+  gap:4px;
+  margin-top:5px;
+}
+
+.action{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:11px;
+  padding:4px 7px;
+  border-radius:8px;
+}
+
+.action:hover{
+  color:var(--text);
+  background:var(--surface2);
+}
+
+/* COMPOSER */
+.composer-wrap{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:14px 18px 22px;
+  background:linear-gradient(transparent,var(--bg) 42%);
+  pointer-events:none;
+}
+
+.composer{
+  pointer-events:auto;
+  width:min(820px,100%);
+  margin:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  padding:8px;
+  background:rgba(16,21,33,.92);
+  border:1px solid var(--border);
+  border-radius:25px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+}
+
+body.light .composer{background:rgba(255,255,255,.92)}
+
+.composer textarea{
+  flex:1;
+  min-width:0;
+  max-height:130px;
+  resize:none;
+  padding:10px 7px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  font-size:var(--font);
+}
+
+.composer-btn{
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border:0;
+  border-radius:15px;
+  background:var(--surface2);
+  color:var(--text);
+}
+
+.composer-btn.send{
+  background:var(--accent);
+  color:#fff;
+}
+
+.composer-btn:disabled{
+  opacity:.45;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(18px);
+  z-index:200;
+}
+
+.modal.open{display:flex}
+
+.modal-box{
+  width:min(650px,100%);
+  max-height:88vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:27px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.modal-head{
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+
+.modal-body{
+  padding:18px;
+  overflow-y:auto;
+}
+
+.section{
+  padding:15px;
+  border-radius:18px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  margin-bottom:12px;
+}
+
+.section h3{
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.section p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+  margin-bottom:10px;
+}
+
+.field{
+  width:100%;
+  padding:12px;
+  border-radius:13px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  outline:none;
+  margin-top:7px;
+}
+
+.save{
+  width:100%;
+  padding:12px;
+  margin-top:9px;
+  border:0;
+  border-radius:13px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:800;
+}
+
+/* COLOR STUDIO */
+.color-top{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+
+.color-search{
+  flex:1;
+  min-width:170px;
+}
+
+.color-count{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+.color-grid{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:7px;
+  max-height:430px;
+  overflow-y:auto;
+  padding:2px;
+}
+
+.color{
+  aspect-ratio:1;
+  border:2px solid transparent;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+}
+
+.color:hover{transform:scale(1.08)}
+
+.color.selected{
+  border-color:#fff;
+  box-shadow:0 0 0 2px var(--accent);
+}
+
+.color-label{
+  position:absolute;
+  left:50%;
+  bottom:-18px;
+  transform:translateX(-50%);
+  display:none;
+}
+
+.color:hover .color-label{
+  display:block;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:95px;
+  transform:translate(-50%,20px);
+  padding:11px 16px;
+  border-radius:13px;
+  background:#111827;
+  color:#fff;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:500;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    transform:translateX(-105%);
+    box-shadow:var(--shadow);
+  }
+
+  .sidebar.open{transform:translateX(0)}
+
+  .header{height:62px;padding:0 12px}
+
+  .chat-scroll{padding:18px 10px 145px}
+
+  .message-content{max-width:82%}
+
+  .welcome h2{font-size:25px}
+
+  .color-grid{
+    grid-template-columns:repeat(7,1fr);
+  }
+}
+
+@media(max-width:420px){
+  .color-grid{grid-template-columns:repeat(6,1fr)}
 }
 </style>
 </head>
@@ -314,405 +639,1229 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 <body>
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <h2>Aura AI <span>One UI</span></h2>
-    </div>
-
-    <button class="btn-new-chat" id="newChatBtn">＋ नया चैट</button>
-
-    <div class="history" id="historyBox"></div>
-
-    <div class="sidebar-footer">
-      <button class="side-btn" id="themeBtn">🌓 डार्क / लाइट मोड</button>
-      <button class="side-btn" id="memoryBtn">🧠 AI Memory</button>
-      <button class="side-btn" id="settingsBtn">⚙️ One UI सेटिंग्स</button>
-      <button class="side-btn" id="clearBtn">🗑️ चैट साफ करीं</button>
-    </div>
-  </aside>
-
-  <!-- MAIN CHAT -->
-  <main class="main">
-    <header class="header">
-      <button class="icon-btn" id="menuBtn">☰</button>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-left">
+      <div class="logo">✦</div>
       <div>
-        <strong id="modelHeader">Gemini 2.5 Flash</strong>
-        <div style="font-size:10px;color:var(--success);text-align:center;">● ऑनलाइन</div>
+        <h1>Aura AI</h1>
+        <span class="badge">ADVANCE</span>
       </div>
-      <button class="icon-btn" id="quickSettingsBtn">⚙️</button>
-    </header>
+    </div>
+    <button class="icon" id="closeSidebar">×</button>
+  </div>
 
-    <div class="chat-scroll" id="chatBox">
-      <div class="chat-container" id="chatInner">
-        <div class="welcome" id="welcomeScreen">
-          <h1>प्रणाम! हम Aura AI हईं 👋</h1>
-          <p>सच्चा काम करे वाला Samsung One UI इंटरफ़ेस। बिना कवनो फर्जी सेटिंग के।</p>
-        </div>
+  <button class="new-chat" id="newChat">＋ नया चैट</button>
+
+  <div class="history-title">आपन चैट</div>
+  <div class="history" id="history"></div>
+
+  <div class="side-tools">
+    <button class="side-btn" id="apiBtn">🔑 API & AI सेटिंग्स</button>
+    <button class="side-btn" id="colorBtn">🎨 450+ Color Studio</button>
+    <button class="side-btn" id="memoryBtn">🧠 Memory Vault</button>
+    <button class="side-btn" id="themeBtn">🌙 Dark / Light</button>
+    <button class="side-btn" id="deleteAllBtn">🗑️ सभी चैट डिलीट</button>
+  </div>
+</aside>
+
+<main class="main">
+
+<header class="header">
+  <button class="icon" id="menuBtn">☰</button>
+
+  <div class="header-center">
+    <div class="model-name" id="modelHeader">Aura AI</div>
+    <div class="online">● Ready</div>
+  </div>
+
+  <button class="icon" id="headerSettings">⚙️</button>
+</header>
+
+<div class="chat-scroll" id="chatScroll">
+  <div class="chat-container" id="chatInner">
+
+    <div class="welcome" id="welcome">
+      <div class="welcome-inner">
+        <div class="welcome-logo">✦</div>
+        <h2>प्रणाम! हम Aura AI हईं 👋</h2>
+        <p>
+          High-level mobile AI interface — API, Memory, Chat History
+          आ 450+ Color Studio के साथ।
+        </p>
       </div>
     </div>
 
-    <!-- COMPOSER -->
-    <div class="composer-wrap">
-      <div class="composer">
-        <input type="file" id="imageInput" accept="image/*" hidden>
-        <button class="composer-btn" id="imageBtn">📷</button>
-        <button class="composer-btn" id="micBtn">🎙️</button>
-        <textarea id="inputBox" rows="1" placeholder="भोजपुरी भा हिंदी में कुछुओ पूछीं..."></textarea>
-        <button class="composer-btn send" id="sendBtn">➤</button>
-      </div>
-    </div>
-  </main>
+  </div>
 </div>
 
-<!-- REAL SETTINGS MODAL -->
-<div class="modal" id="settingsModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>One UI सेटिंग्स & API सेटअप</h3>
-      <button class="icon-btn" id="closeSettings">✕</button>
-    </div>
-    <div class="modal-body">
-      
-      <!-- API KEY SETTING -->
-      <div class="setting-box" style="border:1px solid var(--accent);">
-        <label>🔑 Google Gemini API Key</label>
-        <p>आपन खुद के Gemini API Key डालीं (aistudio.google.com से मुफ्त मिली):</p>
-        <input type="text" id="apiKeyInput" placeholder="AIzaSy...">
-        <button class="btn-new-chat" style="margin-top:8px;padding:8px;" id="saveKeyBtn">सेव करीं</button>
-      </div>
+<div class="composer-wrap">
+  <div class="composer">
 
-      <!-- AI MODEL SELECT -->
-      <div class="setting-box">
-        <label>🤖 मॉडल चुनीं</label>
-        <select id="modelSelect">
-          <option value="gemini-2.5-flash">Gemini 2.5 Flash (Super Fast)</option>
-          <option value="gemini-2.5-pro">Gemini 2.5 Pro (Deep Logic)</option>
-        </select>
-      </div>
+    <input type="file" id="imageInput" accept="image/*" hidden>
 
-      <!-- ACCENT COLOR -->
-      <div class="setting-box">
-        <label>🎨 One UI Accent Color</label>
-        <select id="accentSelect">
-          <option value="#2f80ed">Samsung Classic Blue</option>
-          <option value="#8e44ad">Phantom Violet</option>
-          <option value="#27ae60">Emerald Green</option>
-          <option value="#e67e22">Amber Sunset</option>
-          <option value="#eb5757">Crimson Red</option>
-        </select>
-      </div>
+    <button class="composer-btn" id="imageBtn">📷</button>
+    <button class="composer-btn" id="micBtn">🎙️</button>
 
-      <!-- FONT SIZE -->
-      <div class="setting-box">
-        <label>🔤 फॉन्ट साइज (Font Scale)</label>
-        <input type="range" id="fontRange" min="13" max="19" value="15">
-      </div>
+    <textarea
+      id="input"
+      rows="1"
+      placeholder="भोजपुरी भा हिंदी में कुछुओ पूछीं..."
+    ></textarea>
 
-      <!-- BUBBLE ROUNDNESS -->
-      <div class="setting-box">
-        <label>🔘 बबल गोलाई (Border Radius)</label>
-        <input type="range" id="radiusRange" min="8" max="32" value="20">
-      </div>
-
-      <!-- BLUR STRENGTH -->
-      <div class="setting-box">
-        <label>✨ बैकग्राउंड ब्लर (Blur Filter)</label>
-        <input type="range" id="blurRange" min="0" max="25" value="12">
-      </div>
-
-    </div>
+    <button class="composer-btn send" id="send">➤</button>
   </div>
+</div>
+
+</main>
+</div>
+
+<!-- API MODAL -->
+<div class="modal" id="apiModal">
+<div class="modal-box">
+
+<div class="modal-head">
+  <h3>🔑 API & AI सेटिंग्स</h3>
+  <button class="icon" data-close="apiModal">×</button>
+</div>
+
+<div class="modal-body">
+
+<div class="section">
+<h3>API Provider</h3>
+<p>
+अपना compatible API provider चुनें। Browser में API key रखने से production
+security सीमित रहती है।
+</p>
+
+<select class="field" id="provider">
+<option value="groq">Groq</option>
+<option value="openai">OpenAI Compatible</option>
+<option value="custom">Custom Endpoint</option>
+</select>
+
+<input
+class="field"
+id="endpoint"
+placeholder="https://api.example.com/v1/chat/completions"
+/>
+
+<input
+class="field"
+id="apiKey"
+type="password"
+placeholder="अपना API Key डालें"
+/>
+
+<input
+class="field"
+id="model"
+placeholder="Model name"
+/>
+
+<button class="save" id="saveApi">सेव API सेटिंग्स</button>
+</div>
+
+<div class="section">
+<h3>⚡ Default examples</h3>
+<p>
+Groq इस्तेमाल करते समय provider को Groq रखें और अपने account में उपलब्ध
+model का नाम डालें। Model availability समय के साथ बदल सकती है।
+</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- COLOR MODAL -->
+<div class="modal" id="colorModal">
+<div class="modal-box">
+
+<div class="modal-head">
+  <h3>🎨 Aura Color Studio</h3>
+  <button class="icon" data-close="colorModal">×</button>
+</div>
+
+<div class="modal-body">
+
+<div class="section">
+
+<div class="color-top">
+<input class="field color-search" id="colorSearch"
+placeholder="Color खोजीं...">
+
+<button class="save" style="width:auto;margin:7px 0 0"
+id="randomColor">🎲 Random</button>
+</div>
+
+<div class="color-count" id="colorCount"></div>
+<div class="color-grid" id="colorGrid"></div>
+
+</div>
+
+<div class="section">
+<h3>🎯 Custom Color</h3>
+<p>अपना exact HEX color भी लगा सकते हैं।</p>
+<input class="field" type="color" id="customColor" value="#4f8cff">
+<button class="save" id="applyCustom">Custom Color लागू करें</button>
+</div>
+
+</div>
+</div>
 </div>
 
 <!-- MEMORY MODAL -->
 <div class="modal" id="memoryModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>🧠 AI मेमोरी वॉल्ट</h3>
-      <button class="icon-btn" id="closeMemory">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="memoryDisplay" style="white-space:pre-wrap;background:var(--panel2);padding:14px;border-radius:12px;font-size:13px;">कवनो मेमोरी सेव नइखे।</div>
-      <button class="btn-new-chat" style="background:var(--danger);" id="clearMemoryBtn">मेमोरी साफ करीं</button>
-    </div>
-  </div>
+<div class="modal-box">
+
+<div class="modal-head">
+  <h3>🧠 Memory Vault</h3>
+  <button class="icon" data-close="memoryModal">×</button>
 </div>
+
+<div class="modal-body">
+
+<div class="section">
+<h3>Saved Memory</h3>
+<div id="memoryDisplay" style="white-space:pre-wrap;color:var(--muted)">
+कवनो मेमोरी सेव नइखे।
+</div>
+</div>
+
+<button class="save" style="background:var(--danger)" id="clearMemory">
+मेमोरी साफ करीं
+</button>
+
+</div>
+</div>
+</div>
+
+<!-- RENAME MODAL -->
+<div class="modal" id="renameModal">
+<div class="modal-box">
+
+<div class="modal-head">
+  <h3>✏️ चैट के नाम बदलीं</h3>
+  <button class="icon" data-close="renameModal">×</button>
+</div>
+
+<div class="modal-body">
+<input class="field" id="renameInput" placeholder="नया नाम">
+<button class="save" id="renameSave">नाम सेव करीं</button>
+</div>
+
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 /* =========================================================
-   APP STATE & STORAGE
-   ========================================================= */
-let apiKey = localStorage.getItem("aura_api_key") || "";
-let activeModel = localStorage.getItem("aura_model") || "gemini-2.5-flash";
-let messages = [];
-let pendingImg = null;
-let isBusy = false;
-let userMemory = JSON.parse(localStorage.getItem("aura_memory") || "[]");
+   STORAGE
+========================================================= */
 
-// Apply Saved UI Customizations
-document.getElementById("apiKeyInput").value = apiKey;
-document.getElementById("modelSelect").value = activeModel;
-document.getElementById("modelHeader").textContent = activeModel;
+const STORE = {
+  chats:"aura_chats_v3",
+  active:"aura_active_chat_v3",
+  api:"aura_api_v3",
+  theme:"aura_theme_v3",
+  colors:"aura_colors_v3",
+  memory:"aura_memory_v3"
+};
+
+let chats = JSON.parse(localStorage.getItem(STORE.chats) || "[]");
+let activeId = localStorage.getItem(STORE.active) || null;
+let pendingImage = null;
+let busy = false;
+let renameId = null;
+
+let apiSettings = JSON.parse(
+  localStorage.getItem(STORE.api) ||
+  JSON.stringify({
+    provider:"groq",
+    endpoint:"https://api.groq.com/openai/v1/chat/completions",
+    key:"",
+    model:""
+  })
+);
+
+let memory = JSON.parse(
+  localStorage.getItem(STORE.memory) || "[]"
+);
 
 /* =========================================================
-   SYSTEM INSTRUCTION & GEMINI API CALL
-   ========================================================= */
-function getSystemInstruction() {
-  const memoryStr = userMemory.length ? userMemory.join("\n") : "None";
+   DOM
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+const sidebar = $("sidebar");
+const history = $("history");
+const chatInner = $("chatInner");
+const chatScroll = $("chatScroll");
+const input = $("input");
+const send = $("send");
+
+/* =========================================================
+   UTIL
+========================================================= */
+
+function uid(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
+
+function saveChats(){
+  localStorage.setItem(STORE.chats,JSON.stringify(chats));
+}
+
+function toast(text){
+  const t=$("toast");
+  t.textContent=text;
+  t.classList.add("show");
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+function getActive(){
+  return chats.find(c=>c.id===activeId);
+}
+
+function makeTitle(text){
+  const clean=(text||"नई बातचीत").replace(/\s+/g," ").trim();
+  return clean.slice(0,38) || "नई बातचीत";
+}
+
+/* =========================================================
+   CHAT STORAGE
+========================================================= */
+
+function createChat(){
+  const chat={
+    id:uid(),
+    title:"नई बातचीत",
+    created:Date.now(),
+    messages:[]
+  };
+
+  chats.unshift(chat);
+  activeId=chat.id;
+
+  saveChats();
+  localStorage.setItem(STORE.active,activeId);
+
+  renderHistory();
+  renderChat();
+
+  sidebar.classList.remove("open");
+}
+
+function ensureChat(){
+  if(!activeId || !getActive()){
+    createChat();
+  }
+}
+
+function deleteChat(id){
+  const index=chats.findIndex(c=>c.id===id);
+  if(index<0)return;
+
+  chats.splice(index,1);
+
+  if(activeId===id){
+    activeId=chats[0]?.id || null;
+  }
+
+  saveChats();
+
+  if(activeId){
+    localStorage.setItem(STORE.active,activeId);
+  }else{
+    localStorage.removeItem(STORE.active);
+  }
+
+  renderHistory();
+  renderChat();
+
+  toast("चैट पूरी तरह डिलीट हो गइल");
+}
+
+function deleteAllChats(){
+  if(!chats.length){
+    toast("डिलीट करे खातिर कवनो चैट नइखे");
+    return;
+  }
+
+  if(!confirm("क्या सभी चैट और उनके नाम हमेशा के लिए डिलीट करें?")){
+    return;
+  }
+
+  chats=[];
+  activeId=null;
+
+  localStorage.removeItem(STORE.chats);
+  localStorage.removeItem(STORE.active);
+
+  renderHistory();
+  renderChat();
+
+  toast("सभी चैट पूरी तरह डिलीट हो गइल");
+}
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function renderHistory(){
+  history.innerHTML="";
+
+  if(!chats.length){
+    history.innerHTML=`
+      <div style="color:var(--muted);font-size:12px;padding:14px">
+        अभी कवनो चैट नइखे।
+      </div>`;
+    return;
+  }
+
+  chats.forEach(chat=>{
+    const item=document.createElement("div");
+    item.className="history-item"+
+      (chat.id===activeId?" active":"");
+
+    item.innerHTML=`
+      <div class="history-name">${escapeHtml(chat.title)}</div>
+      <div class="history-time">
+        ${chat.messages.length} संदेश
+      </div>
+      <button class="history-menu">⋮</button>
+    `;
+
+    item.onclick=e=>{
+      if(e.target.closest(".history-menu"))return;
+
+      activeId=chat.id;
+      localStorage.setItem(STORE.active,activeId);
+
+      renderHistory();
+      renderChat();
+
+      sidebar.classList.remove("open");
+    };
+
+    item.querySelector(".history-menu").onclick=e=>{
+      e.stopPropagation();
+
+      const action=prompt(
+        "1 = Rename\n2 = Delete\n\nक्या करना है?"
+      );
+
+      if(action==="1"){
+        openRename(chat.id);
+      }else if(action==="2"){
+        deleteChat(chat.id);
+      }
+    };
+
+    history.appendChild(item);
+  });
+}
+
+/* =========================================================
+   RENDER CHAT
+========================================================= */
+
+function renderChat(){
+  chatInner.innerHTML="";
+
+  const chat=getActive();
+
+  if(!chat || !chat.messages.length){
+    chatInner.innerHTML=`
+      <div class="welcome" id="welcome">
+        <div class="welcome-inner">
+          <div class="welcome-logo">✦</div>
+          <h2>प्रणाम! हम Aura AI हईं 👋</h2>
+          <p>
+            अपना API सेट करें और बातचीत शुरू करें।
+            आपकी चैट इसी browser में सेव रह सकेला।
+          </p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  chat.messages.forEach(m=>{
+    appendBubble(
+      m.text,
+      m.role,
+      m.image
+    );
+  });
+}
+
+/* =========================================================
+   SAFE HTML
+========================================================= */
+
+function escapeHtml(str){
+  return String(str||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+/* =========================================================
+   MESSAGE UI
+========================================================= */
+
+function appendBubble(text,role,image){
+  const row=document.createElement("div");
+  row.className="message-row "+role;
+
+  const content=document.createElement("div");
+  content.className="message-content";
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+
+  if(image){
+    const img=document.createElement("img");
+    img.src=image;
+    img.className="msg-image";
+    bubble.appendChild(img);
+  }
+
+  const textNode=document.createElement("div");
+  textNode.textContent=text;
+  bubble.appendChild(textNode);
+
+  content.appendChild(bubble);
+
+  if(role==="assistant"){
+    const actions=document.createElement("div");
+    actions.className="actions";
+
+    const copy=document.createElement("button");
+    copy.className="action";
+    copy.textContent="कॉपी";
+    copy.onclick=()=>{
+      navigator.clipboard?.writeText(text);
+      toast("कॉपी हो गइल");
+    };
+
+    const speakBtn=document.createElement("button");
+    speakBtn.className="action";
+    speakBtn.textContent="🔊 सुनीं";
+    speakBtn.onclick=()=>speak(text);
+
+    actions.append(copy,speakBtn);
+    content.appendChild(actions);
+  }
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=role==="user"?"👤":"✦";
+
+  row.append(avatar,content);
+  chatInner.appendChild(row);
+
+  chatScroll.scrollTop=chatScroll.scrollHeight;
+}
+
+/* =========================================================
+   API
+========================================================= */
+
+function systemPrompt(){
   return `
 तू Aura AI Advance हउ।
-तोहार निर्माता प्रद्युम्न कुमार बानी।
-तोहार इंटरफेस Samsung One UI स्टाइल पर आधारित बा।
 
 भाषा नियम:
-1. यूजर जब भोजपुरी में बोली, त ठेठ, साफ आ आदरभाव से भोजपुरी में जवाब देब।
-2. हिंदी में पूछला पर सरल हिंदी में जवाब देब।
-3. अंग्रेजी में पूछला पर English में जवाब देब।
+- यूजर भोजपुरी में बोले त साफ, स्वाभाविक आ आदर वाला भोजपुरी में जवाब दे।
+- हिंदी में पूछे त हिंदी में जवाब दे।
+- English में पूछे त English में जवाब दे।
 
-याद रखल मेमोरी:
-${memoryStr}
+यूजर की सेव मेमोरी:
+${memory.length?memory.join("\n"):"कोई सेव मेमोरी नहीं।"}
+
+महत्वपूर्ण:
+- पिछले संदेशों के संदर्भ को ध्यान में रख।
+- तथ्य न पता हो त साफ बता।
+- जवाब उपयोगी और स्पष्ट रख।
 `;
 }
 
-async function fetchGemini(userText, imgData) {
-  if (!apiKey) {
-    throw new Error("कृपया सेटिंग्स (⚙️) में जाके आपन Gemini API Key दर्ज करीं!");
+async function callAI(userText){
+
+  if(!apiSettings.key){
+    throw new Error(
+      "पहिले 🔑 API & AI Settings में आपन API Key डालें।"
+    );
   }
 
-  const contents = messages.map(m => ({
-    role: m.role === "assistant" ? "model" : "user",
-    parts: [{ text: m.text }]
-  }));
+  if(!apiSettings.endpoint){
+    throw new Error("API endpoint खाली बा।");
+  }
 
-  const currentParts = [{ text: userText }];
-  if (imgData) {
-    currentParts.push({
-      inline_data: {
-        mime_type: imgData.type,
-        data: imgData.base64
-      }
+  const chat=getActive();
+
+  const messagesForAPI=[
+    {
+      role:"system",
+      content:systemPrompt()
+    }
+  ];
+
+  chat.messages.forEach(m=>{
+    messagesForAPI.push({
+      role:m.role==="assistant"?"assistant":"user",
+      content:m.text
     });
-  }
-  contents.push({ role: "user", parts: currentParts });
+  });
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${apiKey}`;
+  messagesForAPI.push({
+    role:"user",
+    content:userText
+  });
 
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: getSystemInstruction() }] },
-      contents: contents,
-      generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
+  const response=await fetch(apiSettings.endpoint,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer "+apiSettings.key
+    },
+    body:JSON.stringify({
+      model:apiSettings.model,
+      messages:messagesForAPI,
+      temperature:.7,
+      max_tokens:4096
     })
   });
 
-  const data = await resp.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || "कवनो उत्तर ना मिलल।";
+  const data=await response.json();
+
+  if(!response.ok){
+    throw new Error(
+      data?.error?.message ||
+      "API request failed: "+response.status
+    );
+  }
+
+  const answer=
+    data?.choices?.[0]?.message?.content ||
+    data?.choices?.[0]?.text ||
+    data?.output_text;
+
+  if(!answer){
+    throw new Error("API से usable answer नहीं मिलल।");
+  }
+
+  return answer;
 }
 
 /* =========================================================
-   MESSAGE SENDING & UI LOGIC
-   ========================================================= */
-const chatInner = document.getElementById("chatInner");
-const chatBox = document.getElementById("chatBox");
-const inputBox = document.getElementById("inputBox");
-const sendBtn = document.getElementById("sendBtn");
+   SEND
+========================================================= */
 
-async function sendMessage() {
-  if (isBusy) return;
-  const text = inputBox.value.trim();
-  if (!text && !pendingImg) return;
+async function sendMessage(){
 
-  const currentImg = pendingImg;
-  pendingImg = null;
-  inputBox.value = "";
+  if(busy)return;
 
-  document.getElementById("welcomeScreen")?.remove();
+  const text=input.value.trim();
 
-  // Render User Message
-  appendBubble(text || "फोटो का विवरण", "user", currentImg?.url);
-  messages.push({ role: "user", text: text || "फोटो का विवरण" });
+  if(!text && !pendingImage)return;
 
-  isBusy = true;
-  sendBtn.disabled = true;
+  ensureChat();
 
-  // Typing Indicator
-  const typingDiv = document.createElement("div");
-  typingDiv.className = "message-row assistant";
-  typingDiv.innerHTML = `<div class="msg-avatar">✦</div><div class="msg-bubble">Aura सोचत बा...</div>`;
-  chatInner.appendChild(typingDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  const chat=getActive();
 
-  try {
-    const reply = await fetchGemini(text, currentImg);
-    typingDiv.remove();
-    appendBubble(reply, "assistant");
-    messages.push({ role: "assistant", text: reply });
+  const image=pendingImage;
 
-    // Auto Memory Check
-    if (text.includes("हमार नाम") || text.includes("मेरा नाम")) {
-      userMemory.push(text);
-      localStorage.setItem("aura_memory", JSON.stringify(userMemory));
-    }
+  pendingImage=null;
+  input.value="";
+  input.style.height="auto";
+
+  chat.messages.push({
+    role:"user",
+    text:text||"फोटो के बारे में बताईं।",
+    image:image?.url||null
+  });
+
+  if(chat.title==="नई बातचीत"){
+    chat.title=makeTitle(text||"फोटो बातचीत");
+  }
+
+  saveChats();
+  renderHistory();
+  renderChat();
+
+  busy=true;
+  send.disabled=true;
+
+  const typing=document.createElement("div");
+  typing.className="message-row assistant";
+  typing.innerHTML=`
+    <div class="avatar">✦</div>
+    <div class="message-content">
+      <div class="bubble">Aura सोचत बा…</div>
+    </div>
+  `;
+
+  chatInner.appendChild(typing);
+  chatScroll.scrollTop=chatScroll.scrollHeight;
+
+  try{
+
+    /*
+      Current API adapter uses OpenAI-compatible text chat.
+      Image data is displayed locally but is not sent unless
+      your selected endpoint supports a compatible multimodal
+      message format.
+    */
+
+    const reply=await callAI(text);
+
+    typing.remove();
+
+    chat.messages.push({
+      role:"assistant",
+      text:reply
+    });
+
+    saveChats();
+    renderChat();
+
+    detectMemory(text);
 
     speak(reply);
-  } catch (err) {
-    typingDiv.remove();
-    appendBubble("एरर: " + err.message, "assistant");
-  } finally {
-    isBusy = false;
-    sendBtn.disabled = false;
-    chatBox.scrollTop = chatBox.scrollHeight;
+
+  }catch(error){
+
+    typing.remove();
+
+    appendBubble(
+      "❌ एरर: "+error.message,
+      "assistant"
+    );
+
+  }finally{
+
+    busy=false;
+    send.disabled=false;
+    input.focus();
+
   }
 }
 
-function appendBubble(text, role, imgUrl) {
-  const row = document.createElement("div");
-  row.className = `message-row ${role}`;
-  row.innerHTML = `
-    <div class="msg-avatar">${role === 'user' ? '👤' : '✦'}</div>
-    <div style="max-width:75%">
-      <div class="msg-bubble">
-        ${imgUrl ? `<img src="${imgUrl}" class="msg-image">` : ''}
-        ${text}
-      </div>
-      ${role === 'assistant' ? `
-        <div class="msg-actions">
-          <button class="action-btn" onclick="navigator.clipboard.writeText(\`${text.replace(/`/g, "\\`")}\`)">कॉपी</button>
-          <button class="action-btn" onclick="speak(\`${text.replace(/`/g, "\\`")}\`)">सुनीं</button>
-        </div>
-      ` : ''}
-    </div>
-  `;
-  chatInner.appendChild(row);
-  chatBox.scrollTop = chatBox.scrollHeight;
+/* =========================================================
+   MEMORY
+========================================================= */
+
+function detectMemory(text){
+
+  const patterns=[
+    "मेरा नाम",
+    "हमार नाम",
+    "मुझे पसंद",
+    "हमके पसंद",
+    "remember that",
+    "याद रखना"
+  ];
+
+  if(patterns.some(p=>text.toLowerCase().includes(p.toLowerCase()))){
+
+    if(!memory.includes(text)){
+      memory.push(text);
+
+      localStorage.setItem(
+        STORE.memory,
+        JSON.stringify(memory)
+      );
+    }
+  }
+}
+
+function renderMemory(){
+  $("memoryDisplay").textContent=
+    memory.length
+    ?memory.join("\n")
+    :"कवनो मेमोरी सेव नइखे।";
 }
 
 /* =========================================================
-   VOICE (STT / TTS) & IMAGE
-   ========================================================= */
-function speak(text) {
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const clean = text.replace(/[*_#`~]/g, "");
-  const ut = new SpeechSynthesisUtterance(clean);
-  ut.lang = "hi-IN";
-  window.speechSynthesis.speak(ut);
+   RENAME
+========================================================= */
+
+function openRename(id){
+
+  renameId=id;
+
+  const chat=chats.find(c=>c.id===id);
+  if(!chat)return;
+
+  $("renameInput").value=chat.title;
+  $("renameModal").classList.add("open");
+  $("renameInput").focus();
 }
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (SpeechRecognition) {
-  const recog = new SpeechRecognition();
-  recog.lang = "hi-IN";
-  let listening = false;
+$("renameSave").onclick=()=>{
+  const chat=chats.find(c=>c.id===renameId);
 
-  document.getElementById("micBtn").onclick = () => {
-    if (!listening) {
-      recog.start();
-      document.getElementById("micBtn").classList.add("mic-active");
-      listening = true;
-    } else {
-      recog.stop();
-      document.getElementById("micBtn").classList.remove("mic-active");
-      listening = false;
+  if(!chat)return;
+
+  const name=$("renameInput").value.trim();
+
+  if(name){
+    chat.title=name.slice(0,60);
+    saveChats();
+    renderHistory();
+    toast("चैट के नाम सेव हो गइल");
+  }
+
+  $("renameModal").classList.remove("open");
+};
+
+/* =========================================================
+   API SETTINGS UI
+========================================================= */
+
+function loadApiUI(){
+
+  $("provider").value=apiSettings.provider;
+  $("endpoint").value=apiSettings.endpoint;
+  $("apiKey").value=apiSettings.key;
+  $("model").value=apiSettings.model;
+}
+
+$("provider").onchange=()=>{
+
+  const p=$("provider").value;
+
+  if(p==="groq"){
+    $("endpoint").value=
+      "https://api.groq.com/openai/v1/chat/completions";
+  }
+
+  if(p==="openai"){
+    $("endpoint").value=
+      "https://api.openai.com/v1/chat/completions";
+  }
+};
+
+$("saveApi").onclick=()=>{
+
+  apiSettings={
+    provider:$("provider").value,
+    endpoint:$("endpoint").value.trim(),
+    key:$("apiKey").value.trim(),
+    model:$("model").value.trim()
+  };
+
+  localStorage.setItem(
+    STORE.api,
+    JSON.stringify(apiSettings)
+  );
+
+  $("apiModal").classList.remove("open");
+
+  $("modelHeader").textContent=
+    apiSettings.model||"Aura AI";
+
+  toast("API settings सेव हो गइल");
+};
+
+/* =========================================================
+   450+ COLOR ENGINE
+========================================================= */
+
+const colorGrid=$("colorGrid");
+const colorSearch=$("colorSearch");
+
+let colors=[];
+
+/*
+  30 hue families × 16 variations = 480 colors.
+*/
+for(let h=0;h<360;h+=12){
+
+  for(let s=55;s<=100;s+=15){
+
+    for(let l=32;l<=62;l+=10){
+
+      colors.push({
+        hex:hslToHex(h,s,l),
+        name:`HSL ${h}° ${s}% ${l}%`
+      });
+
     }
+  }
+}
+
+function hslToHex(h,s,l){
+
+  s/=100;
+  l/=100;
+
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+
+  let r=0,g=0,b=0;
+
+  if(h<60)[r,g,b]=[c,x,0];
+  else if(h<120)[r,g,b]=[x,c,0];
+  else if(h<180)[r,g,b]=[0,c,x];
+  else if(h<240)[r,g,b]=[0,x,c];
+  else if(h<300)[r,g,b]=[x,0,c];
+  else[r,g,b]=[c,0,x];
+
+  return "#"+
+    [r,g,b]
+    .map(v=>Math.round((v+m)*255).toString(16).padStart(2,"0"))
+    .join("");
+}
+
+function renderColors(filter=""){
+
+  colorGrid.innerHTML="";
+
+  const list=colors.filter(c=>
+    c.hex.toLowerCase().includes(filter.toLowerCase()) ||
+    c.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  $("colorCount").textContent=
+    `${list.length} colors available • Total ${colors.length}+`;
+
+  list.forEach(c=>{
+
+    const el=document.createElement("button");
+
+    el.className="color";
+    el.title=c.hex;
+    el.style.background=c.hex;
+
+    el.onclick=()=>{
+      applyAccent(c.hex);
+      document.querySelectorAll(".color")
+        .forEach(x=>x.classList.remove("selected"));
+      el.classList.add("selected");
+    };
+
+    colorGrid.appendChild(el);
+  });
+}
+
+function applyAccent(hex){
+
+  document.documentElement.style.setProperty(
+    "--accent",
+    hex
+  );
+
+  document.documentElement.style.setProperty(
+    "--user",
+    hex
+  );
+
+  document.documentElement.style.setProperty(
+    "--accent2",
+    shiftColor(hex,35)
+  );
+
+  document.documentElement.style.setProperty(
+    "--user",
+    hex
+  );
+
+  document.documentElement.style.setProperty(
+    "--user",
+    hex
+  );
+
+  localStorage.setItem(
+    STORE.colors,
+    JSON.stringify({accent:hex})
+  );
+
+  toast("🎨 नया Color लागू हो गइल");
+}
+
+function shiftColor(hex,amount){
+
+  let r=parseInt(hex.slice(1,3),16);
+  let g=parseInt(hex.slice(3,5),16);
+  let b=parseInt(hex.slice(5,7),16);
+
+  r=Math.min(255,r+amount);
+  g=Math.min(255,g+amount);
+  b=Math.min(255,b+amount);
+
+  return "#"+
+    [r,g,b]
+    .map(x=>x.toString(16).padStart(2,"0"))
+    .join("");
+}
+
+colorSearch.oninput=e=>
+  renderColors(e.target.value);
+
+$("randomColor").onclick=()=>{
+  const c=colors[Math.floor(Math.random()*colors.length)];
+  applyAccent(c.hex);
+};
+
+$("applyCustom").onclick=>
+  applyAccent($("customColor").value);
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function toggleTheme(){
+
+  document.body.classList.toggle("light");
+
+  localStorage.setItem(
+    STORE.theme,
+    document.body.classList.contains("light")
+      ?"light"
+      :"dark"
+  );
+}
+
+/* =========================================================
+   VOICE
+========================================================= */
+
+function speak(text){
+
+  if(!("speechSynthesis" in window))return;
+
+  speechSynthesis.cancel();
+
+  const clean=text
+    .replace(/[*_#`~]/g,"")
+    .replace(/\n+/g," ");
+
+  const u=new SpeechSynthesisUtterance(clean);
+  u.lang="hi-IN";
+  u.rate=.95;
+
+  speechSynthesis.speak(u);
+}
+
+const SpeechRecognition=
+  window.SpeechRecognition||
+  window.webkitSpeechRecognition;
+
+if(SpeechRecognition){
+
+  const recognition=new SpeechRecognition();
+
+  recognition.lang="hi-IN";
+  recognition.interimResults=false;
+
+  let listening=false;
+
+  $("micBtn").onclick=()=>{
+
+    if(listening){
+      recognition.stop();
+      return;
+    }
+
+    recognition.start();
+    listening=true;
+    $("micBtn").textContent="⏹️";
   };
 
-  recog.onresult = (e) => {
-    inputBox.value = e.results[0][0].transcript;
-    document.getElementById("micBtn").classList.remove("mic-active");
-    listening = false;
-    sendMessage();
+  recognition.onresult=e=>{
+    input.value=e.results[0][0].transcript;
+    input.dispatchEvent(new Event("input"));
   };
-  recog.onerror = () => {
-    document.getElementById("micBtn").classList.remove("mic-active");
-    listening = false;
+
+  recognition.onend=()=>{
+    listening=false;
+    $("micBtn").textContent="🎙️";
+  };
+
+}else{
+
+  $("micBtn").onclick=()=>{
+    toast("इस browser में voice input उपलब्ध नइखे");
   };
 }
 
-document.getElementById("imageBtn").onclick = () => document.getElementById("imageInput").click();
-document.getElementById("imageInput").onchange = (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    pendingImg = {
-      type: file.type,
-      base64: reader.result.split(",")[1],
-      url: reader.result
+/* =========================================================
+   IMAGE
+========================================================= */
+
+$("imageBtn").onclick=>
+  $("imageInput").click();
+
+$("imageInput").onchange=e=>{
+
+  const file=e.target.files?.[0];
+
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+    pendingImage={
+      type:file.type,
+      url:reader.result
     };
-    alert("फोटो लोड हो गइल! अब आपन सवाल लिख के भेज दीं।");
+
+    toast("📷 फोटो तैयार बा — अब सवाल भेजीं");
   };
+
   reader.readAsDataURL(file);
 };
 
 /* =========================================================
-   WORKING SETTINGS EVENT LISTENERS
-   ========================================================= */
-document.getElementById("saveKeyBtn").onclick = () => {
-  apiKey = document.getElementById("apiKeyInput").value.trim();
-  localStorage.setItem("aura_api_key", apiKey);
-  alert("API Key सुरक्षित सेव हो गइल बा!");
+   INPUT AUTO SIZE
+========================================================= */
+
+input.addEventListener("input",()=>{
+
+  input.style.height="auto";
+  input.style.height=
+    Math.min(input.scrollHeight,130)+"px";
+});
+
+input.addEventListener("keydown",e=>{
+
+  if(e.key==="Enter"&&!e.shiftKey){
+
+    e.preventDefault();
+    sendMessage();
+
+  }
+});
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+send.onclick=sendMessage;
+
+$("newChat").onclick=createChat;
+
+$("menuBtn").onclick=()=>{
+  sidebar.classList.toggle("open");
 };
 
-document.getElementById("modelSelect").onchange = (e) => {
-  activeModel = e.target.value;
-  localStorage.setItem("aura_model", activeModel);
-  document.getElementById("modelHeader").textContent = activeModel;
+$("closeSidebar").onclick=()=>{
+  sidebar.classList.remove("open");
 };
 
-document.getElementById("accentSelect").onchange = (e) => {
-  document.documentElement.style.setProperty("--accent", e.target.value);
-  document.documentElement.style.setProperty("--bubble-user", e.target.value);
+$("apiBtn").onclick=()=>{
+  loadApiUI();
+  $("apiModal").classList.add("open");
 };
 
-document.getElementById("fontRange").oninput = (e) => {
-  document.documentElement.style.setProperty("--font-size", e.target.value + "px");
+$("headerSettings").onclick=()=>{
+  loadApiUI();
+  $("apiModal").classList.add("open");
 };
 
-document.getElementById("radiusRange").oninput = (e) => {
-  document.documentElement.style.setProperty("--radius-bubble", e.target.value + "px");
+$("colorBtn").onclick=()=>{
+  renderColors();
+  $("colorModal").classList.add("open");
 };
 
-document.getElementById("blurRange").oninput = (e) => {
-  document.documentElement.style.setProperty("--blur-val", e.target.value + "px");
+$("memoryBtn").onclick=()=>{
+  renderMemory();
+  $("memoryModal").classList.add("open");
+};
+
+$("themeBtn").onclick=toggleTheme;
+
+$("deleteAllBtn").onclick=deleteAllChats;
+
+$("clearMemory").onclick=()=>{
+
+  if(!confirm("सभी saved memory साफ करीं?"))return;
+
+  memory=[];
+
+  localStorage.removeItem(STORE.memory);
+
+  renderMemory();
+
+  toast("Memory साफ हो गइल");
 };
 
 /* =========================================================
-   NAVIGATION & MODALS
-   ========================================================= */
-sendBtn.onclick = sendMessage;
-inputBox.onkeydown = (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } };
+   CLOSE MODALS
+========================================================= */
 
-document.getElementById("menuBtn").onclick = () => document.getElementById("sidebar").classList.toggle("open");
-document.getElementById("settingsBtn").onclick = () => document.getElementById("settingsModal").classList.add("open");
-document.getElementById("quickSettingsBtn").onclick = () => document.getElementById("settingsModal").classList.add("open");
-document.getElementById("closeSettings").onclick = () => document.getElementById("settingsModal").classList.remove("open");
+document.querySelectorAll("[data-close]").forEach(btn=>{
 
-document.getElementById("memoryBtn").onclick = () => {
-  document.getElementById("memoryDisplay").textContent = userMemory.join("\n") || "कवनो मेमोरी सेव नइखे।";
-  document.getElementById("memoryModal").classList.add("open");
-};
-document.getElementById("closeMemory").onclick = () => document.getElementById("memoryModal").classList.remove("open");
-document.getElementById("clearMemoryBtn").onclick = () => {
-  userMemory = [];
-  localStorage.removeItem("aura_memory");
-  document.getElementById("memoryDisplay").textContent = "कवनो मेमोरी सेव नइखे।";
-};
+  btn.onclick=()=>{
+    $(btn.dataset.close).classList.remove("open");
+  };
 
-document.getElementById("themeBtn").onclick = () => document.body.classList.toggle("light");
-document.getElementById("clearBtn").onclick = () => {
-  chatInner.innerHTML = "";
-  messages = [];
-};
-document.getElementById("newChatBtn").onclick = () => {
-  chatInner.innerHTML = "";
-  messages = [];
-  document.getElementById("sidebar").classList.remove("open");
-};
+});
+
+document.querySelectorAll(".modal").forEach(modal=>{
+
+  modal.addEventListener("click",e=>{
+    if(e.target===modal){
+      modal.classList.remove("open");
+    }
+  });
+
+});
+
+/* =========================================================
+   RESTORE SETTINGS
+========================================================= */
+
+const savedTheme=
+  localStorage.getItem(STORE.theme);
+
+if(savedTheme==="light"){
+  document.body.classList.add("light");
+}
+
+const savedColor=
+  JSON.parse(localStorage.getItem(STORE.colors)||"null");
+
+if(savedColor?.accent){
+  applyAccent(savedColor.accent);
+}
+
+/* =========================================================
+   INIT
+========================================================= */
+
+if(!chats.length){
+
+  /*
+    Don't create a permanent blank history entry.
+    This fixes the old problem where deleted chats/names
+    could remain visible.
+  */
+
+  activeId=null;
+
+}else{
+
+  if(!activeId || !getActive()){
+    activeId=chats[0].id;
+    localStorage.setItem(STORE.active,activeId);
+  }
+
+}
+
+renderHistory();
+renderChat();
+
 </script>
 </body>
 </html>
